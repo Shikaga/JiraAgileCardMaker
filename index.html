@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Jira Ticket Generator</title>
+<script type="text/javascript" src="TicketGenerator.js"></script>
+<script type="text/javascript" src="App.js"></script>
+</head>
+<body>
+	<div id="tickets"></div>
+	<script>
+			var oApp = new jira.App("tickets");
+			
+			function x(e) {
+				oApp.x(e);
+			}
+		</script>
+
+	<script type="text/javascript"
+		src="https://jira.caplin.com/rest/api/latest/search?jql=project=PCTLIBRARY&fixversion=12997&fields=key&jsonp-callback=x"></script>
+</body>
+</html>
