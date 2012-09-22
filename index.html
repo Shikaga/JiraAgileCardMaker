@@ -8,14 +8,35 @@
 <body>
 	<div id="tickets"></div>
 	<script>
-			var oApp = new jira.App("tickets");
-			
-			function x(e) {
-				oApp.x(e);
-			}
-		</script>
-
+	
+		function getParameter(l_sName)
+		{
+			var l_oMatch = window.location.search.match(new RegExp("[?&]" + l_sName + "=([^&]*)"));
+			return ((l_oMatch == null) ? null : l_oMatch[1]);
+		};
+		
+		var project = getParameter("project");
+		var fixversion = getParameter("fixversion");
+		var jiraUrl = "https://jira.caplin.com/rest/api/latest/search?jql=project=" + project + "&fixversion=" + fixversion + "&fields=key&jsonp-callback=x";
+		
+		var scriptElement = document.createElement("script");
+		scriptElement.setAttribute("type", "text/javascript");
+		scriptElement.setAttribute("src", jiraUrl);
+		document.head.appendChild(scriptElement);
+		
+		
+		var oApp = new jira.App("tickets");
+		
+		function getJiraCallback(e) {
+			oApp.getJiraCallback(e);
+		}
+		
+		function x(e) {
+			oApp.x(e);
+		}
+	</script>
 	<script type="text/javascript"
-		src="https://jira.caplin.com/rest/api/latest/search?jql=project=PCTLIBRARY&fixversion=12997&fields=key&jsonp-callback=x"></script>
+		src=
+></script>
 </body>
 </html>
