@@ -27,8 +27,18 @@
 		
 		var oApp = new jira.App("tickets");
 		
+		var cards = 0;
+		var pageElement = document.createElement("div");
 		function getJiraCallback(e) {
-			oApp.getJiraCallback(e);
+			
+			if (cards%2 == 0) {
+				pageElement = document.createElement("div");
+				pageElement.style.pageBreakAfter = "always";
+				pageElement.style.clear = "both";
+				document.getElementById("tickets").appendChild(pageElement);
+			}
+			oApp.getJiraCallback(e, pageElement);
+			cards++
 		}
 		
 		function x(e) {

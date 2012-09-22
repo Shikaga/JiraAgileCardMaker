@@ -8,9 +8,12 @@ jira.ticketviewer.ExampleClass = function(divId, url)
 
 jira.ticketviewer.ticketgenerator.TicketGenerator = function(divId,url, jira, estimate, summary)
 {
-	this.divId = divId;
-	this.element = document.getElementById(this.divId);
-	this.setWidth(600);
+	//if (pagebreak)
+		//this.createNewPage();
+	this.divId = divId + "" + jira
+	console.log(this.divId);
+	this.element = document.getElementById(divId);
+	this.setWidth(350);
 	this.setHeight();
 	this.addDefaultBorder();
 	
@@ -22,13 +25,16 @@ jira.ticketviewer.ticketgenerator.TicketGenerator = function(divId,url, jira, es
 
 jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.setWidth = function(width)
 {
+	this.element.style.margin = "auto";
+	this.element.style.float = "left";
 	this.element.style.width = width + "px";
 	this.element.style.position = "relative";
 	this.element.style.marginLeft = 50 + "px";
+
 }
 jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.setHeight = function()
 {
-	this.element.style.height = 300 + "px";
+	this.element.style.height = 250 + "px";
 	this.element.style.marginBottom = 50 + "px";
 }
 jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.addDefaultBorder = function(width)
@@ -39,10 +45,10 @@ jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.addDefaultBorder = f
 jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.addTitle = function(jira, estimate)
 {
 	
-	var jiraElement = this.createTitleElement(this.divId + "_jira", jira || "Jira", "40%");
-	var estimateElement = this.createTitleElement(this.divId + "_estimate", estimate || "Estimate", "10%");
-	var actualElement = this.createTitleElement(this.divId + "_actual", "Actual", "10%");
-	var ownerElement = this.createTitleElement(this.divId + "_owner", "Owner", "40%");
+	var jiraElement = this.createTitleElement(this.divId + "_jira", jira || "Jira", "35%");
+	var estimateElement = this.createTitleElement(this.divId + "_estimate", estimate || "Estimate", "15%");
+	var actualElement = this.createTitleElement(this.divId + "_actual", "Actual", "15%");
+	var ownerElement = this.createTitleElement(this.divId + "_owner", "Owner", "35%");
 
 	var titleElement = document.createElement("div");
 	titleElement.style.height = "50px";
@@ -58,9 +64,9 @@ jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.addTitle = function(
 jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.addSummary = function(summary)
 {
 	var sideElement = document.createElement("div");
-	sideElement.style.marginRight = "6em";
+	sideElement.style.marginRight = "5em";
 	sideElement.style.padding = "1em";
-	sideElement.style.fontSize= "30px";
+	sideElement.style.fontSize= "23px";
 	sideElement.innerHTML = summary;
 
 	this.element.appendChild(sideElement);
@@ -70,19 +76,20 @@ jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.addSideBar = functio
 {
 	var sideElement = document.createElement("div");
 	sideElement.style.textAlign = "center";
-	sideElement.style.width = "100px";
-	sideElement.style.height = "248px";
+	sideElement.style.width = "70px";
+	sideElement.style.height = "198px";
 	sideElement.style.clear = "both";
 	sideElement.style.position = "absolute";
+	sideElement.style.top = "52px";
 	sideElement.style.bottom = "0";
 	sideElement.style.right = "0";
 	sideElement.style.outline = "2px solid black";
 	sideElement.setAttribute("id", "sidebar");
 
-	var docElement = this.createTitleElement(this.divId + "_doc", "Doc", "100%");
-	var demoElement = this.createTitleElement(this.divId + "_demo", "Demo", "100%");
-	var reviewElement = this.createTitleElement(this.divId + "_review", "Review", "100%");
-	var qrcodeElement = this.createTitleElement(this.divId + "_qrcode", "QRCode", "100%", 80);
+	var docElement = this.createTitleElement(this.divId + "_doc", "Doc", "100%",40);
+	var demoElement = this.createTitleElement(this.divId + "_demo", "Demo", "100%",40);
+	var reviewElement = this.createTitleElement(this.divId + "_review", "Review", "100%",40);
+	var qrcodeElement = this.createTitleElement(this.divId + "_qrcode", "QRCode", "100%", 78);
 
 	sideElement.appendChild(docElement);
 	sideElement.appendChild(demoElement);
@@ -104,7 +111,10 @@ jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.createTitleElement =
 	titleElement.style.float = "left";
 	titleElement.style.outline = "2px solid black";
 	titleElement.style.verticalAlign = "middle";
-	titleElement.style.lineHeight = "50px";
+	height = height || 50;
+	titleElement.style.lineHeight = height + "px";
+	titleElement.style.fontSize= "12px";
+	
 	titleElement.setAttribute("id", id);
 	titleElement.appendChild(document.createTextNode(text));
 	return titleElement;
