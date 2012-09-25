@@ -17,7 +17,7 @@
 		
 		var project = getParameter("project");
 		var fixversion = getParameter("fixversion");
-		var jiraUrl = "https://jira.caplin.com/rest/api/latest/search?jql=project=" + project + "&fixversion=" + fixversion + "&fields=key&jsonp-callback=x";
+		var jiraUrl = "https://jira.caplin.com/rest/api/latest/search?jql=project=" + project + "&fixversion=" + fixversion + "&fields=key&jsonp-callback=x&maxResults=1000";
 		
 		var scriptElement = document.createElement("script");
 		scriptElement.setAttribute("type", "text/javascript");
@@ -25,7 +25,7 @@
 		document.head.appendChild(scriptElement);
 		
 		
-		var oApp = new jira.App("tickets");
+		var oApp = new jira.App("tickets", fixversion);
 		
 		var cards = 0;
 		var pageElement = document.createElement("div");
