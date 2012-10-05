@@ -1,0 +1,25 @@
+From ad1ff394d18780c21e1dce63b130afaac22f249b Mon Sep 17 00:00:00 2001
+From: Nick T <sprogcoder@gmail.com>
+Date: Fri, 5 Oct 2012 15:45:23 +0100
+Subject: [PATCH] The app now correctly uses the fixversion command
+
+---
+ index.html | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/index.html b/index.html
+index 9c7b700..236a4a3 100644
+--- a/index.html
++++ b/index.html
+@@ -17,7 +17,7 @@
+ 		
+ 		var project = getParameter("project");
+ 		var fixversion = getParameter("fixversion");
+-		var jiraUrl = "https://jira.caplin.com/rest/api/latest/search?jql=project=" + project + "&fixversion=" + fixversion + "&fields=key&jsonp-callback=x&maxResults=1000";
++		var jiraUrl = "https://jira.caplin.com/rest/api/latest/search?jql=project=" + project + "%20AND%20fixversion=" + fixversion + "&fields=key&jsonp-callback=x&maxResults=1000";
+ 		
+ 		var scriptElement = document.createElement("script");
+ 		scriptElement.setAttribute("type", "text/javascript");
+-- 
+1.7.11.msysgit.1
+

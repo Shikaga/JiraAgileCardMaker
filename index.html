@@ -17,7 +17,7 @@
 		
 		var project = getParameter("project");
 		var fixversion = getParameter("fixversion");
-		var jiraUrl = "https://jira.caplin.com/rest/api/latest/search?jql=project=" + project + "&fixversion=" + fixversion + "&fields=key&jsonp-callback=x&maxResults=1000";
+		var jiraUrl = "https://jira.caplin.com/rest/api/latest/search?jql=project=" + project + "%20AND%20fixversion=" + fixversion + "&fields=key&jsonp-callback=x&maxResults=1000";
 		
 		var scriptElement = document.createElement("script");
 		scriptElement.setAttribute("type", "text/javascript");
