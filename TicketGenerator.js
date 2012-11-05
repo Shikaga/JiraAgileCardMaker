@@ -6,18 +6,18 @@ jira.ticketviewer.ExampleClass = function(divId, url)
 	document.getElementById(divId).innerHTML = '<img style="margin-top: 20px;" width="50px" height="50px" src="http://qr.kaywa.com/?s=8&d=http%3A%2F%2F'+url + '" alt="QRCode"/>';
 }
 
-jira.ticketviewer.ticketgenerator.TicketGenerator = function(divId,url, jira, estimate, summary)
+jira.ticketviewer.ticketgenerator.TicketGenerator = function(divId,url, jira, estimate, summary, color)
 {
 	//if (pagebreak)
 		//this.createNewPage();
 	this.divId = divId + "" + jira
-	console.log(this.divId);
+	console.log("!!!!!!!!", color);
 	this.element = document.getElementById(divId);
 	this.setWidth(350);
 	this.setHeight();
 	this.addDefaultBorder();
 	
-	this.addTitle(jira,estimate);
+	this.addTitle(jira,estimate, color);
 	this.addSideBar();
 	this.addSummary(summary);
 	this.addQRCode(url);
@@ -42,7 +42,7 @@ jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.addDefaultBorder = f
 	this.element.style.border = "2px solid black"
 }
 
-jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.addTitle = function(jira, estimate)
+jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.addTitle = function(jira, estimate, color)
 {
 	
 	var jiraElement = this.createTitleElement(this.divId + "_jira", jira || "Jira", "35%");
@@ -52,6 +52,11 @@ jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.addTitle = function(
 
 	var titleElement = document.createElement("div");
 	titleElement.style.height = "50px";
+	
+	jiraElement.style.backgroundColor = color;
+	jiraElement.style.fontSize = "80%";
+	jiraElement.style.fontWeight = "Bolder";
+
 
 	titleElement.appendChild(jiraElement);
 	titleElement.appendChild(estimateElement);

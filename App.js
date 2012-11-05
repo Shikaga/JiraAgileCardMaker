@@ -4,6 +4,12 @@ jira.App = function(divId, fixVersion)
 	this.ticketId = 0;
 	this.divId = divId;
 	this.totalTickets = 0;
+	this.issueTypeColors = {
+		"Technical task": "#099"
+		,"Story": "#909"
+		,"Bug": "#C00"
+		,"Documentation": "#FFD600"}
+	this.colorEnabled = getParameter("color");
 }
 
 jira.App.prototype.x = function(e)
@@ -39,17 +45,18 @@ jira.App.prototype.getJiraCallback = function(e, pageElement)
 		var jiraId = e.key;
 		var jiraEstimate = e.fields["customfield_10243"];
 		var jiraSummary = e.fields.summary;
+		var color = this.colorEnabled ? this.issueTypeColors[e.fields.issuetype.name] : null;
 		console.log("Callback!", jiraId, jiraEstimate, jiraSummary);
-		this.addTicket(this.divId,"jira.caplin.com/browse/" + jiraId, jiraId, jiraEstimate, jiraSummary, pageElement);
+		this.addTicket(this.divId,"jira.caplin.com/browse/" + jiraId, jiraId, jiraEstimate, jiraSummary, pageElement, color);
 		console.log("Tickets Produced", this.totalTickets);
 	}
 }
 
-jira.App.prototype.addTicket = function(divId, url, title, estimate, summary, pageElement)
+jira.App.prototype.addTicket = function(divId, url, title, estimate, summary, pageElement, color)
 {
 	this.ticketId++;
 	var titleElement = document.createElement("div");
 	titleElement.setAttribute("id", divId + "_ticket" + this.ticketId);
 	pageElement.appendChild(titleElement);
-	new jira.ticketviewer.ticketgenerator.TicketGenerator(divId + "_ticket" + this.ticketId,url, title, estimate, summary);	
+	new jira.ticketviewer.ticketgenerator.TicketGenerator(divId + "_ticket" + this.ticketId,url, title, estimate, summary, color);	
 }
