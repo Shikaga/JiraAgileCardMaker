@@ -5,10 +5,11 @@ jira.App = function(divId, fixVersion)
 	this.divId = divId;
 	this.totalTickets = 0;
 	this.issueTypeColors = {
-		"Technical task": "#099"
+		"Bug": "#C00"
+		,"Documentation": "#FFD600"
+		,"Improvement": "#090"
 		,"Story": "#909"
-		,"Bug": "#C00"
-		,"Documentation": "#FFD600"}
+		,"Technical task": "#099"}
 	this.colorEnabled = getParameter("color");
 }
 
