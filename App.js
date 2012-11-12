@@ -23,14 +23,12 @@ jira.App.prototype.x = function(e)
 		scriptElement.setAttribute("type", "text/javascript");
 		scriptElement.setAttribute("src", jiraUrl);
 		document.head.appendChild(scriptElement);
-		console.log(issue, e.issues[issue]);
 	}
 }
 
 jira.App.prototype.matchFixVersion = function(e)
 {
 	var matchesFixVersion = false;
-	console.log(e.key, fixVersions);
 	var fixVersions = e.fields.fixVersions;
 	for (var version in fixVersions)
 	{
@@ -47,9 +45,7 @@ jira.App.prototype.getJiraCallback = function(e, pageElement)
 		var jiraEstimate = e.fields["customfield_10243"];
 		var jiraSummary = e.fields.summary;
 		var color = this.colorEnabled ? this.issueTypeColors[e.fields.issuetype.name] : null;
-		console.log("Callback!", jiraId, jiraEstimate, jiraSummary);
 		this.addTicket(this.divId,"jira.caplin.com/browse/" + jiraId, jiraId, jiraEstimate, jiraSummary, pageElement, color);
-		console.log("Tickets Produced", this.totalTickets);
 	}
 }
 

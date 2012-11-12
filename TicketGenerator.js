@@ -11,7 +11,6 @@ jira.ticketviewer.ticketgenerator.TicketGenerator = function(divId,url, jira, es
 	//if (pagebreak)
 		//this.createNewPage();
 	this.divId = divId + "" + jira
-	console.log("!!!!!!!!", color);
 	this.element = document.getElementById(divId);
 	this.setWidth(350);
 	this.setHeight();
