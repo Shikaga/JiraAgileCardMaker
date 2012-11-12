@@ -41,19 +41,21 @@ jira.App.prototype.getJiraCallback = function(e, pageElement)
 {
 	if (this.matchFixVersion(e)) {
 		this.totalTickets++;
+        if (e.fields.parent)
+        var parent = e.fields.parent.key;
 		var jiraId = e.key;
 		var jiraEstimate = e.fields["customfield_10243"];
 		var jiraSummary = e.fields.summary;
 		var color = this.colorEnabled ? this.issueTypeColors[e.fields.issuetype.name] : null;
-		this.addTicket(this.divId,"jira.caplin.com/browse/" + jiraId, jiraId, jiraEstimate, jiraSummary, pageElement, color);
+		this.addTicket(this.divId,"jira.caplin.com/browse/" + jiraId, jiraId, jiraEstimate, jiraSummary, parent, color, pageElement);
 	}
 }
 
-jira.App.prototype.addTicket = function(divId, url, title, estimate, summary, pageElement, color)
+jira.App.prototype.addTicket = function(divId, url, title, estimate, summary, parent, color, pageElement)
 {
 	this.ticketId++;
 	var titleElement = document.createElement("div");
 	titleElement.setAttribute("id", divId + "_ticket" + this.ticketId);
 	pageElement.appendChild(titleElement);
-	new jira.ticketviewer.ticketgenerator.TicketGenerator(divId + "_ticket" + this.ticketId,url, title, estimate, summary, color);	
+	new jira.ticketviewer.ticketgenerator.TicketGenerator(divId + "_ticket" + this.ticketId,url, title, estimate, summary, parent, color);	
 }

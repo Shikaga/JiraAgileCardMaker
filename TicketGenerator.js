@@ -6,17 +6,15 @@ jira.ticketviewer.ExampleClass = function(divId, url)
 	document.getElementById(divId).innerHTML = '<img style="margin-top: 20px;" width="50px" height="50px" src="http://qr.kaywa.com/?s=8&d=http%3A%2F%2F'+url + '" alt="QRCode"/>';
 }
 
-jira.ticketviewer.ticketgenerator.TicketGenerator = function(divId,url, jira, estimate, summary, color)
+jira.ticketviewer.ticketgenerator.TicketGenerator = function(divId,url, jira, estimate, summary, parent, color)
 {
-	//if (pagebreak)
-		//this.createNewPage();
 	this.divId = divId + "" + jira
 	this.element = document.getElementById(divId);
 	this.setWidth(350);
 	this.setHeight();
 	this.addDefaultBorder();
 	
-	this.addTitle(jira,estimate, color);
+	this.addTitle(jira,estimate, parent, color);
 	this.addSideBar();
 	this.addSummary(summary);
 	this.addQRCode(url);
@@ -41,10 +39,12 @@ jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.addDefaultBorder = f
 	this.element.style.border = "2px solid black"
 }
 
-jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.addTitle = function(jira, estimate, color)
+jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.addTitle = function(jira, estimate, parent, color)
 {
-	
-	var jiraElement = this.createTitleElement(this.divId + "_jira", jira || "Jira", "35%");
+    var summary = jira;
+    if (parent !== null && parent !== undefined)
+        summary = parent + "\n" + jira
+	var jiraElement = this.createTitleElement(this.divId + "_jira", summary || "Jira", "35%");
 	var estimateElement = this.createTitleElement(this.divId + "_estimate", estimate || "Estimate", "15%");
 	var actualElement = this.createTitleElement(this.divId + "_actual", "Actual", "15%");
 	var ownerElement = this.createTitleElement(this.divId + "_owner", "Owner", "35%");
@@ -111,7 +111,15 @@ jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.addSideBar = functio
 jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.createTitleElement = function(id,text,width,height)
 {
 	var titleElement = document.createElement("span");
-	titleElement.style.textAlign = "center";
+    var textArray = text.split("\n");
+    for (var i=0; i < textArray.length; i++) {
+	    titleElement.appendChild(document.createTextNode(textArray[i]));
+        titleElement.appendChild(document.createElement("br"));
+    }
+    
+    var multiline = textArray.length > 1;
+    
+    titleElement.style.textAlign = "center";
 	titleElement.style.width = width;
 	if (height != undefined)
 		titleElement.style.height = height + "px";
@@ -121,11 +129,14 @@ jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.createTitleElement =
 	titleElement.style.outline = "2px solid black";
 	titleElement.style.verticalAlign = "middle";
 	height = height || 50;
-	titleElement.style.lineHeight = height + "px";
+    if (multiline) {
+	    titleElement.style.lineHeight = height/2 + "px";
+    } else {
+        titleElement.style.lineHeight = height + "px";
+    }
 	titleElement.style.fontSize= "12px";
 	
 	titleElement.setAttribute("id", id);
-	titleElement.appendChild(document.createTextNode(text));
 	return titleElement;
 }
 
