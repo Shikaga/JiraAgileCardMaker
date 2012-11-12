@@ -54,6 +54,7 @@ jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.addTitle = function(
 	titleElement.style.height = "50px";
 	
 	jiraElement.style.backgroundColor = color;
+	jiraElement.style["-webkit-print-color-adjust"] = "exact";
 	jiraElement.style.fontSize = "80%";
 	jiraElement.style.fontWeight = "Bolder";
 
