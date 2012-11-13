@@ -17,6 +17,7 @@
 		
 		var project = getParameter("project");
 		var fixversion = getParameter("fixversion");
+		jiraId = getParameter("jira");
 		var jiraUrl = "https://jira.caplin.com/rest/api/latest/search?jql=project=" + project + "%20AND%20fixversion=" + fixversion + "&fields=key&jsonp-callback=x&maxResults=1000";
 		
 		var scriptElement = document.createElement("script");
@@ -42,6 +43,18 @@
 		}
 		
 		function x(e) {
+			if (jiraId != null && jiraId != undefined) {
+				var jirasArray = [];
+				for (var i=0; i < e.issues.length; i++) {
+					console.log("[" + e.issues[i].key + "]", "[" + jiraId + "]");
+					
+					if (e.issues[i].key == jiraId) {
+						jirasArray.push(e.issues[i]);
+					}
+				}
+				console.log("|ZZZ", jirasArray);
+				e.issues = jirasArray;
+			}
 			oApp.x(e);
 		}
 	</script>
