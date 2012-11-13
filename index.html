@@ -44,11 +44,12 @@
 		
 		function x(e) {
 			if (jiraId != null && jiraId != undefined) {
+				var jiraIds = jiraId.split(",");
 				var jirasArray = [];
 				for (var i=0; i < e.issues.length; i++) {
-					console.log("[" + e.issues[i].key + "]", "[" + jiraId + "]");
+					console.log(jiraIds.indexOf(e.issues[i].key));
 					
-					if (e.issues[i].key == jiraId) {
+					if (jiraIds.indexOf(e.issues[i].key) !== -1) {
 						jirasArray.push(e.issues[i]);
 					}
 				}
