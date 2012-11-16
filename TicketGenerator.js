@@ -110,14 +110,21 @@ jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.addSideBar = functio
 
 jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.createTitleElement = function(id,text,width,height)
 {
+
 	var titleElement = document.createElement("span");
-    var textArray = text.split("\n");
-    for (var i=0; i < textArray.length; i++) {
+    if (parseInt(text != NaN)) {
+	console.log(text);
+	var textArray = text.split("\n");
+	for (var i=0; i < textArray.length; i++) {
 	    titleElement.appendChild(document.createTextNode(textArray[i]));
-        titleElement.appendChild(document.createElement("br"));
+            titleElement.appendChild(document.createElement("br"));
+	}
+	var multiline = textArray.length > 1;
+    } else {
+	 titleElement.appendChild(document.createTextNode(text));
+	var multiline = true;
     }
     
-    var multiline = textArray.length > 1;
     
     titleElement.style.textAlign = "center";
 	titleElement.style.width = width;
