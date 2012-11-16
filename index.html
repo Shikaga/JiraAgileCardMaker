@@ -4,9 +4,37 @@
 <title>Jira Ticket Generator</title>
 <script type="text/javascript" src="TicketGenerator.js"></script>
 <script type="text/javascript" src="App.js"></script>
+<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
 	<div id="tickets"></div>
+    <div>
+        
+    <div style="min-height:100%" id="ticketManager">
+        <h1>Jira Ticket Generator</h1>
+        <div id="optionsPanel">
+            <ul>
+                <li>Jira Location : <input id="jiraLocation" value="https://jira.caplin.com"></input></li>
+                <li>Color Enabled: <input type="checkbox" id="color"></input></li>
+            </ul>
+        </div>
+        <div>
+            <h2>Project</h2>
+            <ul>
+                <li>Project Name : <input id="project"></input></li>
+                <li>Fix Version : <input id="fixversion"></input></li>
+            </ul>
+            <button onclick="getJiras()">Fetch!</button>
+        </div>
+        <h1>Jira List</h1>
+        <div id="jiraList">
+            <ul id="jiraListUrl">
+                
+            </ul>
+        </div>
+        <button onClick="generateTickets()">Generate!</button>
+    </div>
+    </div>
 	<script>
 	
 		function getParameter(l_sName)
@@ -15,18 +43,32 @@
 			return ((l_oMatch == null) ? null : l_oMatch[1]);
 		};
 		
-		var project = getParameter("project");
-		var fixversion = getParameter("fixversion");
-		jiraId = getParameter("jira");
-		var jiraUrl = "https://jira.caplin.com/rest/api/latest/search?jql=project=" + project + "%20AND%20fixversion=" + fixversion + "&fields=key&jsonp-callback=x&maxResults=1000";
+        jiraId = getParameter("jira");
 		
-		var scriptElement = document.createElement("script");
-		scriptElement.setAttribute("type", "text/javascript");
-		scriptElement.setAttribute("src", jiraUrl);
-		document.head.appendChild(scriptElement);
-		
-		
-		var oApp = new jira.App("tickets", fixversion);
+        function initializeFields() {
+            var project = getParameter("project");
+		    var fixversion = getParameter("fixversion");
+            document.getElementById("project").value = project;
+            document.getElementById("fixversion").value = fixversion;
+        } 
+        
+        initializeFields();
+        
+        function getJiras() {
+            console.log("Jiras Requested!");
+            var project = document.getElementById("project").value
+    	    var fixversion = document.getElementById("fixversion").value;
+            
+            
+        	var jiraUrl = "https://jira.caplin.com/rest/api/latest/search?jql=project=" + project + "%20AND%20fixversion=" + fixversion + "&fields=key&jsonp-callback=x&maxResults=1000";
+                
+        	var scriptElement = document.createElement("script");
+    		scriptElement.setAttribute("type", "text/javascript");
+    		scriptElement.setAttribute("src", jiraUrl);
+            document.head.appendChild(scriptElement);
+        }
+        
+		//document.head.appendChild(scriptElement);
 		
 		var cards = 0;
 		var pageElement = document.createElement("div");
@@ -41,22 +83,80 @@
 			oApp.getJiraCallback(e, pageElement);
 			cards++
 		}
+        
+        function addCheckList(name, callback, className) {
+            var jiraList = document.getElementById("jiraListUrl");
+             var li = document.createElement("li");
+                
+            var checkbox = document.createElement("input")
+            checkbox.type = "checkbox";
+            checkbox.className = className;
+            checkbox.name = name;
+            checkbox.checked = true;
+            
+            if (callback != null && callback != undefined) {
+                checkbox.onclick = callback;
+            }
+            
+            var label = document.createTextNode(name);
+            
+            li.appendChild(checkbox);
+            li.appendChild(label);
+            
+            jiraList.appendChild(li);
+        }
+        
+        function allJirasClicked() {
+            var jiraChecklists = document.getElementsByClassName("jiracheck");
+            for (var i=0; i < jiraChecklists.length; i++) {
+                jiraChecklists[i].checked = this.checked;
+            }   
+        }
+        
+        function addJirasToInterface(issues) {            
+            addCheckList("All", allJirasClicked, null);
+            for (var i=0; i < issues.length; i++) {
+                var issue = issues[i];
+                addCheckList(issue.key, null, "jiracheck");
+            }
+        }
+        
+        function x(e) {
+            addJirasToInterface(e.issues);
+        }
+        
+        function generateTickets() {
+            var jiraChecklists = document.getElementsByClassName("jiracheck");
+            var checklistToDisplay = [];
+            for (var i=0; i < jiraChecklists.length; i++) {
+                var jiraCheck = jiraChecklists[i];
+                if (jiraCheck.checked) {
+                    checklistToDisplay.push(jiraCheck.name);
+                }
+            }   
+            var interface = document.getElementById("ticketManager");
+            interface.style.display = "none";
+            console.log(checklistToDisplay);
+            oApp = new jira.App("tickets", document.getElementById("fixversion").value);
+            doSomething(checklistToDisplay);
+            
+        }
 		
-		function x(e) {
-			if (jiraId != null && jiraId != undefined) {
-				var jiraIds = jiraId.split(",");
-				var jirasArray = [];
-				for (var i=0; i < e.issues.length; i++) {
-					console.log(jiraIds.indexOf(e.issues[i].key));
-					
-					if (jiraIds.indexOf(e.issues[i].key) !== -1) {
-						jirasArray.push(e.issues[i]);
-					}
-				}
-				console.log("|ZZZ", jirasArray);
-				e.issues = jirasArray;
-			}
-			oApp.x(e);
+		function doSomething(jiras) {
+			//if (jiraId != null && jiraId != undefined) {
+			//	var jiraIds = jiraId.split(",");
+			//	var jirasArray = [];
+//				for (var i=0; i < jiras.length; i++) {
+//					console.log(jiras);
+//					if (jiraIds.indexOf(e.issues[i].key) !== -1) {
+//						jirasArray.push(e.issues[i]);
+//					}
+//				}
+			//	console.log("|ZZZ", jirasArray);
+			//	e.issues = jirasArray;
+		//	}
+		//	console.log(e);
+			oApp.x(jiras);
 		}
 	</script>
 	<script type="text/javascript"

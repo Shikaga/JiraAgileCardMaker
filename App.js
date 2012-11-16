@@ -13,12 +13,13 @@ jira.App = function(divId, fixVersion)
 	this.colorEnabled = getParameter("color");
 }
 
-jira.App.prototype.x = function(e)
+jira.App.prototype.x = function(jiras)
 {
 	
-	for (var issue in e.issues)
+	for (var i=0; i < jiras.length; i++)
 	{
-		var jiraUrl = "https://jira.caplin.com/rest/api/latest/issue/" + e.issues[issue].key + "?jsonp-callback=getJiraCallback";
+        var jira = jiras[i];
+		var jiraUrl = "https://jira.caplin.com/rest/api/latest/issue/" + jira + "?jsonp-callback=getJiraCallback";
 		var scriptElement = document.createElement("script");
 		scriptElement.setAttribute("type", "text/javascript");
 		scriptElement.setAttribute("src", jiraUrl);
