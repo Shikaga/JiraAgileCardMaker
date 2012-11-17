@@ -8,6 +8,7 @@ jira.ticketviewer.ExampleClass = function(divId, url)
 
 jira.ticketviewer.ticketgenerator.TicketGenerator = function(divId,url, jira, estimate, summary, parent, color, qrcode)
 {
+    this.qrcode = qrcode;
 	this.divId = divId + "" + jira
 	this.element = document.getElementById(divId);
 	this.setWidth(350);
@@ -17,7 +18,6 @@ jira.ticketviewer.ticketgenerator.TicketGenerator = function(divId,url, jira, es
 	this.addTitle(jira,estimate, parent, color);
 	this.addSideBar();
 	this.addSummary(summary);
-    this.qrcode = qrcode;
     if (this.qrcode) {
     	this.addQRCode(url);
     }
@@ -107,6 +107,7 @@ jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.addSideBar = functio
 	sideElement.appendChild(docElement);
 	sideElement.appendChild(demoElement);
 	sideElement.appendChild(reviewElement);
+    console.log(this.qrcode);
     if (this.qrcode) {
 	    sideElement.appendChild(qrcodeElement);
     }
