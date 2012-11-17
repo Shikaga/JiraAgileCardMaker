@@ -15,13 +15,14 @@
         <div id="optionsPanel">
             <ul>
                 <li>Jira Location : <input id="jiraLocation" value="https://jira.caplin.com"></input></li>
-                <li>Color Enabled: <input type="checkbox" id="color"></input></li>
+                <li>Color Enabled: <input checked=true type="checkbox" id="color"></input></li>
+                <li>QR Code Enabled: <input checked=true type="checkbox" id="qrcode"></input></li>
             </ul>
         </div>
         <div>
             <h2>Project</h2>
             <ul>
-                <li>Wizard : <input id="wizard" value="https://jira.caplin.com/browse/PSL/fixforversion/12733"></input><button onclick=wizard()>Generate</button></li>
+                <li>Wizard : <input id="wizard" value="https://jira.caplin.com/browse/PAPAMAFX/fixforversion/13153" style="width: 400px"></input><button onclick=wizard()>Generate</button></li>
                 <li>Project Name : <input id="project"></input></li>
                 <li>Fix Version : <input id="fixversion"></input></li>
             </ul>
@@ -156,25 +157,14 @@
             var interface = document.getElementById("ticketManager");
             interface.style.display = "none";
             console.log(checklistToDisplay);
-            oApp = new jira.App("tickets", document.getElementById("fixversion").value);
+            var color = document.getElementById("color").checked;
+            var qrcode = document.getElementById("qrcode").checked;
+            oApp = new jira.App("tickets", document.getElementById("fixversion").value, color, qrcode);
             doSomething(checklistToDisplay);
             
         }
 		
 		function doSomething(jiras) {
-			//if (jiraId != null && jiraId != undefined) {
-			//	var jiraIds = jiraId.split(",");
-			//	var jirasArray = [];
-//				for (var i=0; i < jiras.length; i++) {
-//					console.log(jiras);
-//					if (jiraIds.indexOf(e.issues[i].key) !== -1) {
-//						jirasArray.push(e.issues[i]);
-//					}
-//				}
-			//	console.log("|ZZZ", jirasArray);
-			//	e.issues = jirasArray;
-		//	}
-		//	console.log(e);
 			oApp.x(jiras);
 		}
 	</script>

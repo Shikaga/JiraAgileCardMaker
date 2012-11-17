@@ -1,4 +1,4 @@
-jira.App = function(divId, fixVersion)
+jira.App = function(divId, fixVersion, color, qrcode)
 {
 	this.fixVersion = fixVersion;
 	this.ticketId = 0;
@@ -10,7 +10,9 @@ jira.App = function(divId, fixVersion)
 		,"Improvement": "#090"
 		,"Story": "#909"
 		,"Technical task": "#099"}
-	this.colorEnabled = getParameter("color");
+    console.log(color);
+	this.colorEnabled = color;
+    this.qrcodeEnabled = qrcode;
 }
 
 jira.App.prototype.x = function(jiras)
