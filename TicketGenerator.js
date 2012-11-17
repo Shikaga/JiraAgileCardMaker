@@ -6,7 +6,7 @@ jira.ticketviewer.ExampleClass = function(divId, url)
 	document.getElementById(divId).innerHTML = '<img style="margin-top: 20px;" width="50px" height="50px" src="http://qr.kaywa.com/?s=8&d=http%3A%2F%2F'+url + '" alt="QRCode"/>';
 }
 
-jira.ticketviewer.ticketgenerator.TicketGenerator = function(divId,url, jira, estimate, summary, parent, color)
+jira.ticketviewer.ticketgenerator.TicketGenerator = function(divId,url, jira, estimate, summary, parent, color, qrcode)
 {
 	this.divId = divId + "" + jira
 	this.element = document.getElementById(divId);
@@ -17,7 +17,11 @@ jira.ticketviewer.ticketgenerator.TicketGenerator = function(divId,url, jira, es
 	this.addTitle(jira,estimate, parent, color);
 	this.addSideBar();
 	this.addSummary(summary);
-	this.addQRCode(url);
+    this.qrcode = qrcode;
+    if (this.qrcode) {
+    	this.addQRCode(url);
+    }
+    
 };
 
 jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.setWidth = function(width)
@@ -103,7 +107,9 @@ jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.addSideBar = functio
 	sideElement.appendChild(docElement);
 	sideElement.appendChild(demoElement);
 	sideElement.appendChild(reviewElement);
-	sideElement.appendChild(qrcodeElement);
+    if (this.qrcode) {
+	    sideElement.appendChild(qrcodeElement);
+    }
 
 	this.element.appendChild(sideElement);
 }
@@ -117,7 +123,7 @@ jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.createTitleElement =
 	var textArray = text.split("\n");
 	for (var i=0; i < textArray.length; i++) {
 	    titleElement.appendChild(document.createTextNode(textArray[i]));
-            titleElement.appendChild(document.createElement("br"));
+        titleElement.appendChild(document.createElement("br"));
 	}
 	var multiline = textArray.length > 1;
     } else {
