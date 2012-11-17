@@ -50,7 +50,6 @@
                 document.getElementById("project").value = project;
                 document.getElementById("fixversion").value = fixversion;
                 document.getElementById("wizard").value = "";
-                console.log(project, fixversion);
            } else {
                alert("This url was unrecognized");
                alert("try: \"https://jira.caplin.com/browse/PSL/fixforversion/12733\"")
@@ -75,7 +74,6 @@
         initializeFields();
         
         function getJiras() {
-            console.log("Jiras Requested!");
             var project = document.getElementById("project").value
     	    var fixversion = document.getElementById("fixversion").value;
             
@@ -156,7 +154,6 @@
             }   
             var interface = document.getElementById("ticketManager");
             interface.style.display = "none";
-            console.log(checklistToDisplay);
             var color = document.getElementById("color").checked;
             var qrcode = document.getElementById("qrcode").checked;
             oApp = new jira.App("tickets", document.getElementById("fixversion").value, color, qrcode);

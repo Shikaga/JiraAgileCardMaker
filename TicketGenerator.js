@@ -107,7 +107,6 @@ jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.addSideBar = functio
 	sideElement.appendChild(docElement);
 	sideElement.appendChild(demoElement);
 	sideElement.appendChild(reviewElement);
-    console.log(this.qrcode);
     if (this.qrcode) {
 	    sideElement.appendChild(qrcodeElement);
     }
@@ -120,7 +119,6 @@ jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.createTitleElement =
 
 	var titleElement = document.createElement("span");
     if (parseInt(text != NaN)) {
-	console.log(text);
 	var textArray = text.split("\n");
 	for (var i=0; i < textArray.length; i++) {
 	    titleElement.appendChild(document.createTextNode(textArray[i]));
