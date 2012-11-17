@@ -21,6 +21,7 @@
         <div>
             <h2>Project</h2>
             <ul>
+                <li>Wizard : <input id="wizard" value="https://jira.caplin.com/browse/PSL/fixforversion/12733"></input><button onclick=wizard()>Generate</button></li>
                 <li>Project Name : <input id="project"></input></li>
                 <li>Fix Version : <input id="fixversion"></input></li>
             </ul>
@@ -37,6 +38,24 @@
     </div>
 	<script>
 	
+        function wizard() {
+           var url = document.getElementById("wizard").value;
+           projectStart = url.indexOf("browse/");
+           fixversionStart = url.indexOf("fixforversion/");
+           
+           if (projectStart != -1 && fixversionStart != -1) {               
+                project = url.substring(projectStart+7, fixversionStart-1);
+                fixversion = url.substring(fixversionStart+14);
+                document.getElementById("project").value = project;
+                document.getElementById("fixversion").value = fixversion;
+                document.getElementById("wizard").value = "";
+                console.log(project, fixversion);
+           } else {
+               alert("This url was unrecognized");
+               alert("try: \"https://jira.caplin.com/browse/PSL/fixforversion/12733\"")
+           }
+           
+        }
 		function getParameter(l_sName)
 		{
 			var l_oMatch = window.location.search.match(new RegExp("[?&]" + l_sName + "=([^&]*)"));
@@ -86,7 +105,7 @@
         
         function addCheckList(name, callback, className) {
             var jiraList = document.getElementById("jiraListUrl");
-             var li = document.createElement("li");
+            var li = document.createElement("li");
                 
             var checkbox = document.createElement("input")
             checkbox.type = "checkbox";
