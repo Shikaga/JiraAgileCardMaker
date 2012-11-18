@@ -39,12 +39,20 @@
         </div>
         <div style="float:left; width: 50%">
             <h1>Columns</h1>
-            <div class="list">ASDF</div>
+            <div class="list">
+                <ul id="columnListUl">
+                </ul>
+            </div>
+            <button onClick="generateColumns()">Generate!</button>
         </div>
         <div style="clear:both"></div>
     </div>
     </div>
 	<script>
+        function addQRCode(divId, url, size) {
+            if (size == null || size == undefined) size = 50;
+                document.getElementById(divId).innerHTML = '<img style="margin-top: 20px;" width="' + size + 'px" height="' + size + 'px" src="http://qr.kaywa.com/?s=8&d=http%3A%2F%2F'+url + '" alt="QRCode"/>';
+        }
 	
         function wizard() {
            var url = document.getElementById("wizard").value;
@@ -115,8 +123,8 @@
 			cards++
 		}
         
-        function addCheckList(name, callback, className) {
-            var jiraList = document.getElementById("jiraListUrl");
+        function addCheckList(ul, name, callback, className) {
+            var jiraList = document.getElementById(ul);
             var li = document.createElement("li");
                 
             var checkbox = document.createElement("input")
@@ -144,11 +152,51 @@
             }   
         }
         
+        function addColumnsToInterace() {
+            var columnsArray = ["Backlog", "In Dev", "Awaiting QA", "In QA", "Resolved"];
+            for (var i=0; i < columnsArray.length; i++) {
+                addCheckList("columnListUl", columnsArray[i], null, "columncheck");
+            }   
+        }
+        columnCounter = 0;
+        function addQRCodeDiv() {
+            var QRCodeDiv = document.createElement("span");
+            QRCodeDiv.style.width = "200px";
+            QRCodeDiv.style.height = "200px";
+            QRCodeDiv.style.margin = "20px";
+            QRCodeDiv.id = "qrcode_" + columnCounter++;
+            document.body.appendChild(QRCodeDiv);
+            return QRCodeDiv.id;
+        }
+        
+        function generateColumns() {
+            var project = document.getElementById("project").value
+            if (project != "") {                
+                var columnsMap = {"Backlog": "Backlog"
+                    ,"In Dev": "In%20Progress%3A%20Development"
+                    ,"Awaiting QA": "Awaiting%20Test"
+                    ,"In QA": "In%20Progress%3A%20QA%2FTest"
+                    ,"Resolved": "Resolved"
+                }
+                var columnChecklists = getChecked("columncheck");
+                for (var i=0; i < columnChecklists.length; i++) {
+                    var url = "https://jira.caplin.com/secure/IssueNavigator.jspa?jqlQuery=project+%3D+" + project + "+AND+status+%3D+" + columnsMap[columnChecklists[i]]
+                    console.log(url);
+                    hideInterface();
+                    addQRCode(addQRCodeDiv(), url, 200)
+                }
+            } else {
+                alert("You have not set the Project Name");
+            }
+        }
+        
+        addColumnsToInterace();
+        
         function addJirasToInterface(issues) {            
-            addCheckList("All", allJirasClicked, null);
+            addCheckList("jiraListUrl", "All", allJirasClicked, null);
             for (var i=0; i < issues.length; i++) {
                 var issue = issues[i];
-                addCheckList(issue.key, null, "jiracheck");
+                addCheckList("jiraListUrl", issue.key, null, "jiracheck");
             }
         }
         
@@ -157,27 +205,33 @@
             addJirasToInterface(e.issues);
         }
         
-        function generateTickets() {
-            var jiraChecklists = document.getElementsByClassName("jiracheck");
+        function getChecked(className) {
+            var columnsChecklists = document.getElementsByClassName(className);
             var checklistToDisplay = [];
-            for (var i=0; i < jiraChecklists.length; i++) {
-                var jiraCheck = jiraChecklists[i];
-                if (jiraCheck.checked) {
-                    checklistToDisplay.push(jiraCheck.name);
+            for (var i=0; i < columnsChecklists.length; i++) {
+                var columnCheck = columnsChecklists[i];
+                if (columnCheck.checked) {
+                    checklistToDisplay.push(columnCheck.name);
                 }
-            }   
+            }
+            return checklistToDisplay
+        }
+        
+        function hideInterface() {
             var interface = document.getElementById("ticketManager");
             interface.style.display = "none";
+        }
+        
+        function generateTickets() {
+            var jiraChecklists = document.getElementsByClassName("jiracheck");
+            var checklistToDisplay = getChecked("jiracheck");
+            hideInterface();
+            
             var color = document.getElementById("color").checked;
             var qrcode = document.getElementById("qrcode").checked;
             oApp = new jira.App("tickets", document.getElementById("fixversion").value, color, qrcode);
-            doSomething(checklistToDisplay);
-            
+            oApp.x(checklistToDisplay);
         }
-		
-		function doSomething(jiras) {
-			oApp.x(jiras);
-		}
 	</script>
 	<script type="text/javascript"
 		src=
