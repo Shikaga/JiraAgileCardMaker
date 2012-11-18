@@ -28,13 +28,20 @@
             </ul>
             <button onclick="getJiras()">Fetch!</button>
         </div>
-        <h1>Jira List</h1>
-        <div id="jiraList">
-            <ul id="jiraListUrl">
-                
-            </ul>
+        <div style="float:left; width: 50%">
+            <h1>Jira List</h1>
+            <div class="list" id="jiraList">
+                <ul id="jiraListUrl">
+                    
+                </ul>
+            </div>
+            <button onClick="generateTickets()">Generate!</button>
         </div>
-        <button onClick="generateTickets()">Generate!</button>
+        <div style="float:left; width: 50%">
+            <h1>Columns</h1>
+            <div class="list">ASDF</div>
+        </div>
+        <div style="clear:both"></div>
     </div>
     </div>
 	<script>
@@ -77,13 +84,19 @@
             var project = document.getElementById("project").value
     	    var fixversion = document.getElementById("fixversion").value;
             
-            
-        	var jiraUrl = "https://jira.caplin.com/rest/api/latest/search?jql=project=" + project + "%20AND%20fixversion=" + fixversion + "&fields=key&jsonp-callback=x&maxResults=1000";
-                
-        	var scriptElement = document.createElement("script");
-    		scriptElement.setAttribute("type", "text/javascript");
-    		scriptElement.setAttribute("src", jiraUrl);
-            document.head.appendChild(scriptElement);
+            if (project != "" && fixversion != "") {
+            	var jiraUrl = "https://jira.caplin.com/rest/api/latest/search?jql=project=" + project + "%20AND%20fixversion=" + fixversion + "&fields=key&jsonp-callback=x&maxResults=1000";
+                    
+            	var scriptElement = document.createElement("script");
+        		scriptElement.setAttribute("type", "text/javascript");
+        		scriptElement.setAttribute("src", jiraUrl);
+                document.head.appendChild(scriptElement);
+                jiraRequestedTimeout = setTimeout(function() {
+                    alert("The Jira's have not loaded after 2 seconds. Are you sure you are logged in?")
+                },2000);
+            } else {
+                alert("You have not set the Project Name or Fix Version");
+            }
         }
         
 		//document.head.appendChild(scriptElement);
@@ -140,6 +153,7 @@
         }
         
         function x(e) {
+            clearTimeout(jiraRequestedTimeout);
             addJirasToInterface(e.issues);
         }
         

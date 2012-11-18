@@ -14,8 +14,9 @@ html, body {
     float: right;
 }
 
-#jiraList {
+.list {
     height: 300px;
     overflow: auto;
     background-color: #BBB;
+    margin: 5%;
 }
