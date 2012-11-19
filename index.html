@@ -17,6 +17,7 @@
                 <li>Jira Location : <input id="jiraLocation" value="https://jira.caplin.com"></input></li>
                 <li>Color Enabled: <input checked=true type="checkbox" id="color"></input></li>
                 <li>QR Code Enabled: <input checked=true type="checkbox" id="qrcode"></input></li>
+                <li>Show Parent Description: <input checked=true type="checkbox" id="parentdescription"></input></li>
             </ul>
         </div>
         <div>
@@ -112,14 +113,7 @@
 		var cards = 0;
 		var pageElement = document.createElement("div");
 		function getJiraCallback(e) {
-			
-			if (cards%2 == 0) {
-				pageElement = document.createElement("div");
-				pageElement.style.pageBreakAfter = "always";
-				pageElement.style.clear = "both";
-				document.getElementById("tickets").appendChild(pageElement);
-			}
-			oApp.getJiraCallback(e, pageElement);
+			oApp.getJiraCallback(e);
 			cards++
 		}
         
@@ -229,7 +223,8 @@
             
             var color = document.getElementById("color").checked;
             var qrcode = document.getElementById("qrcode").checked;
-            oApp = new jira.App("tickets", document.getElementById("fixversion").value, color, qrcode);
+            var parentDescription = document.getElementById("parentdescription").checked;
+            oApp = new jira.App("tickets", document.getElementById("fixversion").value, color, qrcode, parentDescription);
             oApp.x(checklistToDisplay);
         }
 	</script>

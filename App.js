@@ -1,4 +1,4 @@
-jira.App = function(divId, fixVersion, color, qrcode)
+jira.App = function(divId, fixVersion, color, qrcode, parentdescription)
 {
 	this.fixVersion = fixVersion;
 	this.ticketId = 0;
@@ -12,13 +12,22 @@ jira.App = function(divId, fixVersion, color, qrcode)
 		,"Technical task": "#099"}
 	this.colorEnabled = color;
     this.qrcodeEnabled = qrcode;
+    this.expectedCallbacks = 0;
+    this.callbacksReceived = 0;
+    this.jiraMap = {};
 }
 
 jira.App.prototype.x = function(jiras)
 {
-	
-	for (var i=0; i < jiras.length; i++)
-	{
+	this.requestAllJiras(jiras);
+}
+
+jira.App.prototype.requestAllJiras = function(jiras)
+{
+    this.expectedCallbacks = 0;
+    for (var i=0; i < jiras.length; i++)
+    {
+        this.expectedCallbacks++;
         var jira = jiras[i];
 		var jiraUrl = "https://jira.caplin.com/rest/api/latest/issue/" + jira + "?jsonp-callback=getJiraCallback";
 		var scriptElement = document.createElement("script");
@@ -39,8 +48,19 @@ jira.App.prototype.matchFixVersion = function(e)
 	return matchesFixVersion;
 }
 
-jira.App.prototype.getJiraCallback = function(e, pageElement)
+jira.App.prototype.getJiraCallback = function(e)
 {
+    this.callbacksReceived++;
+    this.jiraMap[e.key] = e;
+    if (this.callbacksReceived == this.expectedCallbacks) {
+        console.log(this.jiraMap);
+    }
+    if (cards%2 == 0) {
+		pageElement = document.createElement("div");
+		pageElement.style.pageBreakAfter = "always";
+		pageElement.style.clear = "both";
+		document.getElementById("tickets").appendChild(pageElement);
+	}
 	if (this.matchFixVersion(e)) {
 		this.totalTickets++;
         if (e.fields.parent)
