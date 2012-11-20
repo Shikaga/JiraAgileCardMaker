@@ -21,6 +21,7 @@ jira.App = function(divId, fixVersion, color, qrcode, parentdescription)
     }
 	this.colorEnabled = color;
     this.qrcodeEnabled = qrcode;
+    this.parentdescription = parentdescription;
     this.expectedCallbacks = 0;
     this.callbacksReceived = 0;
     this.jiraMap = {};
@@ -83,7 +84,9 @@ jira.App.prototype.renderCards = function() {
             var parentSummary = null;
             if (e.fields.parent) {
                 var parent = e.fields.parent.key;
-                var parentSummary = this.jiraMap[parent].fields.summary;
+                if (this.parentdescription) {   
+                    var parentSummary = this.jiraMap[parent].fields.summary;
+                }
                 console.log(parentSummary);
             }
             
