@@ -6,7 +6,7 @@ jira.ticketviewer.ExampleClass = function(divId, url)
 	document.getElementById(divId).innerHTML = '<img style="margin-top: 20px;" width="50px" height="50px" src="http://qr.kaywa.com/?s=8&d=http%3A%2F%2F'+url + '" alt="QRCode"/>';
 }
 
-jira.ticketviewer.ticketgenerator.TicketGenerator = function(divId,url, jira, estimate, summary, parent, color, qrcode)
+jira.ticketviewer.ticketgenerator.TicketGenerator = function(divId,url, jira, estimate, summary, parent, parentSummary, color, qrcode)
 {
     this.qrcode = qrcode;
 	this.divId = divId + "" + jira
@@ -17,7 +17,7 @@ jira.ticketviewer.ticketgenerator.TicketGenerator = function(divId,url, jira, es
 	
 	this.addTitle(jira,estimate, parent, color);
 	this.addSideBar();
-	this.addSummary(summary);
+	this.addSummary(summary, parentSummary);
     if (this.qrcode) {
     	this.addQRCode(url);
     }
@@ -74,12 +74,15 @@ jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.addTitle = function(
 	this.element.appendChild(titleElement);
 }
 
-jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.addSummary = function(summary)
+jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.addSummary = function(summary, parentSummary)
 {
 	var sideElement = document.createElement("div");
 	sideElement.style.marginRight = "5em";
 	sideElement.style.padding = "1em";
 	sideElement.style.fontSize= "23px";
+    if (parentSummary != undefined && parentSummary != null) {
+        summary = "<strong>" + parentSummary + "</strong><br />" + summary;
+    }
 	sideElement.innerHTML = summary;
 
 	this.element.appendChild(sideElement);

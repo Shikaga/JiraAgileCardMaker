@@ -16,6 +16,7 @@ jira.App = function(divId, fixVersion, color, qrcode, parentdescription)
         ,"Documentation": "#FFF"
         ,"Improvement": "#FFF"
         ,"Story": "#FFF"
+        ,"Task": "#000"
         ,"Technical task": "#FFF"
     }
 	this.colorEnabled = color;
@@ -61,31 +62,46 @@ jira.App.prototype.getJiraCallback = function(e)
     this.callbacksReceived++;
     this.jiraMap[e.key] = e;
     if (this.callbacksReceived == this.expectedCallbacks) {
-        console.log(this.jiraMap);
+        this.renderCards();
     }
-    if (cards%2 == 0) {
-		pageElement = document.createElement("div");
-		pageElement.style.pageBreakAfter = "always";
-		pageElement.style.clear = "both";
-		document.getElementById("tickets").appendChild(pageElement);
-	}
-	if (this.matchFixVersion(e)) {
-		this.totalTickets++;
-        if (e.fields.parent)
-        var parent = e.fields.parent.key;
-		var jiraId = e.key;
-		var jiraEstimate = e.fields["customfield_10243"];
-		var jiraSummary = e.fields.summary;
-		var color = this.colorEnabled ? this.issueTypeColors[e.fields.issuetype.name] : null;
-		this.addTicket(this.divId,"jira.caplin.com/browse/" + jiraId, jiraId, jiraEstimate, jiraSummary, parent, color, pageElement, this.qrcodeEnabled);
-	}
 }
 
-jira.App.prototype.addTicket = function(divId, url, title, estimate, summary, parent, color, pageElement, qrcodeEnabled)
+jira.App.prototype.renderCards = function() {
+    var cards = 0;
+    console.log(this.jiraMap);
+    for (index in this.jiraMap) {
+        var e = this.jiraMap[index];
+        if (cards%2 == 0) {
+        	var pageElement = document.createElement("div");
+    		pageElement.style.pageBreakAfter = "always";
+    		pageElement.style.clear = "both";
+    		document.getElementById("tickets").appendChild(pageElement);
+    	}
+    	if (this.matchFixVersion(e)) {
+    		this.totalTickets++;
+            var parent = null;
+            var parentSummary = null;
+            if (e.fields.parent) {
+                var parent = e.fields.parent.key;
+                var parentSummary = this.jiraMap[parent].fields.summary;
+                console.log(parentSummary);
+            }
+            
+    		var jiraId = e.key;
+    		var jiraEstimate = e.fields["customfield_10243"];
+    		var jiraSummary = e.fields.summary;
+    		var color = this.colorEnabled ? this.issueTypeColors[e.fields.issuetype.name] : null;
+    		this.addTicket(this.divId,"jira.caplin.com/browse/" + jiraId, jiraId, jiraEstimate, jiraSummary, parent, parentSummary, color, pageElement, this.qrcodeEnabled);
+    	}
+        cards++;
+    };
+}
+
+jira.App.prototype.addTicket = function(divId, url, title, estimate, summary, parent, parentSummary, color, pageElement, qrcodeEnabled)
 {
 	this.ticketId++;
 	var titleElement = document.createElement("div");
 	titleElement.setAttribute("id", divId + "_ticket" + this.ticketId);
 	pageElement.appendChild(titleElement);
-	new jira.ticketviewer.ticketgenerator.TicketGenerator(divId + "_ticket" + this.ticketId,url, title, estimate, summary, parent, color, qrcodeEnabled);	
+	new jira.ticketviewer.ticketgenerator.TicketGenerator(divId + "_ticket" + this.ticketId,url, title, estimate, summary, parent, parentSummary, color, qrcodeEnabled);	
 }
