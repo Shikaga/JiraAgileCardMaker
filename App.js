@@ -9,6 +9,7 @@ jira.App = function(divId, fixVersion, color, qrcode, parentdescription)
 		,"Documentation": "#FFD600"
 		,"Improvement": "#090"
 		,"Story": "#909"
+		,"Task": "#BFE4FF"
 		,"Technical task": "#099"}
 	this.colorEnabled = color;
     this.qrcodeEnabled = qrcode;
