@@ -11,6 +11,13 @@ jira.App = function(divId, fixVersion, color, qrcode, parentdescription)
 		,"Story": "#909"
 		,"Task": "#BFE4FF"
 		,"Technical task": "#099"}
+    this.issueTypeFontColors = {
+        "Bug": "#FFF"
+        ,"Documentation": "#FFF"
+        ,"Improvement": "#FFF"
+        ,"Story": "#FFF"
+        ,"Technical task": "#FFF"
+    }
 	this.colorEnabled = color;
     this.qrcodeEnabled = qrcode;
     this.expectedCallbacks = 0;
