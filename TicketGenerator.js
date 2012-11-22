@@ -1,12 +1,13 @@
 var jira = function() {};
 jira.ticketviewer = function() {};
 jira.ticketviewer.ticketgenerator = function() {};
+
 jira.ticketviewer.ExampleClass = function(divId, url)
 {
 	document.getElementById(divId).innerHTML = '<img style="margin-top: 20px;" width="50px" height="50px" src="http://qr.kaywa.com/?s=8&d=http%3A%2F%2F'+url + '" alt="QRCode"/>';
 }
 
-jira.ticketviewer.ticketgenerator.TicketGenerator = function(divId,url, jira, estimate, summary, parent, parentSummary, color, qrcode)
+jira.ticketviewer.ticketgenerator.Ticket = function(divId, url, jira, estimate, summary, parent, parentSummary, color, qrcode)
 {
     this.qrcode = qrcode;
 	this.divId = divId + "" + jira
@@ -21,10 +22,9 @@ jira.ticketviewer.ticketgenerator.TicketGenerator = function(divId,url, jira, es
     if (this.qrcode) {
     	this.addQRCode(url);
     }
-    
 };
 
-jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.setWidth = function(width)
+jira.ticketviewer.ticketgenerator.Ticket.prototype.setWidth = function(width)
 {
 	this.element.style.margin = "auto";
 	this.element.style.float = "left";
@@ -32,18 +32,20 @@ jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.setWidth = function(
 	this.element.style.position = "relative";
 	this.element.style.marginLeft = 50 + "px";
 
-}
-jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.setHeight = function()
+};
+
+jira.ticketviewer.ticketgenerator.Ticket.prototype.setHeight = function()
 {
 	this.element.style.height = 250 + "px";
 	this.element.style.marginBottom = 50 + "px";
-}
-jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.addDefaultBorder = function(width)
+};
+
+jira.ticketviewer.ticketgenerator.Ticket.prototype.addDefaultBorder = function(width)
 {
 	this.element.style.border = "2px solid black"
-}
+};
 
-jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.addTitle = function(jira, estimate, parent, color)
+jira.ticketviewer.ticketgenerator.Ticket.prototype.addTitle = function(jira, estimate, parent, color)
 {
     var summary = jira;
     if (parent !== null && parent !== undefined)
@@ -72,9 +74,9 @@ jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.addTitle = function(
 	titleElement.appendChild(ownerElement);
 
 	this.element.appendChild(titleElement);
-}
+};
 
-jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.addSummary = function(summary, parentSummary)
+jira.ticketviewer.ticketgenerator.Ticket.prototype.addSummary = function(summary, parentSummary)
 {
 	var sideElement = document.createElement("div");
 	sideElement.style.marginRight = "5em";
@@ -86,9 +88,9 @@ jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.addSummary = functio
 	sideElement.innerHTML = summary;
 
 	this.element.appendChild(sideElement);
-}
+};
 
-jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.addSideBar = function()
+jira.ticketviewer.ticketgenerator.Ticket.prototype.addSideBar = function()
 {
 	var sideElement = document.createElement("div");
 	sideElement.style.textAlign = "center";
@@ -115,9 +117,9 @@ jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.addSideBar = functio
     }
 
 	this.element.appendChild(sideElement);
-}
+};
 
-jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.createTitleElement = function(id,text,width,height)
+jira.ticketviewer.ticketgenerator.Ticket.prototype.createTitleElement = function(id,text,width,height)
 {
 
 	var titleElement = document.createElement("span");
@@ -153,9 +155,9 @@ jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.createTitleElement =
 	
 	titleElement.setAttribute("id", id);
 	return titleElement;
-}
+};
 
-jira.ticketviewer.ticketgenerator.TicketGenerator.prototype.addQRCode = function(url)
+jira.ticketviewer.ticketgenerator.Ticket.prototype.addQRCode = function(url)
 {
 	new jira.ticketviewer.ExampleClass(this.divId + "_qrcode",url);
-}
+};

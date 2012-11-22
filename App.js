@@ -106,5 +106,5 @@ jira.App.prototype.addTicket = function(divId, url, title, estimate, summary, pa
 	var titleElement = document.createElement("div");
 	titleElement.setAttribute("id", divId + "_ticket" + this.ticketId);
 	pageElement.appendChild(titleElement);
-	new jira.ticketviewer.ticketgenerator.TicketGenerator(divId + "_ticket" + this.ticketId,url, title, estimate, summary, parent, parentSummary, color, qrcodeEnabled);	
+	new jira.ticketviewer.ticketgenerator.Ticket(divId + "_ticket" + this.ticketId,url, title, estimate, summary, parent, parentSummary, color, qrcodeEnabled);	
 }
