@@ -3,6 +3,10 @@ html, body {
     margin: 0;
 }
 
+@page {
+    margin: 0px;
+}
+
 #ticketManager {
     margin: 10px;
     background-color:white;

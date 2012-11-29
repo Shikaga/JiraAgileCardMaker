@@ -30,14 +30,14 @@ jira.ticketviewer.ticketgenerator.Ticket.prototype.setWidth = function(width)
 	this.element.style.float = "left";
 	this.element.style.width = width + "px";
 	this.element.style.position = "relative";
-	this.element.style.marginLeft = 50 + "px";
+	this.element.style.marginLeft = 20 + "px";
 
 };
 
 jira.ticketviewer.ticketgenerator.Ticket.prototype.setHeight = function()
 {
-	this.element.style.height = 250 + "px";
-	this.element.style.marginBottom = 50 + "px";
+	this.element.style.height = 300 + "px";
+	this.element.style.marginTop = 20 + "px";
 };
 
 jira.ticketviewer.ticketgenerator.Ticket.prototype.addDefaultBorder = function(width)
@@ -95,7 +95,7 @@ jira.ticketviewer.ticketgenerator.Ticket.prototype.addSideBar = function()
 	var sideElement = document.createElement("div");
 	sideElement.style.textAlign = "center";
 	sideElement.style.width = "70px";
-	sideElement.style.height = "198px";
+	sideElement.style.height = "248px";
 	sideElement.style.clear = "both";
 	sideElement.style.position = "absolute";
 	sideElement.style.top = "52px";
@@ -104,10 +104,10 @@ jira.ticketviewer.ticketgenerator.Ticket.prototype.addSideBar = function()
 	sideElement.style.outline = "2px solid black";
 	sideElement.setAttribute("id", "sidebar");
 
-	var docElement = this.createTitleElement(this.divId + "_doc", "Doc", "100%",40);
-	var demoElement = this.createTitleElement(this.divId + "_demo", "Demo", "100%",40);
-	var reviewElement = this.createTitleElement(this.divId + "_review", "Review", "100%",40);
-	var qrcodeElement = this.createTitleElement(this.divId + "_qrcode", "QRCode", "100%", 78);
+	var docElement = this.createTitleElement(this.divId + "_doc", "Doc", "100%",60);
+	var demoElement = this.createTitleElement(this.divId + "_demo", "Demo", "100%",60);
+	var reviewElement = this.createTitleElement(this.divId + "_review", "Review", "100%",60);
+	var qrcodeElement = this.createTitleElement(this.divId + "_qrcode", "QRCode", "100%", 68);
 
 	sideElement.appendChild(docElement);
 	sideElement.appendChild(demoElement);

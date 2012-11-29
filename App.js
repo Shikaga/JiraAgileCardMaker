@@ -119,9 +119,9 @@ jira.App.prototype.renderCards = function() {
     var cards = 0;
     for (index in this.jiraMap) {
         var jira = this.jiraMap[index];
-        if (cards%2 == 0) {
+        if (cards%6 == 0) {
             var pageElement = document.createElement("div");
-    		pageElement.style.pageBreakAfter = "always";
+    		pageElement.style.pageBreakBefore = "always";
     		pageElement.style.clear = "both";
     		document.getElementById("tickets").appendChild(pageElement);
     	}
