@@ -20,7 +20,7 @@ jira.App = function(divId, fixVersion, color, qrcode, parentdescription)
     }
 	this.colorEnabled = color;
     this.qrcodeEnabled = qrcode;
-    this.parentdescription = parentdescription;
+    this.parentdescriptionEnabled = parentdescription;
     this.expectedCallbacks = 0;
     this.callbacksReceived = 0;
     this.jiraMap = {};
@@ -78,6 +78,7 @@ jira.App.prototype.parentsNotLoaded = function() {
 
 jira.App.prototype.getJiraCallback = function(e)
 {
+    console.log(e);
     this.callbacksReceived++;
     this.jiraMap[e.key] = e;
     if (this.callbacksReceived == this.expectedCallbacks) {
@@ -95,22 +96,22 @@ jira.App.prototype.renderCardsIfReady = function() {
 }
 
 jira.App.prototype.getParentKey = function(jira) {
-    if (jira.fields.parent) {
-        return jira.fields.parent.key;
+    if (this.parentdescriptionEnabled) { 
+        if (jira.fields.parent) {
+            return jira.fields.parent.key;
+        } else {
+            return null;
+        }
     } else {
         return null;
     }
 }
 
 jira.App.prototype.getParentSummary = function(jira) {
-    if (jira.fields.parent) {
+    if (this.getParentKey(jira) != null) {
         var parentKey = jira.fields.parent.key;
-        if (this.parentdescription) {   
-            return this.jiraMap[parentKey].fields.summary;
-        } else {
-            return null;
-        }
-    }  else {
+        return this.jiraMap[parentKey].fields.summary;
+    } else {
         return null;
     }
 }

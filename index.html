@@ -18,12 +18,14 @@
                 <li>Color Enabled: <input checked=true type="checkbox" id="color"></input></li>
                 <li>QR Code Enabled: <input checked=true type="checkbox" id="qrcode"></input></li>
                 <li>Show Parent Description: <input checked=true type="checkbox" id="parentdescription"></input></li>
+                <li>Show Component Description: <input checked=true type="checkbox" id="componentdescription"></input></li>
+                <li>Show Tag Description: <input checked=true type="checkbox" id="tagdescription"></input></li>
             </ul>
         </div>
         <div>
             <h2>Project</h2>
             <ul>
-                <li>Wizard : <input id="wizard" value="https://jira.caplin.com/browse/PAPAMAFX/fixforversion/13153" style="width: 400px"></input><button onclick=wizard()>Generate</button></li>
+                <li>Wizard : <input id="wizard" value="https://jira.caplin.com/browse/PAPAMAFX/fixforversion/13169" style="width: 400px"></input><button onclick=wizard()>Generate</button></li>
                 <li>Project Name : <input id="project"></input></li>
                 <li>Fix Version : <input id="fixversion"></input></li>
             </ul>
@@ -222,6 +224,8 @@
             var color = document.getElementById("color").checked;
             var qrcode = document.getElementById("qrcode").checked;
             var parentDescription = document.getElementById("parentdescription").checked;
+            var componentDescription = document.getElementById("componentdescription").checked;
+            var tagDescription = document.getElementById("tagdescription").checked;
             oApp = new jira.App("tickets", document.getElementById("fixversion").value, color, qrcode, parentDescription);
             oApp.x(checklistToDisplay);
         }
