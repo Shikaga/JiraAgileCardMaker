@@ -4,7 +4,7 @@ jira.ticketviewer.ticketgenerator = function() {};
 
 jira.ticketviewer.ExampleClass = function(divId, url)
 {
-	document.getElementById(divId).innerHTML = '<img style="margin-top: 20px;" width="50px" height="50px" src="http://qr.kaywa.com/?s=8&d=http%3A%2F%2F'+url + '" alt="QRCode"/>';
+	document.getElementById(divId).innerHTML = '<img style="margin-top: 10px;" width="50px" height="50px" src="http://qr.kaywa.com/?s=8&d=http%3A%2F%2F'+url + '" alt="QRCode"/>';
 }
 
 jira.ticketviewer.ticketgenerator.Ticket = function(divId, url, jira, estimate, summary, parent, parentSummary, color, qrcode)
@@ -79,11 +79,17 @@ jira.ticketviewer.ticketgenerator.Ticket.prototype.addTitle = function(jira, est
 jira.ticketviewer.ticketgenerator.Ticket.prototype.addSummary = function(summary, parentSummary)
 {
 	var sideElement = document.createElement("div");
-	sideElement.style.marginRight = "5em";
+	sideElement.style.marginRight = "70px";
 	sideElement.style.padding = "1em";
 	sideElement.style.fontSize= "23px";
+    
+    sideElement.style.overflow="hidden";
+    sideElement.style.lineHeight="23px";
+    sideElement.style.height = "200px";
+    
+    
     if (parentSummary != undefined && parentSummary != null) {
-        summary = "<strong>" + parentSummary + "</strong><br />" + summary;
+        summary = "<strong>" + parentSummary + "</strong><br /><br />" + summary;
     }
 	sideElement.innerHTML = summary;
 
@@ -104,9 +110,9 @@ jira.ticketviewer.ticketgenerator.Ticket.prototype.addSideBar = function()
 	sideElement.style.outline = "2px solid black";
 	sideElement.setAttribute("id", "sidebar");
 
-	var docElement = this.createTitleElement(this.divId + "_doc", "Doc", "100%",60);
-	var demoElement = this.createTitleElement(this.divId + "_demo", "Demo", "100%",60);
-	var reviewElement = this.createTitleElement(this.divId + "_review", "Review", "100%",60);
+	var docElement = this.createTitleElement(this.divId + "_doc", "Doc", "100%", 60);
+	var demoElement = this.createTitleElement(this.divId + "_demo", "Demo", "100%", 60);
+	var reviewElement = this.createTitleElement(this.divId + "_review", "Review", "100%", 60);
 	var qrcodeElement = this.createTitleElement(this.divId + "_qrcode", "QRCode", "100%", 68);
 
 	sideElement.appendChild(docElement);
