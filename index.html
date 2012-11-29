@@ -226,7 +226,7 @@
             var parentDescription = document.getElementById("parentdescription").checked;
             var componentDescription = document.getElementById("componentdescription").checked;
             var tagDescription = document.getElementById("tagdescription").checked;
-            oApp = new jira.App("tickets", document.getElementById("fixversion").value, color, qrcode, parentDescription);
+            oApp = new jira.App("tickets", document.getElementById("fixversion").value, color, qrcode, parentDescription, componentDescription, tagDescription);
             oApp.x(checklistToDisplay);
         }
 	</script>

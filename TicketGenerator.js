@@ -7,7 +7,7 @@ jira.ticketviewer.ExampleClass = function(divId, url)
 	document.getElementById(divId).innerHTML = '<img style="margin-top: 10px;" width="50px" height="50px" src="http://qr.kaywa.com/?s=8&d=http%3A%2F%2F'+url + '" alt="QRCode"/>';
 }
 
-jira.ticketviewer.ticketgenerator.Ticket = function(divId, url, jira, estimate, summary, parent, parentSummary, color, qrcode)
+jira.ticketviewer.ticketgenerator.Ticket = function(divId, url, jira, estimate, summary, parent, parentSummary, component, tag, color, qrcode)
 {
     this.qrcode = qrcode;
 	this.divId = divId + "" + jira
@@ -18,7 +18,7 @@ jira.ticketviewer.ticketgenerator.Ticket = function(divId, url, jira, estimate, 
 	
 	this.addTitle(jira,estimate, parent, color);
 	this.addSideBar();
-	this.addSummary(summary, parentSummary);
+	this.addSummary(summary, parentSummary, tag);
     if (this.qrcode) {
     	this.addQRCode(url);
     }
@@ -76,7 +76,7 @@ jira.ticketviewer.ticketgenerator.Ticket.prototype.addTitle = function(jira, est
 	this.element.appendChild(titleElement);
 };
 
-jira.ticketviewer.ticketgenerator.Ticket.prototype.addSummary = function(summary, parentSummary)
+jira.ticketviewer.ticketgenerator.Ticket.prototype.addSummary = function(summary, parentSummary, tag)
 {
 	var sideElement = document.createElement("div");
 	sideElement.style.marginRight = "70px";
@@ -87,13 +87,23 @@ jira.ticketviewer.ticketgenerator.Ticket.prototype.addSummary = function(summary
     sideElement.style.lineHeight="23px";
     sideElement.style.height = "200px";
     
-    
     if (parentSummary != undefined && parentSummary != null) {
         summary = "<strong>" + parentSummary + "</strong><br /><br />" + summary;
     }
 	sideElement.innerHTML = summary;
+    
+    var tagElement = document.createElement("div");
+    tagElement.style.width = "70px";
+    tagElement.style.height = "20px";
+    tagElement.style.marginTop = "180px";
+    tagElement.style.padding = "1em";
+    tagElement.style.fontSize= "23px";
+    tagElement.style.position= "absolute";
+    tagElement.innerHTML = tag;
 
-	this.element.appendChild(sideElement);
+	this.element.appendChild(tagElement);
+    this.element.appendChild(sideElement);
+    
 };
 
 jira.ticketviewer.ticketgenerator.Ticket.prototype.addSideBar = function()

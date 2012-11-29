@@ -1,4 +1,4 @@
-jira.App = function(divId, fixVersion, color, qrcode, parentdescription)
+jira.App = function(divId, fixVersion, color, qrcode, parentEnabled, componentEnabled, tagEnabled)
 {
 	this.fixVersion = fixVersion;
 	this.ticketId = 0;
@@ -20,7 +20,9 @@ jira.App = function(divId, fixVersion, color, qrcode, parentdescription)
     }
 	this.colorEnabled = color;
     this.qrcodeEnabled = qrcode;
-    this.parentdescriptionEnabled = parentdescription;
+    this.parentdescriptionEnabled = parentEnabled;
+    this.componentEnabled = componentEnabled;
+    this.tagEnabled = tagEnabled;
     this.expectedCallbacks = 0;
     this.callbacksReceived = 0;
     this.jiraMap = {};
@@ -116,6 +118,15 @@ jira.App.prototype.getParentSummary = function(jira) {
     }
 }
 
+jira.App.prototype.getTag = function(jira) {
+    if (this.tagEnabled) {
+        var tag = jira.fields["customfield_10151"];
+        return tag;        
+    } else {
+        return null
+    }
+}
+
 jira.App.prototype.renderCards = function() {
     var cards = 0;
     for (index in this.jiraMap) {
@@ -129,21 +140,23 @@ jira.App.prototype.renderCards = function() {
     
         var parent = this.getParentKey(jira);
         var parentSummary = this.getParentSummary(jira);
+        var component = null;
+        var tag = this.getTag(jira);
 		var jiraId = jira.key;
 		var jiraEstimate = jira.fields["customfield_10243"];
 		var jiraSummary = jira.fields.summary;
 		var color = this.colorEnabled ? this.issueTypeColors[jira.fields.issuetype.name] : null;
-		this.addTicket(this.divId,"jira.caplin.com/browse/" + jiraId, jiraId, jiraEstimate, jiraSummary, parent, parentSummary, color, pageElement, this.qrcodeEnabled);
+		this.addTicket(this.divId,"jira.caplin.com/browse/" + jiraId, jiraId, jiraEstimate, jiraSummary, parent, parentSummary, component, tag, color, pageElement, this.qrcodeEnabled);
 
         cards++;
     };
 }
 
-jira.App.prototype.addTicket = function(divId, url, title, estimate, summary, parent, parentSummary, color, pageElement, qrcodeEnabled)
+jira.App.prototype.addTicket = function(divId, url, title, estimate, summary, parent, parentSummary, component, tag, color, pageElement, qrcodeEnabled)
 {
 	this.ticketId++;
 	var titleElement = document.createElement("div");
 	titleElement.setAttribute("id", divId + "_ticket" + this.ticketId);
 	pageElement.appendChild(titleElement);
-	new jira.ticketviewer.ticketgenerator.Ticket(divId + "_ticket" + this.ticketId,url, title, estimate, summary, parent, parentSummary, color, qrcodeEnabled);	
+	new jira.ticketviewer.ticketgenerator.Ticket(divId + "_ticket" + this.ticketId,url, title, estimate, summary, parent, parentSummary, component, tag, color, qrcodeEnabled);	
 }
