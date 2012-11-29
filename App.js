@@ -3,7 +3,6 @@ jira.App = function(divId, fixVersion, color, qrcode, parentdescription)
 	this.fixVersion = fixVersion;
 	this.ticketId = 0;
 	this.divId = divId;
-	this.totalTickets = 0;
 	this.issueTypeColors = {
 		"Bug": "#C00"
 		,"Documentation": "#FFD600"
@@ -52,30 +51,26 @@ jira.App.prototype.requestJira = function(jira) {
 	document.head.appendChild(scriptElement);
 }
 
-jira.App.prototype.matchesFixVersion = function(jiraObject)
-{
-	var fixVersions = jiraObject.fields.fixVersions;
-	for (var version in fixVersions)
-	{
-		if (fixVersions[version].id == this.fixVersion) return true;
-	}
-	return false;
-}
-
-jira.App.prototype.isParentLoaded = function(jiraObject) {
-    
+jira.App.prototype.isParentLoaded = function(jira) {
+    var parentId = jira.fields.parent;
+    if (parentId) {
+        var parentKey = jira.fields.parent.key;
+        if (this.jiraMap[parentKey]) {
+            return true;   
+        } else {
+            return false;
+        }
+    } else {
+        return true;
+    }
 }
 
 jira.App.prototype.parentsNotLoaded = function() {
     var parentsNotLoaded = [];
     for (index in this.jiraMap) {
         var jira = this.jiraMap[index];
-        var parentId = jira.fields.parent;
-        if (parentId) {
-            var parentKey = jira.fields.parent.key;
-            if (!this.jiraMap[parentKey]) {
-                parentsNotLoaded.push(jira.fields.parent.key);
-            }
+        if (!this.isParentLoaded(jira)) {
+            parentsNotLoaded.push(jira.fields.parent.key);
         }
     }
     return parentsNotLoaded
@@ -86,45 +81,61 @@ jira.App.prototype.getJiraCallback = function(e)
     this.callbacksReceived++;
     this.jiraMap[e.key] = e;
     if (this.callbacksReceived == this.expectedCallbacks) {
+        this.renderCardsIfReady();
+    }
+}
+
+jira.App.prototype.renderCardsIfReady = function() {
+    var parentsNotLoaded = this.parentsNotLoaded();
+    if (parentsNotLoaded.length == 0) {
         this.renderCards();
+    } else {
+        this.requestAllJiras(parentsNotLoaded);
+    }
+}
+
+jira.App.prototype.getParentKey = function(jira) {
+    if (jira.fields.parent) {
+        return jira.fields.parent.key;
+    } else {
+        return null;
+    }
+}
+
+jira.App.prototype.getParentSummary = function(jira) {
+    if (jira.fields.parent) {
+        var parentKey = jira.fields.parent.key;
+        if (this.parentdescription) {   
+            return this.jiraMap[parentKey].fields.summary;
+        } else {
+            return null;
+        }
+    }  else {
+        return null;
     }
 }
 
 jira.App.prototype.renderCards = function() {
     var cards = 0;
-    var parentsNotLoaded = this.parentsNotLoaded();
-    if (parentsNotLoaded.length == 0) {
-        for (index in this.jiraMap) {
-            var jira = this.jiraMap[index];
-            if (cards%2 == 0) {
-            	var pageElement = document.createElement("div");
-        		pageElement.style.pageBreakAfter = "always";
-        		pageElement.style.clear = "both";
-        		document.getElementById("tickets").appendChild(pageElement);
-        	}
-        	if (this.matchesFixVersion(jira)) {
-        		this.totalTickets++;
-                var parent = null;
-                var parentSummary = null;
-                if (jira.fields.parent) {
-                    var parentKey = jira.fields.parent.key;
-                    if (this.parentdescription) {   
-                        var parentSummary = this.jiraMap[parentKey].fields.summary;
-                    }
-                    console.log(parentSummary);
-                }
-                
-        		var jiraId = jira.key;
-        		var jiraEstimate = jira.fields["customfield_10243"];
-        		var jiraSummary = jira.fields.summary;
-        		var color = this.colorEnabled ? this.issueTypeColors[jira.fields.issuetype.name] : null;
-        		this.addTicket(this.divId,"jira.caplin.com/browse/" + jiraId, jiraId, jiraEstimate, jiraSummary, parent, parentSummary, color, pageElement, this.qrcodeEnabled);
-        	}
-            cards++;
-        };
-    } else {
-        this.requestAllJiras(parentsNotLoaded);
-    }
+    for (index in this.jiraMap) {
+        var jira = this.jiraMap[index];
+        if (cards%2 == 0) {
+            var pageElement = document.createElement("div");
+    		pageElement.style.pageBreakAfter = "always";
+    		pageElement.style.clear = "both";
+    		document.getElementById("tickets").appendChild(pageElement);
+    	}
+    
+        var parent = this.getParentKey(jira);
+        var parentSummary = this.getParentSummary(jira);
+		var jiraId = jira.key;
+		var jiraEstimate = jira.fields["customfield_10243"];
+		var jiraSummary = jira.fields.summary;
+		var color = this.colorEnabled ? this.issueTypeColors[jira.fields.issuetype.name] : null;
+		this.addTicket(this.divId,"jira.caplin.com/browse/" + jiraId, jiraId, jiraEstimate, jiraSummary, parent, parentSummary, color, pageElement, this.qrcodeEnabled);
+
+        cards++;
+    };
 }
 
 jira.App.prototype.addTicket = function(divId, url, title, estimate, summary, parent, parentSummary, color, pageElement, qrcodeEnabled)
