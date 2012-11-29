@@ -80,7 +80,6 @@ jira.App.prototype.parentsNotLoaded = function() {
 
 jira.App.prototype.getJiraCallback = function(e)
 {
-    console.log(e);
     this.callbacksReceived++;
     this.jiraMap[e.key] = e;
     if (this.callbacksReceived == this.expectedCallbacks) {
@@ -127,6 +126,23 @@ jira.App.prototype.getTag = function(jira) {
     }
 }
 
+jira.App.prototype.getComponents = function(jira) {
+    if (this.componentEnabled) {
+        var components = jira.fields.components;
+        if (components.length != 0) {
+            var componentsString = "";
+            for (id in components) {
+                componentsString += components[id].name + ",";
+            }
+            return componentsString.substring(0, componentsString.length-1) + ":";
+        } else {
+            return null;
+        }
+    } else {
+        return null;
+    }
+}
+
 jira.App.prototype.renderCards = function() {
     var cards = 0;
     for (index in this.jiraMap) {
@@ -140,7 +156,7 @@ jira.App.prototype.renderCards = function() {
     
         var parent = this.getParentKey(jira);
         var parentSummary = this.getParentSummary(jira);
-        var component = null;
+        var component = this.getComponents(jira);
         var tag = this.getTag(jira);
 		var jiraId = jira.key;
 		var jiraEstimate = jira.fields["customfield_10243"];

@@ -18,7 +18,7 @@ jira.ticketviewer.ticketgenerator.Ticket = function(divId, url, jira, estimate, 
 	
 	this.addTitle(jira,estimate, parent, color);
 	this.addSideBar();
-	this.addSummary(summary, parentSummary, tag);
+	this.addSummary(summary, parentSummary, component, tag);
     if (this.qrcode) {
     	this.addQRCode(url);
     }
@@ -76,7 +76,7 @@ jira.ticketviewer.ticketgenerator.Ticket.prototype.addTitle = function(jira, est
 	this.element.appendChild(titleElement);
 };
 
-jira.ticketviewer.ticketgenerator.Ticket.prototype.addSummary = function(summary, parentSummary, tag)
+jira.ticketviewer.ticketgenerator.Ticket.prototype.addSummary = function(summary, parentSummary, component, tag)
 {
 	var sideElement = document.createElement("div");
 	sideElement.style.marginRight = "70px";
@@ -90,6 +90,11 @@ jira.ticketviewer.ticketgenerator.Ticket.prototype.addSummary = function(summary
     if (parentSummary != undefined && parentSummary != null) {
         summary = "<strong>" + parentSummary + "</strong><br /><br />" + summary;
     }
+    
+    if (component != undefined && component != null) {
+        summary = "<strong>" + component + "</strong><br /><br />" + summary;
+    }
+    
 	sideElement.innerHTML = summary;
     
     var tagElement = document.createElement("div");
