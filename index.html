@@ -70,7 +70,7 @@
                 document.getElementById("wizard").value = "";
            } else {
                alert("This url was unrecognized");
-               alert("try: \"https://jira.caplin.com/browse/PSL/fixforversion/12733\"")
+               alert("try: \"http://jira.caplin.com/browse/PSL/fixforversion/12733\"")
            }
            
         }
@@ -94,9 +94,9 @@
         function getJiras() {
             var project = document.getElementById("project").value
     	    var fixversion = document.getElementById("fixversion").value;
-            
+            var jiraUrl = document.getElementById("jiraLocation").value;
             if (project != "" && fixversion != "") {
-            	var jiraUrl = "https://jira.caplin.com/rest/api/latest/search?jql=project=" + project + "%20AND%20fixversion=" + fixversion + "&fields=key&jsonp-callback=x&maxResults=1000";
+            	var jiraUrl = jiraUrl + "/rest/api/latest/search?jql=project=" + project + "%20AND%20fixversion=" + fixversion + "&fields=key&jsonp-callback=x&maxResults=1000";
                     
             	var scriptElement = document.createElement("script");
         		scriptElement.setAttribute("type", "text/javascript");
@@ -165,6 +165,7 @@
         
         function generateColumns() {
             var project = document.getElementById("project").value
+            var jiraUrl = document.getElementById("jiraLocation").value;
             if (project != "") {                
                 var columnsMap = {"Backlog": "Backlog"
                     ,"In Dev": "In%20Progress%3A%20Development"
@@ -174,7 +175,7 @@
                 }
                 var columnChecklists = getChecked("columncheck");
                 for (var i=0; i < columnChecklists.length; i++) {
-                    var url = "https://jira.caplin.com/secure/IssueNavigator.jspa?jqlQuery=project+%3D+" + project + "+AND+status+%3D+" + columnsMap[columnChecklists[i]]
+                    var url = jiraUrl + "/secure/IssueNavigator.jspa?jqlQuery=project+%3D+" + project + "+AND+status+%3D+" + columnsMap[columnChecklists[i]]
                     console.log(url);
                     hideInterface();
                     addQRCode(addQRCodeDiv(), url, 200)
@@ -217,6 +218,7 @@
         }
         
         function generateTickets() {
+            var jiraUrl = document.getElementById("jiraLocation").value
             var jiraChecklists = document.getElementsByClassName("jiracheck");
             var checklistToDisplay = getChecked("jiracheck");
             hideInterface();
@@ -226,7 +228,7 @@
             var parentDescription = document.getElementById("parentdescription").checked;
             var componentDescription = document.getElementById("componentdescription").checked;
             var tagDescription = document.getElementById("tagdescription").checked;
-            oApp = new jira.App("tickets", document.getElementById("fixversion").value, color, qrcode, parentDescription, componentDescription, tagDescription);
+            oApp = new jira.App(jiraUrl, "tickets", document.getElementById("fixversion").value, color, qrcode, parentDescription, componentDescription, tagDescription);
             oApp.x(checklistToDisplay);
         }
 	</script>

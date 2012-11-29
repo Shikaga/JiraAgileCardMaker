@@ -1,5 +1,6 @@
-jira.App = function(divId, fixVersion, color, qrcode, parentEnabled, componentEnabled, tagEnabled)
+jira.App = function(jiraUrl, divId, fixVersion, color, qrcode, parentEnabled, componentEnabled, tagEnabled)
 {
+    this.jiraUrl = jiraUrl;
 	this.fixVersion = fixVersion;
 	this.ticketId = 0;
 	this.divId = divId;
@@ -46,7 +47,7 @@ jira.App.prototype.requestAllJiras = function(jiras)
 }
 
 jira.App.prototype.requestJira = function(jira) {
-    var jiraUrl = "https://jira.caplin.com/rest/api/latest/issue/" + jira + "?jsonp-callback=getJiraCallback";
+    var jiraUrl = this.jiraUrl + "/rest/api/latest/issue/" + jira + "?jsonp-callback=getJiraCallback";
 	var scriptElement = document.createElement("script");
 	scriptElement.setAttribute("type", "text/javascript");
 	scriptElement.setAttribute("src", jiraUrl);
