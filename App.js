@@ -91,7 +91,6 @@ jira.App.prototype.getJiraCallback = function(e)
 }
 
 jira.App.prototype.renderCards = function() {
-    debugger;
     var cards = 0;
     var parentsNotLoaded = this.parentsNotLoaded();
     if (parentsNotLoaded.length == 0) {
