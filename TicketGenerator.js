@@ -4,7 +4,7 @@ jira.ticketviewer.ticketgenerator = function() {};
 
 jira.ticketviewer.ExampleClass = function(divId, url)
 {
-	document.getElementById(divId).innerHTML = '<img style="margin-top: 10px;" width="50px" height="50px" src="http://qr.kaywa.com/?s=8&d=http%3A%2F%2F'+url + '" alt="QRCode"/>';
+	document.getElementById(divId).innerHTML = '<img style="margin-top: 20px;" width="50px" height="50px" src="http://qr.kaywa.com/?s=8&d=http%3A%2F%2F'+url + '" alt="QRCode"/>';
 }
 
 jira.ticketviewer.ticketgenerator.Ticket = function(divId, url, jira, estimate, summary, parent, parentSummary, component, tag, color, qrcode)
@@ -116,7 +116,7 @@ jira.ticketviewer.ticketgenerator.Ticket.prototype.addSideBar = function()
 	var sideElement = document.createElement("div");
 	sideElement.style.textAlign = "center";
 	sideElement.style.width = "70px";
-	sideElement.style.height = "248px";
+	sideElement.style.height = "268px";
 	sideElement.style.clear = "both";
 	sideElement.style.position = "absolute";
 	sideElement.style.top = "52px";
@@ -128,7 +128,7 @@ jira.ticketviewer.ticketgenerator.Ticket.prototype.addSideBar = function()
 	var docElement = this.createTitleElement(this.divId + "_doc", "Doc", "100%", 60);
 	var demoElement = this.createTitleElement(this.divId + "_demo", "Demo", "100%", 60);
 	var reviewElement = this.createTitleElement(this.divId + "_review", "Review", "100%", 60);
-	var qrcodeElement = this.createTitleElement(this.divId + "_qrcode", "QRCode", "100%", 68);
+	var qrcodeElement = this.createTitleElement(this.divId + "_qrcode", "QRCode", "100%", 88);
 
 	sideElement.appendChild(docElement);
 	sideElement.appendChild(demoElement);
