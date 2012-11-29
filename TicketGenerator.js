@@ -12,7 +12,7 @@ jira.ticketviewer.ticketgenerator.Ticket = function(divId, url, jira, estimate, 
     this.qrcode = qrcode;
 	this.divId = divId + "" + jira
 	this.element = document.getElementById(divId);
-	this.setWidth(350);
+	this.setWidth();
 	this.setHeight();
 	this.addDefaultBorder();
 	
@@ -28,7 +28,7 @@ jira.ticketviewer.ticketgenerator.Ticket.prototype.setWidth = function(width)
 {
 	this.element.style.margin = "auto";
 	this.element.style.float = "left";
-	this.element.style.width = width + "px";
+	this.element.style.width = 335 + "px";
 	this.element.style.position = "relative";
 	this.element.style.marginLeft = 20 + "px";
 
@@ -36,7 +36,7 @@ jira.ticketviewer.ticketgenerator.Ticket.prototype.setWidth = function(width)
 
 jira.ticketviewer.ticketgenerator.Ticket.prototype.setHeight = function()
 {
-	this.element.style.height = 300 + "px";
+	this.element.style.height = 320 + "px";
 	this.element.style.marginTop = 20 + "px";
 };
 
