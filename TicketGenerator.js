@@ -1,30 +1,40 @@
-var jira = function() {};
-jira.ticketviewer = function() {};
-jira.ticketviewer.ticketgenerator = function() {};
 
-jira.ticketviewer.ExampleClass = function(divId, url)
+QRCodeRenderer = function(divId, url)
 {
 	document.getElementById(divId).innerHTML = '<img style="margin-top: 20px;" width="50px" height="50px" src="http://qr.kaywa.com/?s=8&d=http%3A%2F%2F'+url + '" alt="QRCode"/>';
 }
 
-jira.ticketviewer.ticketgenerator.Ticket = function(divId, url, jira, estimate, summary, parent, parentSummary, component, tag, color, qrcode)
+CardRenderer = function(url, jira, estimate, summary, parent, parentSummary, component, tag, color, qrcode)
 {
+    this.url = url;
+    this.jira = jira;
+    this.estimate = estimate;
+    this.summary = summary;
+    this.parent = parent;
+    this.parentSummary = parentSummary;
+    this.component = component;
+    this.tag = tag;
+    this.color = color;
     this.qrcode = qrcode;
-	this.divId = divId + "" + jira
-	this.element = document.getElementById(divId);
+    
+};
+
+CardRenderer.prototype.render = function(divId) {
+    this.divId = divId + "" + jira;
+    this.element = document.getElementById(divId);
 	this.setWidth();
 	this.setHeight();
 	this.addDefaultBorder();
 	
-	this.addTitle(jira,estimate, parent, color);
+	this.addTitle(this.jira,this.estimate, this.parent, this.color);
 	this.addSideBar();
-	this.addSummary(summary, parentSummary, component, tag);
+	this.addSummary(this.summary, this.parentSummary, this.component, this.tag);
     if (this.qrcode) {
-    	this.addQRCode(url);
+    	this.addQRCode(this.url);
     }
-};
+}
 
-jira.ticketviewer.ticketgenerator.Ticket.prototype.setWidth = function(width)
+CardRenderer.prototype.setWidth = function(width)
 {
 	this.element.style.margin = "auto";
 	this.element.style.float = "left";
@@ -34,18 +44,18 @@ jira.ticketviewer.ticketgenerator.Ticket.prototype.setWidth = function(width)
 
 };
 
-jira.ticketviewer.ticketgenerator.Ticket.prototype.setHeight = function()
+CardRenderer.prototype.setHeight = function()
 {
 	this.element.style.height = 320 + "px";
 	this.element.style.marginTop = 20 + "px";
 };
 
-jira.ticketviewer.ticketgenerator.Ticket.prototype.addDefaultBorder = function(width)
+CardRenderer.prototype.addDefaultBorder = function(width)
 {
 	this.element.style.border = "2px solid black"
 };
 
-jira.ticketviewer.ticketgenerator.Ticket.prototype.addTitle = function(jira, estimate, parent, color)
+CardRenderer.prototype.addTitle = function(jira, estimate, parent, color)
 {
     var summary = jira;
     if (parent !== null && parent !== undefined)
@@ -76,7 +86,7 @@ jira.ticketviewer.ticketgenerator.Ticket.prototype.addTitle = function(jira, est
 	this.element.appendChild(titleElement);
 };
 
-jira.ticketviewer.ticketgenerator.Ticket.prototype.addSummary = function(summary, parentSummary, component, tag)
+CardRenderer.prototype.addSummary = function(summary, parentSummary, component, tag)
 {
 	var sideElement = document.createElement("div");
 	sideElement.style.marginRight = "70px";
@@ -111,7 +121,7 @@ jira.ticketviewer.ticketgenerator.Ticket.prototype.addSummary = function(summary
     
 };
 
-jira.ticketviewer.ticketgenerator.Ticket.prototype.addSideBar = function()
+CardRenderer.prototype.addSideBar = function()
 {
 	var sideElement = document.createElement("div");
 	sideElement.style.textAlign = "center";
@@ -140,7 +150,7 @@ jira.ticketviewer.ticketgenerator.Ticket.prototype.addSideBar = function()
 	this.element.appendChild(sideElement);
 };
 
-jira.ticketviewer.ticketgenerator.Ticket.prototype.createTitleElement = function(id,text,width,height)
+CardRenderer.prototype.createTitleElement = function(id,text,width,height)
 {
 
 	var titleElement = document.createElement("span");
@@ -178,7 +188,7 @@ jira.ticketviewer.ticketgenerator.Ticket.prototype.createTitleElement = function
 	return titleElement;
 };
 
-jira.ticketviewer.ticketgenerator.Ticket.prototype.addQRCode = function(url)
+CardRenderer.prototype.addQRCode = function(url)
 {
-	new jira.ticketviewer.ExampleClass(this.divId + "_qrcode",url);
+	new QRCodeRenderer(this.divId + "_qrcode",url);
 };

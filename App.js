@@ -1,3 +1,4 @@
+jira = function() {};
 jira.App = function(jiraUrl, divId, fixVersion, color, qrcode, parentEnabled, componentEnabled, tagEnabled)
 {
     this.jiraUrl = jiraUrl;
@@ -149,7 +150,7 @@ jira.App.prototype.renderCards = function() {
     for (index in this.jiraMap) {
         var jira = this.jiraMap[index];
         if (cards%6 == 0) {
-            var pageElement = document.createElement("div");
+            pageElement = document.createElement("div");
     		pageElement.style.pageBreakBefore = "always";
     		pageElement.style.clear = "both";
     		document.getElementById("tickets").appendChild(pageElement);
@@ -163,17 +164,20 @@ jira.App.prototype.renderCards = function() {
 		var jiraEstimate = jira.fields["customfield_10243"];
 		var jiraSummary = jira.fields.summary;
 		var color = this.colorEnabled ? this.issueTypeColors[jira.fields.issuetype.name] : null;
-		this.addTicket(this.divId,"jira.caplin.com/browse/" + jiraId, jiraId, jiraEstimate, jiraSummary, parent, parentSummary, component, tag, color, pageElement, this.qrcodeEnabled);
+        var card = new CardRenderer("jira.caplin.com/browse/" + jiraId, jiraId, jiraEstimate, jiraSummary, parent, parentSummary, component, tag, color, this.qrcodeEnabled);
+        
+		this.addTicket(this.divId, card);
 
         cards++;
     };
 }
 
-jira.App.prototype.addTicket = function(divId, url, title, estimate, summary, parent, parentSummary, component, tag, color, pageElement, qrcodeEnabled)
+jira.App.prototype.addTicket = function(divId, card)
 {
 	this.ticketId++;
 	var titleElement = document.createElement("div");
 	titleElement.setAttribute("id", divId + "_ticket" + this.ticketId);
 	pageElement.appendChild(titleElement);
-	new jira.ticketviewer.ticketgenerator.Ticket(divId + "_ticket" + this.ticketId,url, title, estimate, summary, parent, parentSummary, component, tag, color, qrcodeEnabled);	
+		
+    card.render(divId + "_ticket" + this.ticketId);
 }

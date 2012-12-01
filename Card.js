@@ -1,0 +1,3 @@
+jira.Card = function() {
+    
+};
