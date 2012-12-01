@@ -1,3 +1,18 @@
+//This classes responsiblities:
+
+//Class 1:
+    //Creating the div for cards to be added to so they are on seperate pages
+
+//Class 2:
+    //Converting JSON data to card data
+
+//Class 3:
+    //Hodls the co lors for rendering task types
+
+//Class 4:
+    //Handles asynchronous callbacks for card data
+    //Handles requesting parents to get their summaries
+
 jira = function() {};
 jira.App = function(jiraUrl, divId, fixVersion, color, qrcode, parentEnabled, componentEnabled, tagEnabled)
 {
@@ -28,6 +43,7 @@ jira.App = function(jiraUrl, divId, fixVersion, color, qrcode, parentEnabled, co
     this.expectedCallbacks = 0;
     this.callbacksReceived = 0;
     this.jiraMap = {};
+    this.cardsAdded = 0;
 }
 
 jira.App.prototype.x = function(jiras)
@@ -146,16 +162,9 @@ jira.App.prototype.getComponents = function(jira) {
 }
 
 jira.App.prototype.renderCards = function() {
-    var cards = 0;
     for (index in this.jiraMap) {
         var jira = this.jiraMap[index];
-        if (cards%6 == 0) {
-            pageElement = document.createElement("div");
-    		pageElement.style.pageBreakBefore = "always";
-    		pageElement.style.clear = "both";
-    		document.getElementById("tickets").appendChild(pageElement);
-    	}
-    
+        
         var parent = this.getParentKey(jira);
         var parentSummary = this.getParentSummary(jira);
         var component = this.getComponents(jira);
@@ -167,17 +176,26 @@ jira.App.prototype.renderCards = function() {
         var card = new CardRenderer("jira.caplin.com/browse/" + jiraId, jiraId, jiraEstimate, jiraSummary, parent, parentSummary, component, tag, color, this.qrcodeEnabled);
         
 		this.addTicket(this.divId, card);
-
-        cards++;
     };
 }
 
 jira.App.prototype.addTicket = function(divId, card)
 {
+    var pageElement = this.getPageForNewCard();
 	this.ticketId++;
 	var titleElement = document.createElement("div");
 	titleElement.setAttribute("id", divId + "_ticket" + this.ticketId);
 	pageElement.appendChild(titleElement);
 		
     card.render(divId + "_ticket" + this.ticketId);
+}
+
+jira.App.prototype.getPageForNewCard = function() {
+    if (this.cardsAdded%6 == 0) {
+        pageElement = document.createElement("div");
+        pageElement.style.pageBreakBefore = "always";
+		pageElement.style.clear = "both";
+		document.getElementById("tickets").appendChild(pageElement);
+	}
+    this.cardsAdded++;
 }
