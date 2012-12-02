@@ -40,78 +40,15 @@ jira.App = function(jiraUrl, divId, fixVersion, color, qrcode, parentEnabled, co
     this.parentdescriptionEnabled = parentEnabled;
     this.componentEnabled = componentEnabled;
     this.tagEnabled = tagEnabled;
-    this.expectedCallbacks = 0;
-    this.callbacksReceived = 0;
-    this.jiraMap = {};
     this.cardsAdded = 0;
 }
 
 jira.App.prototype.x = function(jiras)
 {
-	this.requestAllJiras(jiras);
-}
-
-jira.App.prototype.requestAllJiras = function(jiras)
-{
-    this.expectedCallbacks = 0;
-    this.callbacksReceived = 0;
-    for (var i=0; i < jiras.length; i++)
-    {
-        this.expectedCallbacks++;
-        var jira = jiras[i];
-	    this.requestJira(jira);
-	}
-}
-
-jira.App.prototype.requestJira = function(jira) {
-    var jiraUrl = this.jiraUrl + "/rest/api/latest/issue/" + jira + "?jsonp-callback=getJiraCallback";
-	var scriptElement = document.createElement("script");
-	scriptElement.setAttribute("type", "text/javascript");
-	scriptElement.setAttribute("src", jiraUrl);
-	document.head.appendChild(scriptElement);
-}
-
-jira.App.prototype.isParentLoaded = function(jira) {
-    var parentId = jira.fields.parent;
-    if (parentId) {
-        var parentKey = jira.fields.parent.key;
-        if (this.jiraMap[parentKey]) {
-            return true;   
-        } else {
-            return false;
-        }
-    } else {
-        return true;
-    }
-}
-
-jira.App.prototype.parentsNotLoaded = function() {
-    var parentsNotLoaded = [];
-    for (index in this.jiraMap) {
-        var jira = this.jiraMap[index];
-        if (!this.isParentLoaded(jira)) {
-            parentsNotLoaded.push(jira.fields.parent.key);
-        }
-    }
-    return parentsNotLoaded
-}
-
-jira.App.prototype.getJiraCallback = function(e)
-{
-    this.callbacksReceived++;
-    this.jiraMap[e.key] = e;
-    if (this.callbacksReceived == this.expectedCallbacks) {
-        this.renderCardsIfReady();
-    }
-}
-
-jira.App.prototype.renderCardsIfReady = function() {
-    var parentsNotLoaded = this.parentsNotLoaded();
-    if (parentsNotLoaded.length == 0) {
-        this.renderCards();
-    } else {
-        this.requestAllJiras(parentsNotLoaded);
-    }
+    this.jiras = jiras;
+    this.jah = new JiraApiHandler(this.jiraUrl);
+    var self = this;
+	this.jah.requestJiras(jiras, this);
 }
 
 jira.App.prototype.getParentKey = function(jira) {
@@ -129,7 +66,7 @@ jira.App.prototype.getParentKey = function(jira) {
 jira.App.prototype.getParentSummary = function(jira) {
     if (this.getParentKey(jira) != null) {
         var parentKey = jira.fields.parent.key;
-        return this.jiraMap[parentKey].fields.summary;
+        return this.jah.get(parentKey).fields.summary;
     } else {
         return null;
     }
@@ -162,8 +99,8 @@ jira.App.prototype.getComponents = function(jira) {
 }
 
 jira.App.prototype.renderCards = function() {
-    for (index in this.jiraMap) {
-        var jira = this.jiraMap[index];
+    for (var i=0; i < this.jiras.length; i++) {
+        var jira = this.jah.get(this.jiras[i]);
         
         var parent = this.getParentKey(jira);
         var parentSummary = this.getParentSummary(jira);
@@ -198,4 +135,5 @@ jira.App.prototype.getPageForNewCard = function() {
 		document.getElementById("tickets").appendChild(pageElement);
 	}
     this.cardsAdded++;
+    return pageElement;
 }
