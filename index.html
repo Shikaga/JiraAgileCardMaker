@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Jira Ticket Generator</title>
-<script type="text/javascript" src="TicketGenerator.js"></script>
-<script type="text/javascript" src="App.js"></script>
-<link rel="stylesheet" type="text/css" href="style.css">
+    <title>Jira Ticket Generator</title>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="TicketGenerator.js"></script>
+    <script type="text/javascript" src="App.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
 	<div id="tickets"></div>
@@ -51,7 +52,7 @@
         <div style="clear:both"></div>
     </div>
     </div>
-	<script>
+	<script type="text/javascript">
         function addQRCode(divId, url, size) {
             if (size == null || size == undefined) size = 50;
                 document.getElementById(divId).innerHTML = '<img style="margin-top: 20px;" width="' + size + 'px" height="' + size + 'px" src="http://qr.kaywa.com/?s=8&d=http%3A%2F%2F'+url + '" alt="QRCode"/>';
@@ -232,8 +233,5 @@
             oApp.x(checklistToDisplay);
         }
 	</script>
-	<script type="text/javascript"
-		src=
-></script>
 </body>
 </html>
