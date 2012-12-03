@@ -5,6 +5,22 @@ JiraApiHandler = function(jiraUrl) {
     this.requested = false;
     this.expectedCallbacks = 0;
     this.callbacksReceived = 0;
+    
+    this.issueTypeColors = {
+		"Bug": "#C00"
+		,"Documentation": "#FFD600"
+		,"Improvement": "#090"
+		,"Story": "#909"
+		,"Task": "#BFE4FF"
+		,"Technical task": "#099"}
+    this.issueTypeFontColors = {
+        "Bug": "#FFF"
+        ,"Documentation": "#FFF"
+        ,"Improvement": "#FFF"
+        ,"Story": "#FFF"
+        ,"Task": "#000"
+        ,"Technical task": "#FFF"
+    }
 };
 
 JiraApiHandler.prototype.get = function(jiraKey) {
@@ -45,11 +61,9 @@ JiraApiHandler.prototype.requestJira = function(jira) {
 	document.head.appendChild(scriptElement);
 }
 
-JiraApiHandler.prototype.isParentLoaded = function(jira) {
-    var parentId = jira.fields.parent;
-    if (parentId) {
-        var parentKey = jira.fields.parent.key;
-        if (this.jiraMap[parentKey]) {
+JiraApiHandler.prototype.isParentLoaded = function(card) {
+    if (card.parentKey) {
+        if (this.jiraMap[card.parentKey]) {
             return true;   
         } else {
             return false;
@@ -62,9 +76,9 @@ JiraApiHandler.prototype.isParentLoaded = function(jira) {
 JiraApiHandler.prototype.parentsNotLoaded = function() {
     var parentsNotLoaded = [];
     for (index in this.jiraMap) {
-        var jira = this.jiraMap[index];
-        if (!this.isParentLoaded(jira)) {
-            parentsNotLoaded.push(jira.fields.parent.key);
+        var card = this.jiraMap[index];
+        if (!this.isParentLoaded(card)) {
+            parentsNotLoaded.push(card.parentKey);
         }
     }
     return parentsNotLoaded
@@ -73,10 +87,33 @@ JiraApiHandler.prototype.parentsNotLoaded = function() {
 JiraApiHandler.prototype.getJiraCallback = function(e)
 {
     this.callbacksReceived++;
-    this.jiraMap[e.key] = e;
+    this.jiraMap[e.key] = this.getCard(e);
     if (this.callbacksReceived == this.expectedCallbacks) {
         this.renderCardsIfReady();
     }
+}
+
+JiraApiHandler.prototype.getCard = function(jira) {
+    var card = new Card(jira.key);
+    card.parentKey = jira.fields.parent ? jira.fields.parent.key : null;
+    
+    card.estimate = jira.fields["customfield_10243"];
+    card.summary = jira.fields.summary;
+    card.tag = jira.fields["customfield_10151"];
+    card.color =  this.issueTypeColors[jira.fields.issuetype.name];
+    
+    var components = jira.fields.components;
+    if (components.length != 0) {
+        var componentsString = "";
+        for (id in components) {
+            componentsString += components[id].name + ",";
+        }
+        card.components = componentsString.substring(0, componentsString.length-1) + ":";
+    } else {
+        card.components = "";
+    }
+    
+    return card;
 }
 
 JiraApiHandler.prototype.renderCardsIfReady = function() {
