@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Workbench</title>
+		
+		<script type="text/javascript" src="TicketGenerator.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="styles/ticket.css">
+
+    </head>
+	<body>
+		<div data-ticket='{
+		    "url": "jira.caplin.com/browse/PCTCUT-547",
+		    "issue": "PCTCUT-547",
+		    "estimate": 2,
+		    "summary": "A marvelous summary.",
+		    "parent": "PCTCUT-444",
+		    "parentSummary": "Parent Summary",
+		    "component": "COMP",
+		    "tag": "TAG",
+		    "type": "Story",
+		    "generateQR": true
+		}'></div>
+
+        <div data-ticket='{
+		    "url": "jira.caplin.com/browse/PCTCUT-597",
+		    "issue": "PCTCUT-522",
+		    "estimate": 8,
+		    "summary": "Some wonderful doc and icecream.",
+		    "tag": "DOC",
+		    "type": "Documentation"
+		}'></div>
+
+		<script>
+
+            var tickets = document.querySelectorAll('[data-ticket]');
+
+            for (var i = 0; i < tickets.length; ++i) {
+                var ticketElement = tickets[i];
+                var data = JSON.parse(ticketElement.getAttribute('data-ticket') || "{}");
+                var ticket = new jira.ticketviewer.ticketgenerator.Ticket(
+                        ticketElement,
+                        data.url,
+                        data.issue,
+                        data.estimate,
+                        data.summary,
+                        data.parent,
+                        data.getParentSummary,
+                        data.component,
+                        data.tag,
+                        data.type,
+                        data.generateQR
+                );
+            }
+		</script>
+	</body>
+</html>

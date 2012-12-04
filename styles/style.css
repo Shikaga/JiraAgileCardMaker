@@ -4,14 +4,14 @@ html, body {
 }
 
 @page {
-    margin: 0px;
+    margin: 0;
 }
 
 #ticketManager {
     margin: 10px;
-    background-color:white;
     padding: 10px;
     background-color:#DDD;
+    min-height:100%;
 }
 
 #optionsPanel {
@@ -23,4 +23,13 @@ html, body {
     overflow: auto;
     background-color: #BBB;
     margin: 5%;
+}
+
+#wizard {
+    width: 400px;
+}
+
+.pane {
+    float:left;
+    width: 50%;
 }
