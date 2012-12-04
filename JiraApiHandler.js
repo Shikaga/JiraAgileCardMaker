@@ -95,7 +95,7 @@ JiraApiHandler.prototype.getCard = function (jira) {
 	card.estimate = jira.fields["customfield_10243"];
 	card.summary = jira.fields.summary;
 	card.tag = jira.fields["customfield_10151"];
-	card.color = this.issueTypeColors[jira.fields.issuetype.name];
+	card.issueType = jira.fields.issuetype.name;
 
 	var components = jira.fields.components;
 	if (components.length != 0) {

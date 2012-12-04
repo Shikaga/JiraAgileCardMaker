@@ -5,5 +5,5 @@ Card = function (key) {
 	this.summary = null;
 	this.component = null;
 	this.tag = null;
-	this.color = null;
+	this.issueType = null;
 };

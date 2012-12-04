@@ -6,9 +6,6 @@
 //Class 2:
 //Converting JSON data to card data
 
-//Class 3:
-//Hodls the co lors for rendering task types
-
 jira = function () {};
 
 jira.App = function (jiraUrl, divId, fixVersion, color, qrcode, parentEnabled, componentEnabled, tagEnabled) {
@@ -21,6 +18,7 @@ jira.App = function (jiraUrl, divId, fixVersion, color, qrcode, parentEnabled, c
 	this.componentEnabled = componentEnabled;
 	this.tagEnabled = tagEnabled;
 	this.cardsAdded = 0;
+	this.currentPage = null;
 };
 
 jira.App.prototype.x = function (jiras) {
@@ -36,7 +34,6 @@ jira.App.prototype.getParentSummary = function (jira) {
 jira.App.prototype.renderCards = function () {
 	for (var i = 0; i < this.jiras.length; i++) {
 		var jira = this.jah.get(this.jiras[i]);
-		debugger;
 		var jiraId = jira.key;
 		var parentKey = jira.parentKey;
 		var parentSummary = this.getParentSummary(jira);
@@ -44,9 +41,9 @@ jira.App.prototype.renderCards = function () {
 		var tag = this.tagEnabled ? jira.tag : null;
 		var jiraEstimate = jira.estimate;
 		var jiraSummary = jira.summary;
-		var color = this.colorEnabled ? jira.color : null;
+		var issueType = this.colorEnabled ? jira.issueType : "";
 
-		var card = new CardRenderer("jira.caplin.com/browse/" + jiraId, jiraId, jiraEstimate, jiraSummary, parentKey, parentSummary, component, tag, color, this.qrcodeEnabled);
+		var card = new CardRenderer(this.jiraUrl.replace(/https?:\/\//, "")+"/browse/" + jiraId, jiraId, jiraEstimate, jiraSummary, parentKey, parentSummary, component, tag, issueType, this.qrcodeEnabled);
 
 		this.addTicket(this.divId, card);
 	}
@@ -63,12 +60,11 @@ jira.App.prototype.addTicket = function (divId, card) {
 };
 
 jira.App.prototype.getPageForNewCard = function () {
-	if (this.cardsAdded % 6 === 0) {
-		var pageElement = document.createElement("div");
-		pageElement.style.pageBreakBefore = "always";
-		pageElement.style.clear = "both";
-		document.getElementById("tickets").appendChild(pageElement);
+	if (this.currentPage == null || this.cardsAdded % 6 === 0) {
+		this.currentPage = document.createElement("div");
+		this.currentPage.className = "page";
+		document.getElementById("tickets").appendChild(this.currentPage);
 	}
 	this.cardsAdded++;
-	return pageElement;
+	return this.currentPage;
 };
