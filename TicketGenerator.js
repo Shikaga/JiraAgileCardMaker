@@ -1,24 +1,24 @@
-CardRenderer = function (url, jira, estimate, summary, parent, parentSummary, component, tag, issueType, qrcode) {
-	this.url = url;
-	this.jira = jira;
-	this.estimate = estimate;
-	this.summary = summary;
-	this.parent = parent;
-	this.parentSummary = parentSummary;
-	this.component = component;
-	this.tag = tag;
-	this.issueType = issueType;
-	this.bAddQRCode = qrcode;
+CardRenderer = function(cardModel, issueMap,	isComponentEnabled,	isTagEnabled,	isColorEnabled, isQRCodeEnabled) {
+	this.cardModel = cardModel;
+	this.issueMap = issueMap;
+	this.isComponentEnabled = isComponentEnabled;
+	this.isTagEnabled = isTagEnabled;
+	this.isColorEnabled = isColorEnabled;
+	this.isQRCodeEnabled = isQRCodeEnabled;
+
+	this.element = null;
 };
 
-CardRenderer.prototype.render = function (divId) {
-	this.divId = divId + "" + jira;
-	this.element = document.getElementById(divId);
-	this.element.className = "ticket";
+CardRenderer.prototype.getElement = function () {
+	if (this.element == null) {
+		this.element = document.createElement('div');
+		this.element.className = "ticket "+(this.isColorEnabled ? "color" : "mono");
 
-	this.addTitle(this.jira, this.estimate, this.parent, this.issueType);
-	this.addSideBar(this.bAddQRCode);
-	this.addSummary(this.summary, this.parentSummary, this.component, this.tag);
+		this.addTitle(this.cardModel.issueId, this.cardModel.estimate, this.cardModel.parentIssueId, this.cardModel.issueType);
+		this.addSideBar(this.isQRCodeEnabled, this.cardModel.issueUrl);
+		this.addSummary(this.cardModel.summary, this.cardModel.getParentSummary(this.issueMap), this.cardModel.component, this.cardModel.tag);
+	}
+	return this.element;
 };
 
 CardRenderer.prototype.addTitle = function (jira, estimate, parent, issueType) {
@@ -26,12 +26,12 @@ CardRenderer.prototype.addTitle = function (jira, estimate, parent, issueType) {
 	if (parent !== null && parent !== undefined) {
 		summary = parent + "\n" + jira;
 	}
-	var jiraElement = this.createTitleElement(this.divId + "_jira", summary || "Jira", "35%");
+	var jiraElement = this.createTitleElement(summary || "Jira", "35%");
 	jiraElement.className += " jiraElement "+issueType.replace(" ", "_");
 
-	var estimateElement = this.createTitleElement(this.divId + "_estimate", estimate || "Estimate", "15%");
-	var actualElement = this.createTitleElement(this.divId + "_actual", "Actual", "15%");
-	var ownerElement = this.createTitleElement(this.divId + "_owner", "Owner", "35%");
+	var estimateElement = this.createTitleElement(estimate || "Estimate", "15%");
+	var actualElement = this.createTitleElement("Actual", "15%");
+	var ownerElement = this.createTitleElement("Owner", "35%");
 
 	var titleElement = document.createElement("div");
 	titleElement.className = "titleRow";
@@ -52,44 +52,44 @@ CardRenderer.prototype.addSummary = function (summary, parentSummary, component,
 		summary = "<strong>" + parentSummary + "</strong><br /><br />" + summary;
 	}
 
-	if (component != null) {
+	if (this.isComponentEnabled && component != null) {
 		summary = "<strong>" + component + "</strong><br /><br />" + summary;
 	}
 
 	sideElement.innerHTML = summary;
 
-	var tagElement = document.createElement("div");
-	tagElement.className = "tagElement";
-	tagElement.innerHTML = tag;
+	if (this.isTagEnabled) {
+		var tagElement = document.createElement("div");
+		tagElement.className = "tagElement";
+		tagElement.innerHTML = tag;
+		this.element.appendChild(tagElement);
+	}
 
-	this.element.appendChild(tagElement);
 	this.element.appendChild(sideElement);
-
 };
 
-CardRenderer.prototype.addSideBar = function (bAddQRCode) {
+CardRenderer.prototype.addSideBar = function (bAddQRCode, url) {
 	var sideElement = document.createElement("div");
 	sideElement.className = "sidebarSideElement";
-	sideElement.setAttribute("id", "sidebar");
 
-	var docElement = this.createTitleElement(this.divId + "_doc", "Doc", "100%", 60);
-	var demoElement = this.createTitleElement(this.divId + "_demo", "Demo", "100%", 60);
-	var reviewElement = this.createTitleElement(this.divId + "_review", "Review", "100%", 60);
+	var docElement = this.createTitleElement("Doc", "100%", 60);
+	var demoElement = this.createTitleElement("Demo", "100%", 60);
+	var reviewElement = this.createTitleElement("Review", "100%", 60);
 
 	sideElement.appendChild(docElement);
 	sideElement.appendChild(demoElement);
 	sideElement.appendChild(reviewElement);
 
 	if (bAddQRCode) {
-		var qrcodeElement = this.createTitleElement("qrid", "QRCode", "100%", 88);
-		qrcodeElement.innerHTML = '<img style="margin-top: 20px;" width="50px" height="50px" src="http://qr.kaywa.com/?s=8&d=http%3A%2F%2F' + this.url + '" alt="QRCode"/>';
+		var qrcodeElement = this.createTitleElement("QRCode", "100%", 88);
+		qrcodeElement.innerHTML = '<img style="margin-top: 20px;" width="50px" height="50px" src="http://qr.kaywa.com/?s=8&d=' + encodeURIComponent(url) + '" alt="QRCode"/>';
 		sideElement.appendChild(qrcodeElement);
 	}
 
 	this.element.appendChild(sideElement);
 };
 
-CardRenderer.prototype.createTitleElement = function (id, text, width, height) {
+CardRenderer.prototype.createTitleElement = function (text, width, height) {
 	var multiline;
 	var titleElement = document.createElement("span");
 	titleElement.className = "titleElement";
@@ -114,6 +114,5 @@ CardRenderer.prototype.createTitleElement = function (id, text, width, height) {
 		titleElement.style.lineHeight = (height || 50) / 2 + "px";
 	}
 
-	titleElement.setAttribute("id", id);
 	return titleElement;
 };

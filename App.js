@@ -6,12 +6,12 @@
 //Class 2:
 //Converting JSON data to card data
 
-jira = function () {};
+var jira = {};
 
-jira.App = function (jiraUrl, divId, fixVersion, color, qrcode, parentEnabled, componentEnabled, tagEnabled) {
+jira.App = function (element, jiraUrl, fixVersion, color, qrcode, parentEnabled, componentEnabled, tagEnabled) {
 	this.jiraUrl = jiraUrl;
+	this.element = element;
 	this.ticketId = 0;
-	this.divId = divId;
 	this.colorEnabled = color;
 	this.qrcodeEnabled = qrcode;
 	this.parentdescriptionEnabled = parentEnabled;
@@ -21,7 +21,7 @@ jira.App = function (jiraUrl, divId, fixVersion, color, qrcode, parentEnabled, c
 	this.currentPage = null;
 };
 
-jira.App.prototype.x = function (jiras) {
+jira.App.prototype.x = function(jiras) {
 	this.jiras = jiras;
 	this.jah = new JiraApiHandler(this.jiraUrl);
 	this.jah.requestJiras(jiras, this);
@@ -31,9 +31,10 @@ jira.App.prototype.getParentSummary = function (jira) {
 	return jira.parentKey ? this.jah.get(jira.parentKey).summary : null;
 };
 
-jira.App.prototype.renderCards = function () {
-	for (var i = 0; i < this.jiras.length; i++) {
-		var jira = this.jah.get(this.jiras[i]);
+jira.App.prototype.renderCards = function(issues, issueMap) {
+	for (var i = 0; i < issues.length; i++) {
+		var cardModel = issueMap[issues[i]];
+
 		var jiraId = jira.key;
 		var parentKey = jira.parentKey;
 		var parentSummary = this.getParentSummary(jira);
@@ -43,27 +44,30 @@ jira.App.prototype.renderCards = function () {
 		var jiraSummary = jira.summary;
 		var issueType = this.colorEnabled ? jira.issueType : "";
 
-		var card = new CardRenderer(this.jiraUrl.replace(/https?:\/\//, "")+"/browse/" + jiraId, jiraId, jiraEstimate, jiraSummary, parentKey, parentSummary, component, tag, issueType, this.qrcodeEnabled);
+		var cardView = new CardRenderer(
+			cardModel,
+			issueMap,
+			this.componentEnabled,
+			this.tagEnabled,
+			this.colorEnabled,
+			this.qrcodeEnabled
+		);
 
-		this.addTicket(this.divId, card);
+		this.addTicket(cardView);
 	}
 };
 
-jira.App.prototype.addTicket = function (divId, card) {
+jira.App.prototype.addTicket = function (card) {
 	var pageElement = this.getPageForNewCard();
 	this.ticketId++;
-	var titleElement = document.createElement("div");
-	titleElement.setAttribute("id", divId + "_ticket" + this.ticketId);
-	pageElement.appendChild(titleElement);
-
-	card.render(divId + "_ticket" + this.ticketId);
+	pageElement.appendChild(card.getElement());
 };
 
 jira.App.prototype.getPageForNewCard = function () {
 	if (this.currentPage == null || this.cardsAdded % 6 === 0) {
 		this.currentPage = document.createElement("div");
 		this.currentPage.className = "page";
-		document.getElementById("tickets").appendChild(this.currentPage);
+		this.element.appendChild(this.currentPage);
 	}
 	this.cardsAdded++;
 	return this.currentPage;

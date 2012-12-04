@@ -52,9 +52,12 @@
 .jiraElement {
     font-size: 80%;
     font-weight: bolder;
+    float: left;
+}
+
+.color .jiraElement {
     text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
     -webkit-print-color-adjust: exact;
-    float: left;
 }
 
 .titleRow {
@@ -66,32 +69,32 @@
     clear: both;
 }
 
-.Bug {
+.color .Bug {
     background-color: #c00;
     color: white;
 }
 
-.Documentation {
+.color .Documentation {
     background-color: #ffd600;
     color: white;
 }
 
-.Improvement {
+.color .Improvement {
     background-color: #090;
     color: white;
 }
 
-.Story {
+.color .Story {
     background-color: #090;
     color: white;
 }
 
-.Task {
+.color .Task {
     background-color: #bfe4ff;
     color: black;
 }
 
-.Technical_Task {
+.color .Technical_Task {
     background-color: #099;
     color: white;
 }

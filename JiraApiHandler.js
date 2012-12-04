@@ -5,41 +5,24 @@ JiraApiHandler = function (jiraUrl) {
 	this.requested = false;
 	this.expectedCallbacks = 0;
 	this.callbacksReceived = 0;
-
-	this.issueTypeColors = {
-		"Bug": "#C00",
-		"Documentation": "#FFD600",
-		"Improvement": "#090",
-		"Story": "#909",
-		"Task": "#BFE4FF",
-		"Technical task": "#099"
-	};
-
-	this.issueTypeFontColors = {
-		"Bug": "#FFF",
-		"Documentation": "#FFF",
-		"Improvement": "#FFF",
-		"Story": "#FFF",
-		"Task": "#000",
-		"Technical task": "#FFF"
-	};
 };
 
-JiraApiHandler.prototype.get = function (jiraKey) {
+JiraApiHandler.prototype.get = function(jiraKey) {
 	return this.jiraMap[jiraKey];
 };
 
-JiraApiHandler.prototype.requestJiras = function (jiraKeys, app) {
+JiraApiHandler.prototype.requestJiras = function(jiraKeys, app) {
 	if (!this.requested) {
 		this.app = app;
 		this.requested = true;
 		this.requestAllJiras(jiraKeys);
+		this.chosenIssues = jiraKeys;
 	} else {
-		throw "You can only requestJirasOnce";
+		throw new Error("You can only requestJirasOnce");
 	}
 };
 
-JiraApiHandler.prototype.requestAllJiras = function (jiras) {
+JiraApiHandler.prototype.requestAllJiras = function(jiras) {
 	this.expectedCallbacks = 0;
 	this.callbacksReceived = 0;
 	for (var i = 0; i < jiras.length; i++) {
@@ -49,7 +32,7 @@ JiraApiHandler.prototype.requestAllJiras = function (jiras) {
 	}
 };
 
-JiraApiHandler.prototype.requestJira = function (jira) {
+JiraApiHandler.prototype.requestJira = function(jira) {
 	var selfJiraApiHandler = this;
 	getJiraCallback = function (e) {
 		selfJiraApiHandler.getJiraCallback(e);
@@ -80,42 +63,42 @@ JiraApiHandler.prototype.parentsNotLoaded = function () {
 	return parentsNotLoaded
 };
 
-JiraApiHandler.prototype.getJiraCallback = function (e) {
+JiraApiHandler.prototype.getJiraCallback = function(jiraData) {
 	this.callbacksReceived++;
-	this.jiraMap[e.key] = this.getCard(e);
+	this.jiraMap[jiraData.key] = this.getCard(jiraData);
 	if (this.callbacksReceived == this.expectedCallbacks) {
 		this.renderCardsIfReady();
 	}
 };
 
 JiraApiHandler.prototype.getCard = function (jira) {
-	var card = new Card(jira.key);
-	card.parentKey = jira.fields.parent ? jira.fields.parent.key : null;
-
-	card.estimate = jira.fields["customfield_10243"];
-	card.summary = jira.fields.summary;
-	card.tag = jira.fields["customfield_10151"];
-	card.issueType = jira.fields.issuetype.name;
-
+	var componentString = "";
 	var components = jira.fields.components;
 	if (components.length != 0) {
 		var componentsString = "";
 		for (var id in components) {
 			componentsString += components[id].name + ",";
 		}
-		card.components = componentsString.substring(0, componentsString.length - 1) + ":";
-	} else {
-		card.components = "";
+		componentString = componentsString.substring(0, componentsString.length - 1) + ":";
 	}
 
+	var card = new Card(jira.key,
+		this.jiraUrl + "/browse/" + jira.key,
+		jira.fields.issuetype.name,
+		jira.fields["customfield_10243"],
+		jira.fields.summary,
+		componentString,
+		jira.fields["customfield_10151"],
+		jira.fields.parent ? jira.fields.parent.key : null
+	);
 	return card;
 };
 
 JiraApiHandler.prototype.renderCardsIfReady = function () {
 	var parentsNotLoaded = this.parentsNotLoaded();
-	if (parentsNotLoaded.length == 0) {
-		this.app.renderCards();
-	} else {
 		this.requestAllJiras(parentsNotLoaded);
+	if (parentsNotLoaded.length !== 0) {
+	} else {
+		this.app.renderCards(this.chosenIssues, this.jiraMap);
 	}
 };
