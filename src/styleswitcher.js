@@ -1,6 +1,7 @@
 /* taken from http://www.alistapart.com/articles/alternate/ */
 
 function setActiveStyleSheet(title) {
+	if (title == null) return;
 	var i, a, main;
 	for(i=0; (a = document.getElementsByTagName("link")[i]); i++) {
 		if(a.getAttribute("rel").indexOf("style") != -1 && a.getAttribute("title")) {
@@ -8,6 +9,7 @@ function setActiveStyleSheet(title) {
 			if(a.getAttribute("title") == title) a.disabled = false;
 		}
 	}
+	createCookie("style", title, 365);
 }
 
 function getActiveStyleSheet() {
@@ -54,11 +56,6 @@ window.onload = function(e) {
 	var cookie = readCookie("style");
 	var title = cookie ? cookie : getPreferredStyleSheet();
 	setActiveStyleSheet(title);
-}
-
-window.onunload = function(e) {
-	var title = getActiveStyleSheet();
-	createCookie("style", title, 365);
 }
 
 var cookie = readCookie("style");
