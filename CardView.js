@@ -22,27 +22,27 @@ CardView.prototype.getElement = function () {
 	return this.element;
 };
 
-CardView.prototype.addTitle = function (jira, estimate, parent) {
-	var summary = jira;
+CardView.prototype.addTitle = function (issueId, estimate, parent) {
 	if (parent !== null && parent !== undefined) {
-		summary = parent + "\n" + jira;
+		issueId = parent + "\n" + issueId;
 	}
-	var jiraElement = this.createTitleElement(summary || "Jira", "35%");
-	jiraElement.className += " jiraElement";
-
-	var estimateElement = this.createTitleElement(estimate || "Estimate", "15%");
-	estimateElement.className += " estimate";
-
-	var actualElement = this.createTitleElement("Actual", "15%");
-	actualElement.className += " actual";
-
-	var ownerElement = this.createTitleElement("Owner", "35%");
-	ownerElement.className += " owner";
 
 	var titleElement = document.createElement("div");
 	titleElement.className = "titleRow";
 
-	titleElement.appendChild(jiraElement);
+	var issueIdElement = this.createTitleElement(issueId || "Issue Id");
+	issueIdElement.className += " issueId";
+
+	var estimateElement = this.createTitleElement(estimate || "Estimate");
+	estimateElement.className += " estimate";
+
+	var actualElement = this.createTitleElement("Actual");
+	actualElement.className += " actual";
+
+	var ownerElement = this.createTitleElement("Owner");
+	ownerElement.className += " owner";
+
+	titleElement.appendChild(issueIdElement);
 	titleElement.appendChild(estimateElement);
 	titleElement.appendChild(actualElement);
 	titleElement.appendChild(ownerElement);
@@ -55,18 +55,18 @@ CardView.prototype.addSummary = function (summary, parentSummary, component, tag
 	sideElement.className = "summaryElement";
 
 	if (this.isParentDescriptionEnabled && parentSummary != null) {
-		summary = "<strong>" + parentSummary + "</strong><br /><br />" + summary;
+		summary = "<span class='parentSummary'>" + parentSummary + "</span>" + summary;
 	}
 
 	if (this.isComponentEnabled && component != null) {
-		summary = "<strong>" + component + "</strong><br /><br />" + summary;
+		summary = "<span class='component'>" + component + "</span>" + summary;
 	}
 
 	sideElement.innerHTML = summary;
 
 	if (this.isTagEnabled) {
 		var tagElement = document.createElement("div");
-		tagElement.className = "tagElement";
+		tagElement.className = "tag";
 		tagElement.innerHTML = tag;
 		this.element.appendChild(tagElement);
 	}
@@ -76,33 +76,35 @@ CardView.prototype.addSummary = function (summary, parentSummary, component, tag
 
 CardView.prototype.addSideBar = function (bAddQRCode, url) {
 	var sideElement = document.createElement("div");
-	sideElement.className = "sidebarSideElement";
+	sideElement.className = "sidebar";
 
-	var docElement = this.createTitleElement("Doc", "100%", 60);
-	var demoElement = this.createTitleElement("Demo", "100%", 60);
-	var reviewElement = this.createTitleElement("Review", "100%", 60);
+	var docElement = this.createTitleElement("Doc");
+	docElement.className += " doc";
+
+	var demoElement = this.createTitleElement("Demo");
+	demoElement.className += " demo";
+
+	var reviewElement = this.createTitleElement("Review");
+	reviewElement.className += " review";
 
 	sideElement.appendChild(docElement);
 	sideElement.appendChild(demoElement);
 	sideElement.appendChild(reviewElement);
 
 	if (bAddQRCode) {
-		var qrcodeElement = this.createTitleElement("QRCode", "100%", 88);
-		qrcodeElement.innerHTML = '<img style="margin-top: 20px;" width="50px" height="50px" src="http://qr.kaywa.com/?s=8&d=' + encodeURIComponent(url) + '" alt="QRCode"/>';
+		var qrcodeElement = this.createTitleElement("QRCode");
+		qrcodeElement.className += " qrcode";
+		qrcodeElement.innerHTML = '<img src="http://qr.kaywa.com/?s=8&d=' + encodeURIComponent(url) + '" alt="QRCode"/>';
 		sideElement.appendChild(qrcodeElement);
 	}
 
 	this.element.appendChild(sideElement);
 };
 
-CardView.prototype.createTitleElement = function (text, width, height) {
+CardView.prototype.createTitleElement = function (text) {
 	var multiline;
 	var titleElement = document.createElement("span");
 	titleElement.className = "titleElement";
-	titleElement.style.width = width;
-	if (height != undefined) {
-		titleElement.style.height = height + "px";
-	}
 
 	if (typeof text != 'number') {
 		var textArray = text.split("\n");
@@ -117,7 +119,7 @@ CardView.prototype.createTitleElement = function (text, width, height) {
 	}
 
 	if (multiline) {
-		titleElement.style.lineHeight = (height || 50) / 2 + "px";
+		titleElement.className += " multiline";
 	}
 
 	return titleElement;

@@ -1,3 +1,8 @@
+.page {
+    page-break-before: always;
+    clear: both;
+}
+
 .ticket {
     margin: auto;
     float: left;
@@ -9,16 +14,13 @@
     border: 2px solid black;
 }
 
-.summaryElement {
-    margin-right: 70px;
-    padding: 1em;
-    font-size: 23px;
-    overflow: hidden;
-    line-height: 23px;
-    height: 200px;
+/* row and column */
+
+.titleRow {
+    height: 50px;
 }
 
-.sidebarSideElement {
+.sidebar {
     text-align: center;
     width: 70px;
     height: 267px;
@@ -29,14 +31,44 @@
     right: 0;
 }
 
-.tagElement {
-    width: 70px;
-    height: 20px;
-    margin-top: 180px;
-    padding: 1em;
-    font-size: 23px;
-    position: absolute;
+/* colors */
+
+.color .issueId {
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    -webkit-print-color-adjust: exact;
 }
+
+.color.Bug .issueId {
+    background-color: #c00;
+    color: white;
+}
+
+.color.Documentation .issueId {
+    background-color: #ffd600;
+    color: white;
+}
+
+.color.Improvement .issueId {
+    background-color: #090;
+    color: white;
+}
+
+.color.Story .issueId {
+    background-color: #090;
+    color: white;
+}
+
+.color.Task .issueId {
+    background-color: #bfe4ff;
+    color: black;
+}
+
+.color.Technical_Task .issueId {
+    background-color: #099;
+    color: white;
+}
+
+/* parts of the card */
 
 .titleElement {
     text-align: center;
@@ -49,54 +81,67 @@
     display: inline-block;
 }
 
-.jiraElement {
+.titleElement.multiline {
+    line-height: 25px;
+}
+
+.issueId {
     font-size: 80%;
     font-weight: bolder;
     float: left;
+    width: 35%;
+    line-height: 25px;
 }
 
-.color .jiraElement {
-    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-    -webkit-print-color-adjust: exact;
+.estimate {
+    width: 15%;
+    line-height: 25px;
 }
 
-.titleRow {
+.actual {
+    width: 15%;
+}
+
+.owner {
+    width: 35%;
+}
+
+.doc, .demo, .review {
+    width: 100%;
+    height: 60px;
+}
+
+.qrcode {
+    width: 100%;
+    height: 88px;
+}
+
+.qrcode img {
+    margin-top: 20px;
+    width: 50px;
     height: 50px;
 }
 
-.page {
-    page-break-before: always;
-    clear: both;
+.summaryElement {
+    margin-right: 70px;
+    padding: 1em;
+    font-size: 23px;
+    overflow: hidden;
+    line-height: 23px;
+    height: 200px;
 }
 
-.color.Bug .jiraElement {
-    background-color: #c00;
-    color: white;
+.parentSummary, .component {
+    font-weight: bolder;
+    display: block;
+    padding-bottom: 1em;
 }
 
-.color.Documentation .jiraElement {
-    background-color: #ffd600;
-    color: white;
+.tag {
+    width: 70px;
+    height: 20px;
+    margin-top: 180px;
+    padding: 1em;
+    font-size: 23px;
+    position: absolute;
 }
-
-.color.Improvement .jiraElement {
-    background-color: #090;
-    color: white;
-}
-
-.color.Story .jiraElement {
-    background-color: #090;
-    color: white;
-}
-
-.color.Task .jiraElement {
-    background-color: #bfe4ff;
-    color: black;
-}
-
-.color.Technical_Task .jiraElement {
-    background-color: #099;
-    color: white;
-}
-
-
