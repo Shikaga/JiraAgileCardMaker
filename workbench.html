@@ -6,10 +6,18 @@
     <script type="text/javascript" src="Card.js"></script>
     <script type="text/javascript" src="CardView.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="styles/ticket.css">
+    <script type="text/javascript" src="styleswitcher.js"></script>
+
+    <link rel="stylesheet" title="default" type="text/css" href="styles/ticket-default.css">
+    <link rel="alternate stylesheet" title="new" type="text/css" href="styles/ticket-new.css">
 
 </head>
 <body>
+
+Style:
+    <a href="#" onclick="setActiveStyleSheet('default');return false;">default</a>
+    <a href="#" onclick="setActiveStyleSheet('new');return false;">new</a>
+
 
 <div data-ticket='{
 		    "issueId": "PCTCUT-547",
