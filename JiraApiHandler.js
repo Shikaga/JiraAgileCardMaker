@@ -1,5 +1,6 @@
-JiraApiHandler = function (jiraUrl) {
-	this.jiraUrl = jiraUrl;
+var JiraApiHandler = function(jiraUrl, listener) {
+	this.baseUrl = jiraUrl;
+	this.listener = listener;
 	this.jiraMap = {};
 
 	this.requested = false;
@@ -7,37 +8,38 @@ JiraApiHandler = function (jiraUrl) {
 	this.callbacksReceived = 0;
 };
 
-JiraApiHandler.prototype.get = function(jiraKey) {
-	return this.jiraMap[jiraKey];
-};
-
-JiraApiHandler.prototype.requestJiras = function(jiraKeys, app) {
+// Interface method - requestIssues passing in an array of issue ids.
+JiraApiHandler.prototype.requestIssues = function(issueIds) {
 	if (!this.requested) {
-		this.app = app;
 		this.requested = true;
-		this.requestAllJiras(jiraKeys);
-		this.chosenIssues = jiraKeys;
+		this.requestJiras(issueIds);
+		this.chosenIssues = issueIds;
 	} else {
-		throw new Error("You can only requestJirasOnce");
+		throw new Error("You can only request issues once.");
 	}
 };
 
-JiraApiHandler.prototype.requestAllJiras = function(jiras) {
+JiraApiHandler.prototype.requestJiras = function(jiraIds) {
 	this.expectedCallbacks = 0;
 	this.callbacksReceived = 0;
-	for (var i = 0; i < jiras.length; i++) {
+	for (var i = 0; i < jiraIds.length; i++) {
 		this.expectedCallbacks++;
-		var jira = jiras[i];
-		this.requestJira(jira);
+		this.requestJira(jiraIds[i]);
 	}
 };
 
-JiraApiHandler.prototype.requestJira = function(jira) {
-	var selfJiraApiHandler = this;
-	getJiraCallback = function (e) {
-		selfJiraApiHandler.getJiraCallback(e);
-	};
-	var jiraUrl = this.jiraUrl + "/rest/api/latest/issue/" + jira + "?jsonp-callback=getJiraCallback";
+JiraApiHandler.prototype.requestJira = function(jiraId) {
+	var callbackName = "_jiraProcessData_";
+	while (window[callbackName]) {
+		callbackName += "X";
+	}
+
+	window[callbackName] = function(jiraData) {
+		this.processJiraData(jiraData);
+		delete window[callbackName];
+	}.bind(this);
+
+	var jiraUrl = this.baseUrl + "/rest/api/latest/issue/" + jiraId + "?jsonp-callback="+callbackName;
 	var scriptElement = document.createElement("script");
 	scriptElement.setAttribute("type", "text/javascript");
 	scriptElement.setAttribute("src", jiraUrl);
@@ -63,7 +65,7 @@ JiraApiHandler.prototype.parentsNotLoaded = function () {
 	return parentsNotLoaded
 };
 
-JiraApiHandler.prototype.getJiraCallback = function(jiraData) {
+JiraApiHandler.prototype.processJiraData = function(jiraData) {
 	this.callbacksReceived++;
 	this.jiraMap[jiraData.key] = this.getCard(jiraData);
 	if (this.callbacksReceived == this.expectedCallbacks) {
@@ -83,7 +85,7 @@ JiraApiHandler.prototype.getCard = function (jira) {
 	}
 
 	var card = new Card(jira.key,
-		this.jiraUrl + "/browse/" + jira.key,
+		this.baseUrl + "/browse/" + jira.key,
 		jira.fields.issuetype.name,
 		jira.fields["customfield_10243"],
 		jira.fields.summary,
@@ -96,9 +98,9 @@ JiraApiHandler.prototype.getCard = function (jira) {
 
 JiraApiHandler.prototype.renderCardsIfReady = function () {
 	var parentsNotLoaded = this.parentsNotLoaded();
-		this.requestAllJiras(parentsNotLoaded);
+		this.requestJiras(parentsNotLoaded);
 	if (parentsNotLoaded.length !== 0) {
 	} else {
-		this.app.renderCards(this.chosenIssues, this.jiraMap);
+		this.listener.onIssuesAvailable(this.chosenIssues, this.jiraMap);
 	}
 };

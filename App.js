@@ -8,45 +8,33 @@
 
 var jira = {};
 
-jira.App = function (element, jiraUrl, fixVersion, color, qrcode, parentEnabled, componentEnabled, tagEnabled) {
-	this.jiraUrl = jiraUrl;
+jira.App = function (element, baseUrl, fixVersion, color, qrcode, parentEnabled, componentEnabled, tagEnabled) {
+	this.baseUrl = baseUrl;
 	this.element = element;
-	this.ticketId = 0;
 	this.colorEnabled = color;
 	this.qrcodeEnabled = qrcode;
-	this.parentdescriptionEnabled = parentEnabled;
+	this.parentDescriptionEnabled = parentEnabled;
 	this.componentEnabled = componentEnabled;
 	this.tagEnabled = tagEnabled;
 	this.cardsAdded = 0;
 	this.currentPage = null;
 };
 
-jira.App.prototype.x = function(jiras) {
-	this.jiras = jiras;
-	this.jah = new JiraApiHandler(this.jiraUrl);
-	this.jah.requestJiras(jiras, this);
+jira.App.prototype.requestIssues = function(selectedIssueIds) {
+	this.selectedIssueIds = selectedIssueIds;
+
+	this.issueRequester = new JiraApiHandler(this.baseUrl, this);
+	this.issueRequester.requestIssues(selectedIssueIds);
 };
 
-jira.App.prototype.getParentSummary = function (jira) {
-	return jira.parentKey ? this.jah.get(jira.parentKey).summary : null;
-};
-
-jira.App.prototype.renderCards = function(issues, issueMap) {
-	for (var i = 0; i < issues.length; i++) {
-		var cardModel = issueMap[issues[i]];
-
-		var jiraId = jira.key;
-		var parentKey = jira.parentKey;
-		var parentSummary = this.getParentSummary(jira);
-		var component = this.componentEnabled ? jira.component : null;
-		var tag = this.tagEnabled ? jira.tag : null;
-		var jiraEstimate = jira.estimate;
-		var jiraSummary = jira.summary;
-		var issueType = this.colorEnabled ? jira.issueType : "";
+jira.App.prototype.onIssuesAvailable = function(issueIds, issueMap) {
+	for (var i = 0; i < issueIds.length; i++) {
+		var cardModel = issueMap[issueIds[i]];
 
 		var cardView = new CardView(
 			cardModel,
 			issueMap,
+			this.parentDescriptionEnabled,
 			this.componentEnabled,
 			this.tagEnabled,
 			this.colorEnabled,
@@ -57,13 +45,12 @@ jira.App.prototype.renderCards = function(issues, issueMap) {
 	}
 };
 
-jira.App.prototype.addTicket = function (card) {
+jira.App.prototype.addTicket = function(card) {
 	var pageElement = this.getPageForNewCard();
-	this.ticketId++;
 	pageElement.appendChild(card.getElement());
 };
 
-jira.App.prototype.getPageForNewCard = function () {
+jira.App.prototype.getPageForNewCard = function() {
 	if (this.currentPage == null || this.cardsAdded % 6 === 0) {
 		this.currentPage = document.createElement("div");
 		this.currentPage.className = "page";

@@ -127,7 +127,7 @@
 
     var pageElement = document.createElement("div");
     function getJiraCallback(e) {
-        oApp.getJiraCallback(e);
+        oApp.processJiraData(e);
     }
 
     function addCheckList(ul, name, callback, className) {
@@ -243,7 +243,7 @@
         var tagDescription = document.getElementById("tagdescription").checked;
 
         oApp = new jira.App(document.getElementById('tickets'), jiraUrl, document.getElementById("fixversion").value, color, qrcode, parentDescription, componentDescription, tagDescription);
-        oApp.x(checklistToDisplay);
+        oApp.requestIssues(checklistToDisplay);
     }
 </script>
 </body>

@@ -1,9 +1,9 @@
 JSONParser = function () {
-	this.jiras = {};
+	this.selectedIssueIds = {};
 };
 
 JSONParser.prototype.addJSON = function (jiraID, json) {
-	this.jiras[jiraID] = json;
+	this.selectedIssueIds[jiraID] = json;
 };
 
 JSONParser.prototype.getParentKey = function () {

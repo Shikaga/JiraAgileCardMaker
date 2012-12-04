@@ -1,6 +1,7 @@
-var CardView = function(cardModel, issueMap, isComponentEnabled, isTagEnabled, isColorEnabled, isQRCodeEnabled) {
+var CardView = function(cardModel, issueMap, isParentDescriptionEnabled, isComponentEnabled, isTagEnabled, isColorEnabled, isQRCodeEnabled) {
 	this.cardModel = cardModel;
 	this.issueMap = issueMap;
+	this.isParentDescriptionEnabled = isParentDescriptionEnabled;
 	this.isComponentEnabled = isComponentEnabled;
 	this.isTagEnabled = isTagEnabled;
 	this.isColorEnabled = isColorEnabled;
@@ -48,7 +49,7 @@ CardView.prototype.addSummary = function (summary, parentSummary, component, tag
 	var sideElement = document.createElement("div");
 	sideElement.className = "summaryElement";
 
-	if (parentSummary != null) {
+	if (this.isParentDescriptionEnabled && parentSummary != null) {
 		summary = "<strong>" + parentSummary + "</strong><br /><br />" + summary;
 	}
 

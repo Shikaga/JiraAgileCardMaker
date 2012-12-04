@@ -21,6 +21,7 @@
 		    "tag": "TAG",
 		    "parentIssueId": "PCTCUT-444",
 		    "parentSummary": "A parent summary",
+		    "parentEnabled": true,
 		    "componentEnabled": true,
 		    "tagEnabled": true,
 		    "colorEnabled": true,
@@ -58,7 +59,7 @@
             data.issueUrl, data.issueType, data.estimate,
             data.summary, data.component, data.tag, data.parentIssueId);
 
-        var view = new CardView(ticket, parentMap, data.componentEnabled, data.tagEnabled, data.colorEnabled, data.qrCodeEnabled);
+        var view = new CardView(ticket, parentMap, data.parentEnabled, data.componentEnabled, data.tagEnabled, data.colorEnabled, data.qrCodeEnabled);
 
         // fake up a parent.
         parentMap[ticket.parentIssueId] = {summary: data.parentSummary};
