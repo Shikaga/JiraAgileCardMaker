@@ -1,4 +1,4 @@
-var CardView = function(cardModel, issueMap,	isComponentEnabled,	isTagEnabled,	isColorEnabled, isQRCodeEnabled) {
+var CardView = function(cardModel, issueMap, isComponentEnabled, isTagEnabled, isColorEnabled, isQRCodeEnabled) {
 	this.cardModel = cardModel;
 	this.issueMap = issueMap;
 	this.isComponentEnabled = isComponentEnabled;
