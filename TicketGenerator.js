@@ -1,7 +1,3 @@
-QRCodeRenderer = function (divId, url) {
-	document.getElementById(divId).innerHTML = '<img style="margin-top: 20px;" width="50px" height="50px" src="http://qr.kaywa.com/?s=8&d=http%3A%2F%2F' + url + '" alt="QRCode"/>';
-};
-
 CardRenderer = function (url, jira, estimate, summary, parent, parentSummary, component, tag, issueType, qrcode) {
 	this.url = url;
 	this.jira = jira;
@@ -12,8 +8,7 @@ CardRenderer = function (url, jira, estimate, summary, parent, parentSummary, co
 	this.component = component;
 	this.tag = tag;
 	this.issueType = issueType;
-	this.qrcode = qrcode;
-
+	this.bAddQRCode = qrcode;
 };
 
 CardRenderer.prototype.render = function (divId) {
@@ -22,11 +17,8 @@ CardRenderer.prototype.render = function (divId) {
 	this.element.className = "ticket";
 
 	this.addTitle(this.jira, this.estimate, this.parent, this.issueType);
-	this.addSideBar();
+	this.addSideBar(this.bAddQRCode);
 	this.addSummary(this.summary, this.parentSummary, this.component, this.tag);
-	if (this.qrcode) {
-		this.addQRCode(this.url);
-	}
 };
 
 CardRenderer.prototype.addTitle = function (jira, estimate, parent, issueType) {
@@ -75,7 +67,7 @@ CardRenderer.prototype.addSummary = function (summary, parentSummary, component,
 
 };
 
-CardRenderer.prototype.addSideBar = function () {
+CardRenderer.prototype.addSideBar = function (bAddQRCode) {
 	var sideElement = document.createElement("div");
 	sideElement.className = "sidebarSideElement";
 	sideElement.setAttribute("id", "sidebar");
@@ -88,8 +80,9 @@ CardRenderer.prototype.addSideBar = function () {
 	sideElement.appendChild(demoElement);
 	sideElement.appendChild(reviewElement);
 
-	if (this.qrcode) {
-		var qrcodeElement = this.createTitleElement(this.divId + "_qrcode", "QRCode", "100%", 88);
+	if (bAddQRCode) {
+		var qrcodeElement = this.createTitleElement("qrid", "QRCode", "100%", 88);
+		qrcodeElement.innerHTML = '<img style="margin-top: 20px;" width="50px" height="50px" src="http://qr.kaywa.com/?s=8&d=http%3A%2F%2F' + this.url + '" alt="QRCode"/>';
 		sideElement.appendChild(qrcodeElement);
 	}
 
@@ -105,7 +98,6 @@ CardRenderer.prototype.createTitleElement = function (id, text, width, height) {
 		titleElement.style.height = height + "px";
 	}
 
-	var multiline;
 	if (typeof text != 'number') {
 		var textArray = text.split("\n");
 		for (var i = 0; i < textArray.length; i++) {
@@ -124,8 +116,4 @@ CardRenderer.prototype.createTitleElement = function (id, text, width, height) {
 
 	titleElement.setAttribute("id", id);
 	return titleElement;
-};
-
-CardRenderer.prototype.addQRCode = function (url) {
-	new QRCodeRenderer(this.divId + "_qrcode", url);
 };
