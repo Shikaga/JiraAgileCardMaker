@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Workbench</title>
+
+    <script type="text/javascript" src="Card.js"></script>
+    <script type="text/javascript" src="CardView.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="styles/ticket.css">
+
+</head>
+<body>
+
+<div data-ticket='{
+		    "issueId": "PCTCUT-547",
+		    "issueUrl": "https://jira.caplin.com/browse/PCTCUT-547",
+		    "issueType": "Story",
+		    "estimate": 2,
+		    "summary": "A marvelous summary.",
+		    "component": "COMP",
+		    "tag": "TAG",
+		    "parentIssueId": "PCTCUT-444",
+		    "parentSummary": "A parent summary",
+		    "parentEnabled": true,
+		    "componentEnabled": true,
+		    "tagEnabled": true,
+		    "colorEnabled": true,
+		    "qrCodeEnabled": true
+		}'></div>
+
+<div data-ticket='{
+		    "issueId": "PCTCUT-523",
+		    "issueUrl": "https://jira.caplin.com/browse/PCTCUT-523",
+		    "issueType": "Story",
+		    "estimate": 2,
+		    "summary": "A marvelous summary.",
+		    "component": "COMP",
+		    "tag": "TAG",
+		    "parentIssueId": "PCTCUT-444",
+		    "parentSummary": "A parent summary",
+		    "componentEnabled": true,
+		    "tagEnabled": true
+		}'></div>
+
+
+
+<script type="text/javascript">
+
+    var elementMap = {};
+    var parentMap = {};
+    var viewMap = {};
+
+    var tickets = document.querySelectorAll('[data-ticket]');
+
+    for (var i = 0; i < tickets.length; ++i) {
+        var ticketElement = tickets[i];
+        var data = JSON.parse(ticketElement.getAttribute('data-ticket') || "{}");
+        var ticket = new Card( data.issueId,
+            data.issueUrl, data.issueType, data.estimate,
+            data.summary, data.component, data.tag, data.parentIssueId);
+
+        var view = new CardView(ticket, parentMap, data.parentEnabled, data.componentEnabled, data.tagEnabled, data.colorEnabled, data.qrCodeEnabled);
+
+        // fake up a parent.
+        parentMap[ticket.parentIssueId] = {summary: data.parentSummary};
+
+        elementMap[ticket.issueId] = ticketElement;
+        viewMap[ticket.issueId] = view;
+    }
+
+    for (var issueId in viewMap) {
+        var view = viewMap[issueId];
+        elementMap[issueId].appendChild(view.getElement());
+    }
+
+</script>
+</body>
+</html>
