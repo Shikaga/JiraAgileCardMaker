@@ -1,6 +1,7 @@
-var CardView = function(cardModel, issueMap, isParentDescriptionEnabled, isComponentEnabled, isTagEnabled, isColorEnabled, isQRCodeEnabled) {
+var CardView = function(cardModel, issueMap, checkBoxes, isParentDescriptionEnabled, isComponentEnabled, isTagEnabled, isColorEnabled, isQRCodeEnabled) {
 	this.cardModel = cardModel;
 	this.issueMap = issueMap;
+	this.checkBoxes = checkBoxes;
 	this.isParentDescriptionEnabled = isParentDescriptionEnabled;
 	this.isComponentEnabled = isComponentEnabled;
 	this.isTagEnabled = isTagEnabled;
@@ -78,18 +79,12 @@ CardView.prototype.addSideBar = function (bAddQRCode, url) {
 	var sideElement = document.createElement("div");
 	sideElement.className = "sidebar";
 
-	var docElement = this.createTitleElement("Doc");
-	docElement.className += " doc";
-
-	var demoElement = this.createTitleElement("Demo");
-	demoElement.className += " demo";
-
-	var reviewElement = this.createTitleElement("Review");
-	reviewElement.className += " review";
-
-	sideElement.appendChild(docElement);
-	sideElement.appendChild(demoElement);
-	sideElement.appendChild(reviewElement);
+	for (var i = 0; i < this.checkBoxes.length; ++i) {
+		var checkBoxName = this.checkBoxes[i];
+		var element = this.createTitleElement(checkBoxName);
+		element.className += " "+checkBoxName.replace(" ", "_");
+		sideElement.appendChild(element);
+	}
 
 	if (bAddQRCode) {
 		var qrcodeElement = this.createTitleElement("QRCode");

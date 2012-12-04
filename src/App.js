@@ -34,6 +34,7 @@ jira.App.prototype.onIssuesAvailable = function(issueIds, issueMap) {
 		var cardView = new CardView(
 			cardModel,
 			issueMap,
+			["Doc", "Demo", "Review"],
 			this.parentDescriptionEnabled,
 			this.componentEnabled,
 			this.tagEnabled,

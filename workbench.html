@@ -23,6 +23,7 @@ Style:
 		    "issueId": "PCTCUT-547",
 		    "issueUrl": "https://jira.caplin.com/browse/PCTCUT-547",
 		    "issueType": "Story",
+		    "checkBoxes": ["Doc", "Demo", "Review"],
 		    "estimate": 2,
 		    "summary": "A marvelous summary.",
 		    "component": "COMP",
@@ -40,7 +41,8 @@ Style:
 		    "issueId": "PCTCUT-523",
 		    "issueUrl": "https://jira.caplin.com/browse/PCTCUT-523",
 		    "issueType": "Story",
-		    "estimate": 2,
+		    "checkBoxes": ["Doc", "Demo", "Review"],
+            "estimate": 2,
 		    "summary": "A marvelous summary.",
 		    "component": "COMP",
 		    "tag": "TAG",
@@ -54,6 +56,7 @@ Style:
 		    "issueId": "PCTCUT-511",
 		    "issueUrl": "https://jira.caplin.com/browse/PCTCUT-511",
 		    "issueType": "Technical task",
+		    "checkBoxes": ["Rel Note", "Wiki", "Review"],
 		    "estimate": 3,
 		    "summary": "A tech task.",
 		    "component": "COMP",
@@ -80,7 +83,7 @@ Style:
             data.issueUrl, data.issueType, data.estimate,
             data.summary, data.component, data.tag, data.parentIssueId);
 
-        var view = new CardView(ticket, parentMap, data.parentEnabled, data.componentEnabled, data.tagEnabled, data.colorEnabled, data.qrCodeEnabled);
+        var view = new CardView(ticket, parentMap, data.checkBoxes, data.parentEnabled, data.componentEnabled, data.tagEnabled, data.colorEnabled, data.qrCodeEnabled);
 
         // fake up a parent.
         parentMap[ticket.parentIssueId] = {summary: data.parentSummary};

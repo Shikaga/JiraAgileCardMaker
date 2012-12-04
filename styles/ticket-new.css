@@ -82,6 +82,7 @@
 
 .sidebar .titleElement {
     width: 63px;
+    height: 60px;
     border-bottom: 2px solid black;
     border-left: 2px solid black;
     border-right: 2px solid black;
@@ -111,13 +112,7 @@
     width: 63px;
 }
 
-.doc, .demo, .review {
-    width: 100%;
-    height: 60px;
-}
-
-.qrcode {
-    width: 100%;
+.sidebar .qrcode {
     height: 82px;
 }
 
