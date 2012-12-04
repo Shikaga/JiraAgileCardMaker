@@ -13,26 +13,31 @@ var CardView = function(cardModel, issueMap, isParentDescriptionEnabled, isCompo
 CardView.prototype.getElement = function () {
 	if (this.element == null) {
 		this.element = document.createElement('div');
-		this.element.className = "ticket "+(this.isColorEnabled ? "color" : "mono");
+		this.element.className = "ticket "+(this.isColorEnabled ? "color" : "mono")+" "+this.cardModel.issueType.replace(" ", "_");
 
-		this.addTitle(this.cardModel.issueId, this.cardModel.estimate, this.cardModel.parentIssueId, this.cardModel.issueType);
+		this.addTitle(this.cardModel.issueId, this.cardModel.estimate, this.cardModel.parentIssueId);
 		this.addSideBar(this.isQRCodeEnabled, this.cardModel.issueUrl);
 		this.addSummary(this.cardModel.summary, this.cardModel.getParentSummary(this.issueMap), this.cardModel.component, this.cardModel.tag);
 	}
 	return this.element;
 };
 
-CardView.prototype.addTitle = function (jira, estimate, parent, issueType) {
+CardView.prototype.addTitle = function (jira, estimate, parent) {
 	var summary = jira;
 	if (parent !== null && parent !== undefined) {
 		summary = parent + "\n" + jira;
 	}
 	var jiraElement = this.createTitleElement(summary || "Jira", "35%");
-	jiraElement.className += " jiraElement "+issueType.replace(" ", "_");
+	jiraElement.className += " jiraElement";
 
 	var estimateElement = this.createTitleElement(estimate || "Estimate", "15%");
+	estimateElement.className += " estimate";
+
 	var actualElement = this.createTitleElement("Actual", "15%");
+	actualElement.className += " actual";
+
 	var ownerElement = this.createTitleElement("Owner", "35%");
+	ownerElement.className += " owner";
 
 	var titleElement = document.createElement("div");
 	titleElement.className = "titleRow";

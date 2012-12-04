@@ -69,32 +69,32 @@
     clear: both;
 }
 
-.color .Bug {
+.color.Bug .jiraElement {
     background-color: #c00;
     color: white;
 }
 
-.color .Documentation {
+.color.Documentation .jiraElement {
     background-color: #ffd600;
     color: white;
 }
 
-.color .Improvement {
+.color.Improvement .jiraElement {
     background-color: #090;
     color: white;
 }
 
-.color .Story {
+.color.Story .jiraElement {
     background-color: #090;
     color: white;
 }
 
-.color .Task {
+.color.Task .jiraElement {
     background-color: #bfe4ff;
     color: black;
 }
 
-.color .Technical_Task {
+.color.Technical_Task .jiraElement {
     background-color: #099;
     color: white;
 }
