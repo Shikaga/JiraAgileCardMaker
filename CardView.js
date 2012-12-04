@@ -1,4 +1,4 @@
-CardRenderer = function(cardModel, issueMap,	isComponentEnabled,	isTagEnabled,	isColorEnabled, isQRCodeEnabled) {
+var CardView = function(cardModel, issueMap,	isComponentEnabled,	isTagEnabled,	isColorEnabled, isQRCodeEnabled) {
 	this.cardModel = cardModel;
 	this.issueMap = issueMap;
 	this.isComponentEnabled = isComponentEnabled;
@@ -9,7 +9,7 @@ CardRenderer = function(cardModel, issueMap,	isComponentEnabled,	isTagEnabled,	i
 	this.element = null;
 };
 
-CardRenderer.prototype.getElement = function () {
+CardView.prototype.getElement = function () {
 	if (this.element == null) {
 		this.element = document.createElement('div');
 		this.element.className = "ticket "+(this.isColorEnabled ? "color" : "mono");
@@ -21,7 +21,7 @@ CardRenderer.prototype.getElement = function () {
 	return this.element;
 };
 
-CardRenderer.prototype.addTitle = function (jira, estimate, parent, issueType) {
+CardView.prototype.addTitle = function (jira, estimate, parent, issueType) {
 	var summary = jira;
 	if (parent !== null && parent !== undefined) {
 		summary = parent + "\n" + jira;
@@ -44,7 +44,7 @@ CardRenderer.prototype.addTitle = function (jira, estimate, parent, issueType) {
 	this.element.appendChild(titleElement);
 };
 
-CardRenderer.prototype.addSummary = function (summary, parentSummary, component, tag) {
+CardView.prototype.addSummary = function (summary, parentSummary, component, tag) {
 	var sideElement = document.createElement("div");
 	sideElement.className = "summaryElement";
 
@@ -68,7 +68,7 @@ CardRenderer.prototype.addSummary = function (summary, parentSummary, component,
 	this.element.appendChild(sideElement);
 };
 
-CardRenderer.prototype.addSideBar = function (bAddQRCode, url) {
+CardView.prototype.addSideBar = function (bAddQRCode, url) {
 	var sideElement = document.createElement("div");
 	sideElement.className = "sidebarSideElement";
 
@@ -89,7 +89,7 @@ CardRenderer.prototype.addSideBar = function (bAddQRCode, url) {
 	this.element.appendChild(sideElement);
 };
 
-CardRenderer.prototype.createTitleElement = function (text, width, height) {
+CardView.prototype.createTitleElement = function (text, width, height) {
 	var multiline;
 	var titleElement = document.createElement("span");
 	titleElement.className = "titleElement";

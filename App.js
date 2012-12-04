@@ -44,7 +44,7 @@ jira.App.prototype.renderCards = function(issues, issueMap) {
 		var jiraSummary = jira.summary;
 		var issueType = this.colorEnabled ? jira.issueType : "";
 
-		var cardView = new CardRenderer(
+		var cardView = new CardView(
 			cardModel,
 			issueMap,
 			this.componentEnabled,
