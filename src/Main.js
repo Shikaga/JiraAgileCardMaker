@@ -52,19 +52,8 @@ function getJiras() {
 	var project = document.getElementById("project").value;
 	var fixversion = document.getElementById("fixversion").value;
 	var jiraUrl = document.getElementById("jiraLocation").value;
-	if (project != "" && fixversion != "") {
-		jiraUrl = jiraUrl + "/rest/api/latest/search?jql=project=" + project + "%20AND%20fixversion=" + fixversion + "&fields=key&jsonp-callback=x&maxResults=1000";
-
-		var scriptElement = document.createElement("script");
-		scriptElement.setAttribute("type", "text/javascript");
-		scriptElement.setAttribute("src", jiraUrl);
-		document.head.appendChild(scriptElement);
-		jiraRequestedTimeout = setTimeout(function () {
-			alert("The Jira's have not loaded after 2 seconds. Are you sure you are logged in?");
-		}, 2000);
-	} else {
-		alert("You have not set the Project Name or Fix Version");
-	}
+	var jah = new JiraApiHandler(jiraUrl, this);
+	jah.requestFixVersion(project, fixversion);
 }
 
 function addCheckList(ul, name, callback, className) {
@@ -89,7 +78,7 @@ function addCheckList(ul, name, callback, className) {
 	jiraList.appendChild(li);
 }
 
-function x(e) {
+function receiveJiras(e) {
 	clearTimeout(jiraRequestedTimeout);
 	addJirasToInterface(e.issues);
 }

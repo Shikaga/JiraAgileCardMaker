@@ -28,17 +28,37 @@ JiraApiHandler.prototype.requestJiras = function(jiraIds) {
 	}
 };
 
-JiraApiHandler.prototype.requestJira = function(jiraId) {
+JiraApiHandler.prototype.requestFixVersion = function(project, fixversion) {
+	var callbackName = this.getCallbackName();
+	if (project != "" && fixversion != "") {
+			jiraUrl = this.baseUrl + "/rest/api/latest/search?jql=project=" + project + "%20AND%20fixversion=" + fixversion + "&fields=key&jsonp-callback=" + callbackName + "&maxResults=1000";
+
+			var scriptElement = document.createElement("script");
+			scriptElement.setAttribute("type", "text/javascript");
+			scriptElement.setAttribute("src", jiraUrl);
+			document.head.appendChild(scriptElement);
+			jiraRequestedTimeout = setTimeout(function () {
+				alert("The Jira's have not loaded after 2 seconds. Are you sure you are logged in?");
+			}, 2000);
+		} else {
+			alert("You have not set the Project Name or Fix Version");
+		}
+};
+
+JiraApiHandler.prototype.getCallbackName = function() {
 	var callbackName = "_jiraProcessData_";
 	while (window[callbackName]) {
 		callbackName += "X";
 	}
-
 	window[callbackName] = function(jiraData) {
 		this.processJiraData(jiraData);
 		delete window[callbackName];
 	}.bind(this);
+	return callbackName
+}
 
+JiraApiHandler.prototype.requestJira = function(jiraId) {
+	var callbackName = this.getCallbackName();
 	var jiraUrl = this.baseUrl + "/rest/api/latest/issue/" + jiraId + "?jsonp-callback="+callbackName;
 	var scriptElement = document.createElement("script");
 	scriptElement.setAttribute("type", "text/javascript");
@@ -65,11 +85,23 @@ JiraApiHandler.prototype.parentsNotLoaded = function () {
 	return parentsNotLoaded
 };
 
-JiraApiHandler.prototype.processJiraData = function(jiraData) {
-	this.callbacksReceived++;
+JiraApiHandler.prototype.processCardsData = function(jiraData) {
+	this.listener.receiveJiras(jiraData);
+};
+
+JiraApiHandler.prototype.processCardData = function(jiraData) {
+this.callbacksReceived++;
 	this.jiraMap[jiraData.key] = this.getCard(jiraData);
 	if (this.callbacksReceived == this.expectedCallbacks) {
 		this.renderCardsIfReady();
+	}
+};
+
+JiraApiHandler.prototype.processJiraData = function(jiraData) {
+	if (jiraData.issues != null) {
+		this.processCardsData(jiraData);
+	} else {
+		this.processCardData(jiraData);
 	}
 };
 
