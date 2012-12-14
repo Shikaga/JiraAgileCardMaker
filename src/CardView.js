@@ -31,7 +31,7 @@ CardView.prototype.addTitle = function (issueId, estimate, parent) {
 	var titleElement = document.createElement("div");
 	titleElement.className = "titleRow";
 
-	var issueIdElement = this.createTitleElement(issueId || "Issue Id");
+	var issueIdElement = this.createSummaryElement(issueId || "Issue Id");
 	issueIdElement.className += " issueId";
 
 	var estimateElement = this.createTitleElement(estimate || "Estimate");
@@ -119,3 +119,32 @@ CardView.prototype.createTitleElement = function (text) {
 
 	return titleElement;
 };
+
+CardView.prototype.createSummaryElement = function (text) {
+	var multiline;
+	var titleElement = document.createElement("span");
+	titleElement.className = "titleElement";
+
+	var textArray = text.split("\n");
+	for (var i = 0; i < 1; i++) {
+		var project = textArray[i].split("-")[0];
+		var number = textArray[i].split("-")[1];
+		var projectDiv = document.createElement("div");
+		projectDiv.className = "jiraProject";
+		projectDiv.innerHTML = project;
+		var numberDiv = document.createElement("div");
+		numberDiv.className = "jiraNumber";
+		numberDiv.innerHTML = number;
+		titleElement.appendChild(projectDiv);
+		titleElement.appendChild(numberDiv);
+		titleElement.appendChild(document.createElement("br"));
+	}
+	multiline = textArray.length > 1;
+
+	if (multiline) {
+		titleElement.className += " multiline";
+	}
+
+	return titleElement;
+};
+

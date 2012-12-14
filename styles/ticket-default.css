@@ -3,6 +3,14 @@
     clear: both;
 }
 
+.jiraProject {
+	line-height: 18px;
+}
+
+.jiraNumber {
+	font-size: 250%;
+}
+
 .ticket {
     margin: auto;
     float: left;
@@ -95,7 +103,6 @@
 
 .estimate {
     width: 15%;
-    line-height: 25px;
 }
 
 .actual {
