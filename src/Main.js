@@ -39,7 +39,6 @@ function initializeFields() {
 
 initializeFields();
 
-
 var pageElement = document.createElement("div");
 function getJiraCallback(e) {
 	oApp.processJiraData(e);
@@ -47,7 +46,6 @@ function getJiraCallback(e) {
 
 
 //JIRA DISPALYER
-
 function getJiras() {
 	var project = document.getElementById("project").value;
 	var fixversion = document.getElementById("fixversion").value;
@@ -56,46 +54,10 @@ function getJiras() {
 	jah.requestFixVersion(project, fixversion);
 }
 
-function addCheckList(ul, name, callback, className) {
-	var jiraList = document.getElementById(ul);
-	var li = document.createElement("li");
-
-	var checkbox = document.createElement("input");
-	checkbox.type = "checkbox";
-	checkbox.className = className;
-	checkbox.name = name;
-	checkbox.checked = true;
-
-	if (callback != null && callback != undefined) {
-		checkbox.onclick = callback;
-	}
-
-	var label = document.createTextNode(name);
-
-	li.appendChild(checkbox);
-	li.appendChild(label);
-
-	jiraList.appendChild(li);
-}
-
 function receiveJiras(e) {
 	clearTimeout(jiraRequestedTimeout);
-	addJirasToInterface(e.issues);
-}
-
-function addJirasToInterface(issues) {
-	addCheckList("jiraListUrl", "All", allJirasClicked, null);
-	for (var i = 0; i < issues.length; i++) {
-		var issue = issues[i];
-		addCheckList("jiraListUrl", issue.key, null, "jiracheck");
-	}
-}
-
-function allJirasClicked() {
-	var jiraChecklists = document.getElementsByClassName("jiracheck");
-	for (var i = 0; i < jiraChecklists.length; i++) {
-		jiraChecklists[i].checked = this.checked;
-	}
+	issueChecklistUl = document.getElementById("jiraListUrl");
+	var ich = new IssueChecklistHandler(issueChecklistUl, e.issues);
 }
 
 columnCounter = 0;
@@ -107,18 +69,6 @@ function addQRCodeDiv() {
 	QRCodeDiv.id = "qrcode_" + columnCounter++;
 	document.body.appendChild(QRCodeDiv);
 	return QRCodeDiv.id;
-}
-
-function getChecked(className) {
-	var columnsChecklists = document.getElementsByClassName(className);
-	var checklistToDisplay = [];
-	for (var i = 0; i < columnsChecklists.length; i++) {
-		var columnCheck = columnsChecklists[i];
-		if (columnCheck.checked) {
-			checklistToDisplay.push(columnCheck.name);
-		}
-	}
-	return checklistToDisplay;
 }
 
 function hideInterface() {
