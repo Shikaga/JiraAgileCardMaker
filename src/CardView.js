@@ -24,10 +24,6 @@ CardView.prototype.getElement = function () {
 };
 
 CardView.prototype.addTitle = function (issueId, estimate, parent) {
-	if (parent !== null && parent !== undefined) {
-		issueId = parent + "\n" + issueId;
-	}
-
 	var titleElement = document.createElement("div");
 	titleElement.className = "titleRow";
 
