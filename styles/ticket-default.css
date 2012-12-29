@@ -3,7 +3,7 @@
 	clear: both;
 }
 
-.jiraProject {
+.project {
 	line-height: 18px;
 }
 
@@ -42,41 +42,41 @@
 
 /* colors */
 
-.color .issueId {
+.color .key {
 
 	-webkit-print-color-adjust: exact;
 }
 
-.color.Bug .issueId {
+.color.Bug .key {
 	background-color: #c00;
 	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 	color: white;
 }
 
-.color.Documentation .issueId {
+.color.Documentation .key {
 	background-color: #ffd600;
 	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 	color: white;
 }
 
-.color.Improvement .issueId {
+.color.Improvement .key {
 	background-color: #090;
 	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 	color: white;
 }
 
-.color.Story .issueId {
+.color.Story .key {
 	background-color: #909;
 	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 	color: white;
 }
 
-.color.Task .issueId {
+.color.Task .key {
 	background-color: #bfe4ff;
 	color: black;
 }
 
-.color.Technical_task .issueId {
+.color.Technical_task .key {
 	background-color: #099;
 	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 	color: white;
@@ -99,7 +99,7 @@
 	line-height: 25px;
 }
 
-.issueId {
+.key {
 	font-size: 80%;
 	font-weight: bolder;
 	float: left;

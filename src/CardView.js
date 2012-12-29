@@ -33,7 +33,7 @@ CardView.prototype.addTitle = function (issueId, estimate, parent) {
 	titleElement.className = "titleRow";
 
 	var issueIdElement = this.createSummaryElement(issueId || "Issue Id");
-	issueIdElement.className += " issueId";
+	issueIdElement.className += " key";
 
 	var estimateElement = this.createTitleElement(estimate || "Estimate");
 	estimateElement.className += " estimate";
@@ -131,7 +131,7 @@ CardView.prototype.createSummaryElement = function (text) {
 		var project = textArray[i].split("-")[0];
 		var number = textArray[i].split("-")[1];
 		var projectDiv = document.createElement("div");
-		projectDiv.className = "jiraProject";
+		projectDiv.className = "project";
 		projectDiv.innerHTML = project;
 		var numberDiv = document.createElement("div");
 		numberDiv.className = "jiraNumber";
