@@ -32,8 +32,7 @@ jiraId = getParameter("jira");
 
 function drawExampleCard() {
 
-
-	data = {
+	var card = {
 		"issueId": "PCTCUT-511",
 		"issueUrl": "https://jira.caplin.com/browse/PCTCUT-511",
 		"issueType": "Technical task",
@@ -42,24 +41,45 @@ function drawExampleCard() {
 		"summary": "A tech task.",
 		"component": "COMP",
 		"tag": "TAG",
-		"componentEnabled": true,
-		"tagEnabled": true,
+		"parentIssueId": "PCTCUT-523",
 		"colorEnabled": true,
 		"qrCodeEnabled": true
 	}
 
+	var parentCard = {
+			"issueId": "PCTCUT-523",
+			"issueUrl": "https://jira.caplin.com/browse/PCTCUT-523",
+			"issueType": "Story",
+			"checkBoxes": ["Doc", "Demo", "Review"],
+			"estimate": 2,
+			"summary": "A marvelous summary.",
+			"component": "COMP",
+			"tag": "TAG",
+			"parentSummary": "A parent summary",
+			"componentEnabled": true,
+			"tagEnabled": true
+		};
+
 	var parentMap = {};
-	var ticket = new Card( data.issueId,
-		data.issueUrl, data.issueType, data.estimate,
-		data.summary, data.component, data.tag, data.parentIssueId);
+	var ticket = new Card( card.issueId,
+		card.issueUrl, card.issueType, card.estimate,
+		card.summary, card.component, card.tag, card.parentIssueId);
 
-	parentMap[data.issueId] = data;
+	parentMap[card.issueId] = card;
+	parentMap[parentCard.issueId] = parentCard;
 
-	var view = new CardView(ticket, parentMap, data.checkBoxes, data.parentEnabled, data.componentEnabled, data.tagEnabled, data.colorEnabled, data.qrCodeEnabled);
+	var view = new CardView(ticket, parentMap, card.checkBoxes,
+		document.getElementById("parentdescription").checked,
+		document.getElementById("componentdescription").checked,
+		document.getElementById("tagdescription").checked,
+		document.getElementById("color").checked,
+		document.getElementById("qrcode").checked);
 
+	document.getElementById("example-card").innerHTML = "";
 	document.getElementById("example-card").appendChild(view.getElement());
 }
 
+drawExampleCard();
 
 function initializeFields() {
 	var project = getParameter("project");

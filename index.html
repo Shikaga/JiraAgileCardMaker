@@ -22,12 +22,12 @@
         <div id="optionsPanel">
             <ul>
                 <li>Jira Location : <input id="jiraLocation" value="https://jira.springsource.org" /></li>
-                <li>Color Enabled: <input checked=true type="checkbox" id="color" /></li>
-                <li>QR Code Enabled: <input checked=true type="checkbox" id="qrcode" /></li>
-                <li>Show Parent Description: <input checked=true type="checkbox" id="parentdescription" /></li>
-                <li>Show Component Description: <input checked=true type="checkbox" id="componentdescription" />
+                <li>Color Enabled: <input checked=true type="checkbox" id="color" onclick="drawExampleCard()" /></li>
+                <li>QR Code Enabled: <input checked=true type="checkbox" id="qrcode" onclick="drawExampleCard()" /></li>
+                <li>Show Parent Description: <input checked=true type="checkbox" id="parentdescription" onclick="drawExampleCard()"/></li>
+                <li>Show Component Description: <input checked=true type="checkbox" id="componentdescription" onclick="drawExampleCard()" />
                 </li>
-                <li>Show Tag Description: <input checked=true type="checkbox" id="tagdescription" /></li>
+                <li>Show Tag Description: <input checked=true type="checkbox" id="tagdescription" onclick="drawExampleCard()"/></li>
             </ul>
         </div>
         <div>
