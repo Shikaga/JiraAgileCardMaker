@@ -18,10 +18,15 @@ CardView.prototype.getElement = function () {
 
 		this.addTitle(this.cardModel.issueId, this.cardModel.estimate, this.cardModel.parentIssueId);
 		this.addSideBar(this.isQRCodeEnabled, this.cardModel.issueUrl);
-		this.addSummary(this.cardModel.summary, this.cardModel.getParentSummary(this.issueMap), this.cardModel.component, this.cardModel.tag);
+		this.addSummary(this.cardModel.summary, this.getCardParentSummary(), this.cardModel.component, this.cardModel.tag);
 	}
 	return this.element;
 };
+
+CardView.prototype.getCardParentSummary = function() {
+	var parentIssue = this.issueMap[this.cardModel.parentIssueId];
+	return parentIssue != null ? parentIssue.summary : null;
+}
 
 CardView.prototype.addTitle = function (issueId, estimate, parent) {
 	var titleElement = document.createElement("div");

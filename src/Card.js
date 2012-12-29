@@ -10,8 +10,3 @@ var Card = function(issueId, issueUrl, issueType, estimate, summary, component, 
 	this.tag = tag;
 	this.parentIssueId = parentIssueId;
 };
-
-Card.prototype.getParentSummary = function(issueMap) {
-	var parentIssue = issueMap[this.parentIssueId];
-	return parentIssue != null ? parentIssue.summary : null;
-};
