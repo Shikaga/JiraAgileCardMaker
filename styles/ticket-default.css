@@ -43,27 +43,31 @@
 /* colors */
 
 .color .issueId {
-	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+
 	-webkit-print-color-adjust: exact;
 }
 
 .color.Bug .issueId {
 	background-color: #c00;
+	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 	color: white;
 }
 
 .color.Documentation .issueId {
 	background-color: #ffd600;
+	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 	color: white;
 }
 
 .color.Improvement .issueId {
 	background-color: #090;
+	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 	color: white;
 }
 
 .color.Story .issueId {
 	background-color: #909;
+	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 	color: white;
 }
 
@@ -74,6 +78,7 @@
 
 .color.Technical_task .issueId {
 	background-color: #099;
+	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 	color: white;
 }
 
