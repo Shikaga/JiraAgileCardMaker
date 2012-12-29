@@ -1,62 +1,62 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Jira Ticket Generator</title>
-    <meta charset="utf-8">
-    <script type="text/javascript" src="src/CardView.js"></script>
-    <script type="text/javascript" src="src/App.js"></script>
-    <script type="text/javascript" src="src/JiraApiHandler.js"></script>
+	<title>Jira Ticket Generator</title>
+	<meta charset="utf-8">
+	<script type="text/javascript" src="src/CardView.js"></script>
+	<script type="text/javascript" src="src/App.js"></script>
+	<script type="text/javascript" src="src/JiraApiHandler.js"></script>
 	<script type="text/javascript" src="src/Card.js"></script>
 	<script type="text/javascript" src="src/IssueChecklistHandler.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="styles/style.css">
-    <link rel="stylesheet" type="text/css" href="styles/ticket-default.css">
+	<link rel="stylesheet" type="text/css" href="styles/style.css">
+	<link rel="stylesheet" type="text/css" href="styles/ticket-default.css">
 </head>
 <body>
 <div id="tickets"></div>
 <div>
 
-    <div style="min-height:100%" id="ticketManager">
-        <h1>Jira Ticket Generator</h1>
+	<div style="min-height:100%" id="ticketManager">
+		<h1>Jira Ticket Generator</h1>
 
-        <div id="optionsPanel">
-            <ul>
-                <li>Jira Location : <input id="jiraLocation" value="https://jira.springsource.org" /></li>
-                <li>Color Enabled: <input checked=true type="checkbox" id="color" onclick="drawExampleCard()" /></li>
-                <li>QR Code Enabled: <input checked=true type="checkbox" id="qrcode" onclick="drawExampleCard()" /></li>
-                <li>Show Parent Description: <input checked=true type="checkbox" id="parentdescription" onclick="drawExampleCard()"/></li>
-                <li>Show Component Description: <input checked=true type="checkbox" id="componentdescription" onclick="drawExampleCard()" />
-                </li>
-                <li>Show Tag Description: <input checked=true type="checkbox" id="tagdescription" onclick="drawExampleCard()"/></li>
-            </ul>
-        </div>
-        <div>
-            <h2>Project</h2>
-            <ul>
-                <li>Wizard : <input id="wizard" value="https://jira.springsource.org/browse/BATCH/fixforversion/11179" style="width: 400px" />
-                    <button onclick="wizard();">Generate</button>
-                </li>
-                <li>Project Name : <input id="project" /></li>
-                <li>Fix Version : <input id="fixversion" /></li>
-            </ul>
-            <button onclick="getJiras()">Fetch!</button>
-        </div>
-        <div style="float:left; width: 50%">
-            <h1>Jira List</h1>
+		<div id="optionsPanel">
+			<ul>
+				<li>Jira Location : <input id="jiraLocation" value="https://jira.springsource.org" /></li>
+				<li>Color Enabled: <input checked=true type="checkbox" id="color" onclick="drawExampleCard()" /></li>
+				<li>QR Code Enabled: <input checked=true type="checkbox" id="qrcode" onclick="drawExampleCard()" /></li>
+				<li>Show Parent Description: <input checked=true type="checkbox" id="parentdescription" onclick="drawExampleCard()"/></li>
+				<li>Show Component Description: <input checked=true type="checkbox" id="componentdescription" onclick="drawExampleCard()" />
+				</li>
+				<li>Show Tag Description: <input checked=true type="checkbox" id="tagdescription" onclick="drawExampleCard()"/></li>
+			</ul>
+		</div>
+		<div>
+			<h2>Project</h2>
+			<ul>
+				<li>Wizard : <input id="wizard" value="https://jira.springsource.org/browse/BATCH/fixforversion/11179" style="width: 400px" />
+					<button onclick="wizard();">Generate</button>
+				</li>
+				<li>Project Name : <input id="project" /></li>
+				<li>Fix Version : <input id="fixversion" /></li>
+			</ul>
+			<button onclick="getJiras()">Fetch!</button>
+		</div>
+		<div style="float:left; width: 50%">
+			<h1>Jira List</h1>
 
-            <div class="list" id="jiraList">
-                <ul id="jiraListUrl">
+			<div class="list" id="jiraList">
+				<ul id="jiraListUrl">
 
-                </ul>
-            </div>
-            <button onClick="generateTickets()">Generate!</button>
-        </div>
-        <div style="float:left; width: 50%">
-            <div id = "example-card">
-            </div>
-        </div>
-        <div style="clear:both"></div>
-    </div>
+				</ul>
+			</div>
+			<button onClick="generateTickets()">Generate!</button>
+		</div>
+		<div style="float:left; width: 50%">
+			<div id = "example-card">
+			</div>
+		</div>
+		<div style="clear:both"></div>
+	</div>
 </div>
 </body>
 <script type="text/javascript" src="src/Main.js"></script>

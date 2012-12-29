@@ -1,25 +1,25 @@
 html, body {
-    background-color: white;
-    margin: 0;
+	background-color: white;
+	margin: 0;
 }
 
 @page {
-    margin: 0;
+	margin: 0;
 }
 
 #ticketManager {
-    margin: 10px;
-    padding: 10px;
-    background-color: #DDD;
+	margin: 10px;
+	padding: 10px;
+	background-color: #DDD;
 }
 
 #optionsPanel {
-    float: right;
+	float: right;
 }
 
 .list {
-    height: 300px;
-    overflow: auto;
-    background-color: #BBB;
-    margin: 5%;
+	height: 300px;
+	overflow: auto;
+	background-color: #BBB;
+	margin: 5%;
 }
