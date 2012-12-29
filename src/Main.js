@@ -30,6 +30,37 @@ function wizard() {
 
 jiraId = getParameter("jira");
 
+function drawExampleCard() {
+
+
+	data = {
+		"issueId": "PCTCUT-511",
+		"issueUrl": "https://jira.caplin.com/browse/PCTCUT-511",
+		"issueType": "Technical task",
+		"checkBoxes": ["Rel Note", "Wiki", "Review"],
+		"estimate": 3,
+		"summary": "A tech task.",
+		"component": "COMP",
+		"tag": "TAG",
+		"componentEnabled": true,
+		"tagEnabled": true,
+		"colorEnabled": true,
+		"qrCodeEnabled": true
+	}
+
+	var parentMap = {};
+	var ticket = new Card( data.issueId,
+		data.issueUrl, data.issueType, data.estimate,
+		data.summary, data.component, data.tag, data.parentIssueId);
+
+	parentMap[data.issueId] = data;
+
+	var view = new CardView(ticket, parentMap, data.checkBoxes, data.parentEnabled, data.componentEnabled, data.tagEnabled, data.colorEnabled, data.qrCodeEnabled);
+
+	document.getElementById("example-card").appendChild(view.getElement());
+}
+
+
 function initializeFields() {
 	var project = getParameter("project");
 	var fixversion = getParameter("fixversion");
