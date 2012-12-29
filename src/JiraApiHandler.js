@@ -86,7 +86,7 @@ JiraApiHandler.prototype.parentsNotLoaded = function () {
 };
 
 JiraApiHandler.prototype.processCardsData = function(jiraData) {
-	this.listener.receiveJiras(jiraData);
+	this.listener.receiveJiraCallback(jiraData);
 };
 
 JiraApiHandler.prototype.processCardData = function(jiraData) {
