@@ -136,7 +136,7 @@ function setWizardCookie() {
 }
 
 function setConfigFromBooleanCookie(elementId, cookie, def) {
-	var string = Cookies.get("colorEnabled");
+	var string = Cookies.get(cookie);
 	var element = document.getElementById(elementId);
 	if (string == "true") {
 		element.checked = true;
