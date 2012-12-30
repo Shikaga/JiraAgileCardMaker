@@ -98,7 +98,6 @@ CardView.prototype.addSideBar = function (bAddQRCode, url) {
 };
 
 CardView.prototype.createTitleElement = function (text) {
-	var multiline;
 	var titleElement = document.createElement("span");
 	titleElement.className = "titleElement";
 
@@ -106,16 +105,9 @@ CardView.prototype.createTitleElement = function (text) {
 		var textArray = text.split("\n");
 		for (var i = 0; i < textArray.length; i++) {
 			titleElement.appendChild(document.createTextNode(textArray[i]));
-			titleElement.appendChild(document.createElement("br"));
 		}
-		multiline = textArray.length > 1;
 	} else {
 		titleElement.appendChild(document.createTextNode(text));
-		multiline = true;
-	}
-
-	if (multiline) {
-		titleElement.className += " multiline";
 	}
 
 	return titleElement;
@@ -134,7 +126,7 @@ CardView.prototype.createSummaryElement = function (text) {
 		projectDiv.className = "project";
 		projectDiv.innerHTML = project;
 		var numberDiv = document.createElement("div");
-		numberDiv.className = "jiraNumber";
+		numberDiv.className = "number";
 		numberDiv.innerHTML = number;
 		titleElement.appendChild(projectDiv);
 		titleElement.appendChild(numberDiv);
