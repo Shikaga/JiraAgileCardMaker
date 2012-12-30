@@ -137,14 +137,14 @@ function setWizardCookie() {
 
 function setConfigFromCookies() {
 	document.getElementById("jiraLocation").value = Cookies.get("jiraLocation") || "https://jira.springsource.org";
-	document.getElementById("color").value = Cookies.get("colorEnabled") || true;
-	document.getElementById("qrcode").value = Cookies.get("qrCodeEnabled") || true;
-	document.getElementById("parentdescription").value = Cookies.get("parentDescriptionEnabled") || true;
-	document.getElementById("componentdescription").value = Cookies.get("componentEnabled") || true;
-	document.getElementById("tagdescription").value = Cookies.get("tagEnabled") || true;
-	document.getElementById("project").value = Cookies.get("projectName") || true;
-	document.getElementById("fixversion").value = Cookies.get("fixVersion") || true;
-	document.getElementById("wizard").value = Cookies.get("wizard") || true;
+	document.getElementById("color").value = Cookies.get("colorEnabled") == "true" || true;
+	document.getElementById("qrcode").value = Cookies.get("qrCodeEnabled")  == "true" || true;
+	document.getElementById("parentdescription").value = Cookies.get("parentDescriptionEnabled")  == "true" || true;
+	document.getElementById("componentdescription").value = Cookies.get("componentEnabled")  == "true" || true;
+	document.getElementById("tagdescription").value = Cookies.get("tagEnabled")  == "true" || false;
+	document.getElementById("project").value = Cookies.get("projectName") || "";
+	document.getElementById("fixversion").value = Cookies.get("fixVersion") || ""
+	document.getElementById("wizard").value = Cookies.get("wizard") || "https://jira.springsource.org/browse/BATCH/fixforversion/11327";
 
 }
 
