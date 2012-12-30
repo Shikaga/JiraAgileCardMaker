@@ -101,6 +101,22 @@ test( "Component is shown in SummaryElement>Component if configured", function()
 	ok("COMP" == div.innerHTML, "Passed!" );
 });
 
+test( "Tag is not shown by default", function() {
+	var view = new CardView(card1, parentMap, ["Doc", "Demo", "Review"],
+		false, false, false, false, false);
+	var cardElement = view.getElement();
+	var div = getChildElementByClassNames(cardElement, ["summaryElement", "tag"]);
+	ok(null == div, "Passed!" );
+});
+
+test( "Tag is shown in Tag if configured", function() {
+	var view = new CardView(card1, parentMap, ["Doc", "Demo", "Review"],
+		false, false, true, false, false);
+	var cardElement = view.getElement();
+	console.log(cardElement);
+	var div = getChildElementByClassNames(cardElement, ["tag"]);
+	ok("TAG" == div.innerHTML, "Passed!" );
+});
 
 function getChildElementByClassName(element, className) {
 	for (var i = 0; i < element.childNodes.length; i++) {
