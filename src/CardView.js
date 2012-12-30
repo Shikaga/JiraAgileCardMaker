@@ -56,15 +56,15 @@ CardView.prototype.addSummary = function (summary, parentSummary, component, tag
 	var sideElement = document.createElement("div");
 	sideElement.className = "summaryElement";
 
-	if (this.isParentDescriptionEnabled && parentSummary != null) {
-		summary = "<span class='parentSummary'>" + parentSummary + "</span>" + summary;
-	}
-
 	if (this.isComponentEnabled && component != null) {
-		summary = "<span class='component'>" + component + "</span>" + summary;
+		sideElement.innerHTML += "<span class='component'>" + component + "</span>";
 	}
 
-	sideElement.innerHTML = summary;
+	if (this.isParentDescriptionEnabled && parentSummary != null) {
+		sideElement.innerHTML += "<span class='parentSummary'>" + parentSummary + "</span>"
+	}
+
+	sideElement.innerHTML += "<span class='summary'>" + summary + "</span>";
 
 	if (this.isTagEnabled) {
 		var tagElement = document.createElement("div");
