@@ -24,6 +24,7 @@ function wizard() {
 	var fixversionStart = url.indexOf("fixforversion/");
 
 	if (projectStart != -1 && fixversionStart != -1) {
+		setWizardCookie();
 		project = url.substring(projectStart + 7, fixversionStart - 1);
 		fixversion = url.substring(fixversionStart + 14);
 		document.getElementById("project").value = project;
@@ -54,6 +55,7 @@ function receiveJiraCallback(e) {
 }
 
 function generateTickets() {
+	setCookies();
 	var jiraUrl = document.getElementById("jiraLocation").value;
 	var jiraChecklists = document.getElementsByClassName("jiracheck");
 	var checklistToDisplay = getChecked("jiracheck");
@@ -116,6 +118,24 @@ function drawExampleCard() {
 
 	document.getElementById("example-card").innerHTML = "";
 	document.getElementById("example-card").appendChild(view.getElement());
+}
+
+function setCookies() {
+	Cookies.set("jiraLocation", document.getElementById("jiraLocation").value);
+	Cookies.set("colorEnabled", document.getElementById("color").checked);
+	Cookies.set("qrCodeEnabled", document.getElementById("qrcode").checked);
+	Cookies.set("parentDescriptionEnabled", document.getElementById("parentdescription").checked);
+	Cookies.set("componentEnabled", document.getElementById("componentdescription").checked);
+	Cookies.set("tagEnabled", document.getElementById("tagdescription").checked);
+	Cookies.set("projectName", document.getElementById("project").value);
+	Cookies.set("fixVersion", document.getElementById("fixversion").value);
+
+	document.getElementById("project").value = project;
+	document.getElementById("fixversion").value = fixversion;
+}
+
+function setWizardCookie() {
+	Cookies.set("wizard", document.getElementById("wizard").value);
 }
 
 function hideInterface() {
