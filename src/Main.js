@@ -41,6 +41,7 @@ function getJiraCallback(e) {
 }
 
 function getJiras() {
+	setCookies();
 	var project = document.getElementById("project").value;
 	var fixversion = document.getElementById("fixversion").value;
 	var jiraUrl = document.getElementById("jiraLocation").value;
@@ -55,7 +56,6 @@ function receiveJiraCallback(e) {
 }
 
 function generateTickets() {
-	setCookies();
 	var jiraUrl = document.getElementById("jiraLocation").value;
 	var jiraChecklists = document.getElementsByClassName("jiracheck");
 	var checklistToDisplay = getChecked("jiracheck");
