@@ -66,8 +66,9 @@ function generateTickets() {
 	var parentDescription = document.getElementById("parentdescription").checked;
 	var componentDescription = document.getElementById("componentdescription").checked;
 	var tagDescription = document.getElementById("tagdescription").checked;
+	var businessValue = document.getElementById("businessvalue").checked;
 
-	oApp = new jira.App(document.getElementById('tickets'), jiraUrl, document.getElementById("fixversion").value, color, qrcode, parentDescription, componentDescription, tagDescription);
+	oApp = new jira.App(document.getElementById('tickets'), jiraUrl, document.getElementById("fixversion").value, color, qrcode, parentDescription, componentDescription, tagDescription, businessValue);
 	oApp.requestIssues(checklistToDisplay);
 }
 
@@ -84,7 +85,8 @@ function drawExampleCard() {
 		"tag": "TAG",
 		"parentIssueId": "PCTCUT-523",
 		"colorEnabled": true,
-		"qrCodeEnabled": true
+		"qrCodeEnabled": true,
+		"businessValue": "6"
 	}
 
 	var parentCard = {
@@ -98,13 +100,12 @@ function drawExampleCard() {
 		"tag": "TAG",
 		"parentSummary": "A parent summary",
 		"componentEnabled": true,
-		"tagEnabled": true
+		"tagEnabled": true,
+		"businessvalue":6
 	};
 
 	var parentMap = {};
-	var ticket = new Card( card.issueId,
-		card.issueUrl, card.issueType, card.estimate,
-		card.summary, card.component, card.tag, card.parentIssueId);
+	var ticket = new Card(card.issueId, card.issueUrl, card.issueType, card.estimate, card.summary, card.component, card.tag, card.businessvalue, card.parentIssueId);
 
 	parentMap[card.issueId] = card;
 	parentMap[parentCard.issueId] = parentCard;
@@ -114,7 +115,8 @@ function drawExampleCard() {
 		document.getElementById("componentdescription").checked,
 		document.getElementById("tagdescription").checked,
 		document.getElementById("color").checked,
-		document.getElementById("qrcode").checked);
+		document.getElementById("qrcode").checked,
+		document.getElementById("businessvalue").checked);
 
 	document.getElementById("example-card").innerHTML = "";
 	document.getElementById("example-card").appendChild(view.getElement());
@@ -122,11 +124,14 @@ function drawExampleCard() {
 
 function setCookies() {
 	Cookies.set("jiraLocation", document.getElementById("jiraLocation").value);
+
 	Cookies.set("colorEnabled", document.getElementById("color").checked);
 	Cookies.set("qrCodeEnabled", document.getElementById("qrcode").checked);
 	Cookies.set("parentDescriptionEnabled", document.getElementById("parentdescription").checked);
 	Cookies.set("componentEnabled", document.getElementById("componentdescription").checked);
 	Cookies.set("tagEnabled", document.getElementById("tagdescription").checked);
+	Cookies.set("businessValueEnabled", document.getElementById("businessvalue").value);
+
 	Cookies.set("projectName", document.getElementById("project").value);
 	Cookies.set("fixVersion", document.getElementById("fixversion").value);
 }
@@ -154,6 +159,7 @@ function setConfigFromCookies() {
 	setConfigFromBooleanCookie("parentdescription", "parentDescriptionEnabled", true);
 	setConfigFromBooleanCookie("componentdescription", "componentEnabled", true);
 	setConfigFromBooleanCookie("tagdescription", "tagEnabled", false);
+	setConfigFromBooleanCookie("businessvalue", "businessValueEnabled", false);
 	document.getElementById("project").value = Cookies.get("projectName") || "";
 	document.getElementById("fixversion").value = Cookies.get("fixVersion") || ""
 	document.getElementById("wizard").value = Cookies.get("wizard") || "https://jira.springsource.org/browse/BATCH/fixforversion/11327";

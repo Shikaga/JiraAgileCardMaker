@@ -1,12 +1,6 @@
-var card1 = new Card(
-	"PCTCUT-511", "https://jira.caplin.com/browse/PCTCUT-511",
-	"Technical task", 3, "A tech task.",
-	"COMP", "TAG", "PCTCUT-523");
+var card1 = new Card("PCTCUT-511", "https://jira.caplin.com/browse/PCTCUT-511", "Technical task", 3, "A tech task.", "COMP", "TAG", 6, "PCTCUT-523");
 
-var card2 = new Card(
-	"PCTCUT-523", "https://jira.caplin.com/browse/PCTCUT-523",
-	"Technical task", null, "A parent task.",
-	"COMP", "TAG", null);
+var card2 = new Card("PCTCUT-523", "https://jira.caplin.com/browse/PCTCUT-523", "Technical task", null, "A parent task.", "COMP", "TAG", 6, null);
 
 var parentMap = {};
 parentMap[card1.issueId] = card1;

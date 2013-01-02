@@ -1,4 +1,4 @@
-var CardView = function(cardModel, issueMap, checkBoxes, isParentDescriptionEnabled, isComponentEnabled, isTagEnabled, isColorEnabled, isQRCodeEnabled) {
+var CardView = function(cardModel, issueMap, checkBoxes, isParentDescriptionEnabled, isComponentEnabled, isTagEnabled, isColorEnabled, isQRCodeEnabled, isBusinessValueEnabled) {
 	this.cardModel = cardModel;
 	this.issueMap = issueMap;
 	this.checkBoxes = checkBoxes;
@@ -7,6 +7,7 @@ var CardView = function(cardModel, issueMap, checkBoxes, isParentDescriptionEnab
 	this.isTagEnabled = isTagEnabled;
 	this.isColorEnabled = isColorEnabled;
 	this.isQRCodeEnabled = isQRCodeEnabled;
+	this.isBusinessValueEnabled = isBusinessValueEnabled;
 
 	this.element = null;
 };
@@ -18,7 +19,7 @@ CardView.prototype.getElement = function () {
 
 		this.addTitle(this.cardModel.issueId, this.cardModel.estimate, this.cardModel.parentIssueId);
 		this.addSideBar(this.isQRCodeEnabled, this.cardModel.issueUrl);
-		this.addSummary(this.cardModel.summary, this.getCardParentSummary(), this.cardModel.component, this.cardModel.tag);
+		this.addSummary(this.cardModel.summary, this.getCardParentSummary(), this.cardModel.component, this.cardModel.tag, this.cardModel.businessValue);
 	}
 	return this.element;
 };
@@ -52,7 +53,7 @@ CardView.prototype.addTitle = function (issueId, estimate, parent) {
 	this.element.appendChild(titleElement);
 };
 
-CardView.prototype.addSummary = function (summary, parentSummary, component, tag) {
+CardView.prototype.addSummary = function (summary, parentSummary, component, tag, businessvalue) {
 	var sideElement = document.createElement("div");
 	sideElement.className = "summaryElement";
 
@@ -70,6 +71,13 @@ CardView.prototype.addSummary = function (summary, parentSummary, component, tag
 		var tagElement = document.createElement("div");
 		tagElement.className = "tag";
 		tagElement.innerHTML = tag;
+		this.element.appendChild(tagElement);
+	}
+
+	if (this.isBusinessValueEnabled) {
+		var tagElement = document.createElement("div");
+		tagElement.className = "businessvalue cat" + businessvalue;
+		tagElement.innerHTML = "";
 		this.element.appendChild(tagElement);
 	}
 

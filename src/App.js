@@ -8,7 +8,7 @@
 
 var jira = {};
 
-jira.App = function (element, baseUrl, fixVersion, color, qrcode, parentEnabled, componentEnabled, tagEnabled) {
+jira.App = function (element, baseUrl, fixVersion, color, qrcode, parentEnabled, componentEnabled, tagEnabled, businessValue) {
 	this.baseUrl = baseUrl;
 	this.element = element;
 	this.colorEnabled = color;
@@ -16,6 +16,7 @@ jira.App = function (element, baseUrl, fixVersion, color, qrcode, parentEnabled,
 	this.parentDescriptionEnabled = parentEnabled;
 	this.componentEnabled = componentEnabled;
 	this.tagEnabled = tagEnabled;
+	this.businessValue = businessValue;
 	this.cardsAdded = 0;
 	this.currentPage = null;
 };
@@ -39,7 +40,8 @@ jira.App.prototype.onIssuesAvailable = function(issueIds, issueMap) {
 			this.componentEnabled,
 			this.tagEnabled,
 			this.colorEnabled,
-			this.qrcodeEnabled
+			this.qrcodeEnabled,
+			this.businessValue
 		);
 
 		this.addTicket(cardView);

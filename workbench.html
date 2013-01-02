@@ -79,9 +79,7 @@ Style:
 	for (var i = 0; i < tickets.length; ++i) {
 		var ticketElement = tickets[i];
 		var data = JSON.parse(ticketElement.getAttribute('data-ticket') || "{}");
-		var ticket = new Card( card.issueId,
-			card.issueUrl, card.issueType, card.estimate,
-			card.summary, card.component, card.tag, card.parentIssueId);
+		var ticket = new Card(card.issueId, card.issueUrl, card.issueType, card.estimate, card.summary, card.component, card.tag, 6, card.parentIssueId);
 
 		var view = new CardView(ticket, parentMap, card.checkBoxes, card.parentEnabled, card.componentEnabled, card.tagEnabled, card.colorEnabled, card.qrCodeEnabled);
 

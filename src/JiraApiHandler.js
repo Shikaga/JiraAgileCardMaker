@@ -115,7 +115,6 @@ JiraApiHandler.prototype.getCard = function (jira) {
 		}
 		componentString = componentsString.substring(0, componentsString.length - 1) + ":";
 	}
-
 	var card = new Card(jira.key,
 		this.baseUrl + "/browse/" + jira.key,
 		jira.fields.issuetype.name,
@@ -123,6 +122,7 @@ JiraApiHandler.prototype.getCard = function (jira) {
 		jira.fields.summary,
 		componentString,
 		jira.fields["customfield_10151"],
+		jira.fields["customfield_10261"],
 		jira.fields.parent ? jira.fields.parent.key : null
 	);
 	return card;

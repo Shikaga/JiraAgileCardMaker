@@ -158,3 +158,37 @@
 	font-size: 23px;
 	position: absolute;
 }
+
+.businessvalue {
+	width: 20px;
+	height: 20px;
+	margin-top: 200px;
+	margin-left: 194px;
+	padding: 1em;
+	font-size: 23px;
+	position: absolute;
+}
+
+.businessvalue.cat1 {
+	background-color: #abda0a;
+}
+
+.businessvalue.cat2 {
+	background-color: #dad99d;
+}
+
+.businessvalue.cat3 {
+	background-color: #f36d1a;
+}
+
+.businessvalue.cat4 {
+	background-color: #18a7da;
+}
+
+.businessvalue.cat5 {
+	background-color: #19da12;
+}
+
+.businessvalue.cat6 {
+	background-color:#DA205B;
+}
