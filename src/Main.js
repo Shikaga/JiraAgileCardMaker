@@ -86,7 +86,7 @@ function drawExampleCard() {
 		"parentIssueId": "PCTCUT-523",
 		"colorEnabled": true,
 		"qrCodeEnabled": true,
-		"businessValue": "6"
+		"businessvalue": "6"
 	}
 
 	var parentCard = {
