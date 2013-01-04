@@ -167,6 +167,7 @@
 	padding: 1em;
 	font-size: 23px;
 	position: absolute;
+	-webkit-print-color-adjust: exact;
 }
 
 .businessvalue.cat1 {
