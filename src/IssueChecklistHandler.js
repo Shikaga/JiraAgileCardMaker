@@ -30,7 +30,7 @@ IssueChecklistHandler.prototype.addJirasToInterface = function(issues) {
 	this.addCheckList("jiraListUrl", "All", this.allJirasClicked, null);
 	for (var i = 0; i < issues.length; i++) {
 		var issue = issues[i];
-		this.addCheckList(this.issueChecklistUl, issue.key, null, "jiracheck");
+		this.addCheckList(this.issueChecklistUl, issue, null, "jiracheck");
 	}
 }
 

@@ -18,7 +18,14 @@ function getParameter(l_sName) {
 	return ((l_oMatch == null) ? null : l_oMatch[1]);
 }
 
+function rapidWizard() {
+	var url = document.getElementById("rapidWizard").value;
+	var sprint = RapidBoardHandler.getSprintIfFromURL(url);
+	document.getElementById("rapidSprint").value = sprint;
+}
+
 function wizard() {
+	debugger;
 	var url = document.getElementById("wizard").value;
 	var projectStart = url.indexOf("browse/");
 	var fixversionStart = url.indexOf("fixforversion/");
@@ -49,10 +56,17 @@ function getJiras() {
 	jah.requestFixVersion(project, fixversion);
 }
 
-function receiveJiraCallback(e) {
+function getRapidBoardJiras() {
+	var sprint = document.getElementById("rapidSprint").value;
+	var jiraUrl = document.getElementById("jiraLocation").value;
+	var jah = new JiraApiHandler(jiraUrl, this);
+	jah.requestRapidBoard(sprint);
+}
+
+function receiveJiraCallback(issues) {
 	clearTimeout(jiraRequestedTimeout);
 	issueChecklistUl = document.getElementById("jiraListUrl");
-	var ich = new IssueChecklistHandler(issueChecklistUl, e.issues);
+	var ich = new IssueChecklistHandler(issueChecklistUl, issues);
 }
 
 function generateTickets() {
