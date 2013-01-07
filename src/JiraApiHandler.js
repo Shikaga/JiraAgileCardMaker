@@ -32,12 +32,12 @@ JiraApiHandler.prototype.requestRapidBoard = function(sprintId) {
 
 //https://jira.caplin.com/rest/greenhopper/latest/sprint/10/issues
 	var callbackName = this.getCallbackName();
-	jiraUrl = this.baseUrl + "/rest/greenhopper/latest/sprint/" + sprintId + "/issues?jsonp-callback=" + callbackName;
+	//https://jira.caplin.com/rest/greenhopper/latest/sprints/11
+	jiraUrl = this.baseUrl + "/rest/greenhopper/latest/sprints/" + sprintId + "?jsonp-callback=" + callbackName;
 	var scriptElement = document.createElement("script");
 	scriptElement.setAttribute("type", "text/javascript");
 	scriptElement.setAttribute("src", jiraUrl);
 	document.head.appendChild(scriptElement);
-
 }
 
 JiraApiHandler.prototype.requestFixVersion = function(project, fixversion) {
@@ -105,10 +105,20 @@ JiraApiHandler.prototype.processCardsData = function(jiraData) {
 	this.listener.receiveJiraCallback(jiraKeys);
 };
 
-JiraApiHandler.prototype.processRapidBoard = function(jiraData) {
+JiraApiHandler.prototype.processRapidBoardSprints = function(jiraData) {
+	var callbackName = this.getCallbackName();
+	var sprintId = RapidBoardHandler.getOpenSprintFromJSON(jiraData)[0];
+	jiraUrl = this.baseUrl + "/rest/greenhopper/latest/sprint/" + sprintId + "/issues?jsonp-callback=" + callbackName;
+	var scriptElement = document.createElement("script");
+	scriptElement.setAttribute("type", "text/javascript");
+	scriptElement.setAttribute("src", jiraUrl);
+	document.head.appendChild(scriptElement);
+};
+
+JiraApiHandler.prototype.processRapidBoardSprint = function(jiraData) {
 	var issues = RapidBoardHandler.getJirasFromJSON(jiraData);
 	this.listener.receiveJiraCallback(issues);
-};
+}
 
 JiraApiHandler.prototype.processCardData = function(jiraData) {
 this.callbacksReceived++;
@@ -119,9 +129,10 @@ this.callbacksReceived++;
 };
 
 JiraApiHandler.prototype.processJiraData = function(jiraData) {
-
-	if (jiraData.contents != null) {
-		this.processRapidBoard(jiraData);
+	if (jiraData.sprints != null) {
+		this.processRapidBoardSprints(jiraData);
+	} else if (jiraData.contents != null) {
+		this.processRapidBoardSprint(jiraData);
 	} else {
 		if (jiraData.issues != null) {
 			this.processCardsData(jiraData);
