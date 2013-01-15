@@ -18,40 +18,61 @@ function getParameter(l_sName) {
 	return ((l_oMatch == null) ? null : l_oMatch[1]);
 }
 
-function rapidWizard() {
-	var url = document.getElementById("rapidWizard").value;
-	var sprint = RapidBoardHandler.getSprintIfFromURL(url);
-	document.getElementById("rapidSprint").value = sprint;
-}
-
 function wizard() {
-	debugger;
 	var url = document.getElementById("wizard").value;
-	var projectStart = url.indexOf("browse/");
-	var fixversionStart = url.indexOf("fixforversion/");
-
-	if (projectStart != -1 && fixversionStart != -1) {
-		setWizardCookie();
-		project = url.substring(projectStart + 7, fixversionStart - 1);
-		fixversion = url.substring(fixversionStart + 14);
-		document.getElementById("project").value = project;
-		document.getElementById("fixversion").value = fixversion;
-		document.getElementById("wizard").value = "";
+	var hostName = getHostFromUrl(url);
+	if (hostName == null) {
+		alert ("That URL doesn't contain a hostName");
 	} else {
-		alert("This url was unrecognized");
-		alert("try: \"http://jira.caplin.com/browse/PSL/fixforversion/12733\"")
+
+		document.getElementById("jiraLocation").value = hostName;
+		document.getElementById("project").value = "";
+		document.getElementById("fixversion").value = "";
+		document.getElementById("wizard").value = "";
+		document.getElementById("rapidSprint").value = "";
+		var urlType = getUrlType(url);
+		if (urlType == "fixVersion") {
+			var projectStart = url.indexOf("browse/");
+			var fixVersionStart = url.indexOf("fixforversion/");
+
+			if (projectStart != -1 && fixVersionStart != -1) {
+				setWizardCookie();
+				project = url.substring(projectStart + 7, fixVersionStart - 1);
+				fixversion = url.substring(fixVersionStart + 14);
+				document.getElementById("project").value = project;
+				document.getElementById("fixversion").value = fixversion;
+				document.getElementById("wizard").value = "";
+			} else {
+				alert("This url was unrecognized");
+				alert("try: \"http://jira.caplin.com/browse/PSL/fixforversion/12733\"")
+			}
+		} else if (urlType == "rapidBoard") {
+			var sprint = RapidBoardHandler.getSprintIfFromURL(url);
+			document.getElementById("rapidSprint").value = sprint;
+		}
 	}
 }
 
 function getUrlType(url) {
-	if (true) {
+	if (url.indexOf("fixforversion") != -1) {
+		return "fixVersion";
+	} else if (url.indexOf("browse") != -1) {
 		return "jira";
-	} else if (true) {
-		return "fixversion";
-	} else if (true) {
+	} else if (url.indexOf("RapidBoard.jspa") != -1) {
 		return "rapidBoard";
+	} else {
+		return "null";
 	}
+}
 
+function getHostFromUrl(url) {
+	var protocol = url.split("://")[0];
+	if (protocol == null) return null;
+	var restOfUrl = url.split("://")[1];
+	if (restOfUrl == null) return null;
+	var host = restOfUrl.split("/")[0];
+	if (host == null) return null;
+	return protocol + "://" + host;
 }
 
 function getJiraCallback(e) {
@@ -59,20 +80,19 @@ function getJiraCallback(e) {
 }
 
 function getJiras() {
-	setCookies();
 	var project = document.getElementById("project").value;
-	var fixversion = document.getElementById("fixversion").value;
-	var jiraUrl = document.getElementById("jiraLocation").value;
-	var jah = new JiraApiHandler(jiraUrl, this);
-	jah.requestFixVersion(project, fixversion);
-}
-
-function getRapidBoardJiras() {
+	var fixVersion = document.getElementById("fixversion").value;
 	var sprint = document.getElementById("rapidSprint").value;
 	var jiraUrl = document.getElementById("jiraLocation").value;
 	var jah = new JiraApiHandler(jiraUrl, this);
-	jah.requestRapidBoard(sprint);
+	if (project != "" && fixVersion != "") {
+		setCookies();
+		jah.requestFixVersion(project, fixVersion);
+	} else if (sprint != "") {
+		jah.requestRapidBoard(sprint);
+	}
 }
+
 
 function receiveJiraCallback(issues) {
 	clearTimeout(jiraRequestedTimeout);
