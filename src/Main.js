@@ -43,6 +43,17 @@ function wizard() {
 	}
 }
 
+function getUrlType(url) {
+	if (true) {
+		return "jira";
+	} else if (true) {
+		return "fixversion";
+	} else if (true) {
+		return "rapidBoard";
+	}
+
+}
+
 function getJiraCallback(e) {
 	oApp.processJiraData(e);
 }
@@ -88,52 +99,55 @@ function generateTickets() {
 
 function drawExampleCard() {
 
-	var card = {
-		"issueId": "PCTCUT-511",
-		"issueUrl": "https://jira.caplin.com/browse/PCTCUT-511",
-		"issueType": "Technical task",
-		"checkBoxes": ["Rel Note", "Wiki", "Review"],
-		"estimate": 3,
-		"summary": "A tech task.",
-		"component": "COMP",
-		"tag": "TAG",
-		"parentIssueId": "PCTCUT-523",
-		"colorEnabled": true,
-		"qrCodeEnabled": true,
-		"businessvalue": "6"
+	if (document.getElementById("example-card") != null ) {
+
+		var card = {
+			"issueId": "PCTCUT-511",
+			"issueUrl": "https://jira.caplin.com/browse/PCTCUT-511",
+			"issueType": "Technical task",
+			"checkBoxes": ["Rel Note", "Wiki", "Review"],
+			"estimate": 3,
+			"summary": "A tech task.",
+			"component": "COMP",
+			"tag": "TAG",
+			"parentIssueId": "PCTCUT-523",
+			"colorEnabled": true,
+			"qrCodeEnabled": true,
+			"businessvalue": "6"
+		}
+
+		var parentCard = {
+			"issueId": "PCTCUT-523",
+			"issueUrl": "https://jira.caplin.com/browse/PCTCUT-523",
+			"issueType": "Story",
+			"checkBoxes": ["Doc", "Demo", "Review"],
+			"estimate": 2,
+			"summary": "A marvelous summary.",
+			"component": "COMP",
+			"tag": "TAG",
+			"parentSummary": "A parent summary",
+			"componentEnabled": true,
+			"tagEnabled": true,
+			"businessvalue":6
+		};
+
+		var parentMap = {};
+		var ticket = new Card(card.issueId, card.issueUrl, card.issueType, card.estimate, card.summary, card.component, card.tag, card.businessvalue, card.parentIssueId);
+
+		parentMap[card.issueId] = card;
+		parentMap[parentCard.issueId] = parentCard;
+
+		var view = new CardView(ticket, parentMap, card.checkBoxes,
+			document.getElementById("parentdescription").checked,
+			document.getElementById("componentdescription").checked,
+			document.getElementById("tagdescription").checked,
+			document.getElementById("color").checked,
+			document.getElementById("qrcode").checked,
+			document.getElementById("businessvalue").checked);
+
+		document.getElementById("example-card").innerHTML = "";
+		document.getElementById("example-card").appendChild(view.getElement());
 	}
-
-	var parentCard = {
-		"issueId": "PCTCUT-523",
-		"issueUrl": "https://jira.caplin.com/browse/PCTCUT-523",
-		"issueType": "Story",
-		"checkBoxes": ["Doc", "Demo", "Review"],
-		"estimate": 2,
-		"summary": "A marvelous summary.",
-		"component": "COMP",
-		"tag": "TAG",
-		"parentSummary": "A parent summary",
-		"componentEnabled": true,
-		"tagEnabled": true,
-		"businessvalue":6
-	};
-
-	var parentMap = {};
-	var ticket = new Card(card.issueId, card.issueUrl, card.issueType, card.estimate, card.summary, card.component, card.tag, card.businessvalue, card.parentIssueId);
-
-	parentMap[card.issueId] = card;
-	parentMap[parentCard.issueId] = parentCard;
-
-	var view = new CardView(ticket, parentMap, card.checkBoxes,
-		document.getElementById("parentdescription").checked,
-		document.getElementById("componentdescription").checked,
-		document.getElementById("tagdescription").checked,
-		document.getElementById("color").checked,
-		document.getElementById("qrcode").checked,
-		document.getElementById("businessvalue").checked);
-
-	document.getElementById("example-card").innerHTML = "";
-	document.getElementById("example-card").appendChild(view.getElement());
 }
 
 function setCookies() {
@@ -167,17 +181,19 @@ function setConfigFromBooleanCookie(elementId, cookie, def) {
 }
 
 function setConfigFromCookies() {
-	document.getElementById("jiraLocation").value = Cookies.get("jiraLocation") || "https://jira.springsource.org";
-	setConfigFromBooleanCookie("color", "colorEnabled", true);
-	setConfigFromBooleanCookie("qrcode", "qrCodeEnabled", true);
-	setConfigFromBooleanCookie("parentdescription", "parentDescriptionEnabled", true);
-	setConfigFromBooleanCookie("componentdescription", "componentEnabled", true);
-	setConfigFromBooleanCookie("tagdescription", "tagEnabled", false);
-	setConfigFromBooleanCookie("businessvalue", "businessValueEnabled", false);
-	document.getElementById("project").value = Cookies.get("projectName") || "";
-	document.getElementById("fixversion").value = Cookies.get("fixVersion") || ""
-	document.getElementById("wizard").value = Cookies.get("wizard") || "https://jira.springsource.org/browse/BATCH/fixforversion/11327";
-
+	var location = Cookies.get("jiraLocation") || "https://jira.springsource.org";
+	if (location != null && document.getElementById("jiraLocation") != null) {
+		document.getElementById("jiraLocation").value = location;
+		setConfigFromBooleanCookie("color", "colorEnabled", true);
+		setConfigFromBooleanCookie("qrcode", "qrCodeEnabled", true);
+		setConfigFromBooleanCookie("parentdescription", "parentDescriptionEnabled", true);
+		setConfigFromBooleanCookie("componentdescription", "componentEnabled", true);
+		setConfigFromBooleanCookie("tagdescription", "tagEnabled", false);
+		setConfigFromBooleanCookie("businessvalue", "businessValueEnabled", false);
+		document.getElementById("project").value = Cookies.get("projectName") || "";
+		document.getElementById("fixversion").value = Cookies.get("fixVersion") || ""
+		document.getElementById("wizard").value = Cookies.get("wizard") || "https://jira.springsource.org/browse/BATCH/fixforversion/11327";
+	}
 }
 
 function hideInterface() {
