@@ -13,9 +13,13 @@ var listOfRapidViewSprints = {"sprints":[{"id":15,"name":"Sprint 0","closed":fal
 
 test( "JiraNavigator Test", function() {
 	var jn = new JiraNavigator();
-	jn.getProjectDropDown(listOfProjects);
-	jn.getFixVersionsDropDown(listOfVersions);
-	jn.getRapidViewDropDown(listOfRapidViews);
-	jn.getRapidViewSprintDropDown(listOfRapidViewSprints);
+	var projectDropDown = jn.getProjectDropDown(listOfProjects);
+	document.body.appendChild(projectDropDown);
+	var fixVersions = jn.getFixVersionsDropDown(listOfVersions);
+	document.body.appendChild(fixVersions);
+	var rapidViews = jn.getRapidViewDropDown(listOfRapidViews);
+	document.body.appendChild(rapidViews);
+	var sprints = jn.getRapidViewSprintDropDown(listOfRapidViewSprints);
+	document.body.appendChild(sprints);
 	equal(1,1);
 });
