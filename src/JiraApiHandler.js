@@ -28,7 +28,7 @@ JiraApiHandler.prototype.requestJiras = function(jiraIds) {
 	}
 };
 
-JiraApiHandler.prototype.requestRapidBoard = function(sprintId) {
+JiraApiHandler.prototype.requestRapidSprints = function(sprintId) {
 
 //https://jira.caplin.com/rest/greenhopper/latest/sprint/10/issues
 	var callbackName = this.getCallbackName();
@@ -40,7 +40,7 @@ JiraApiHandler.prototype.requestRapidBoard = function(sprintId) {
 	document.head.appendChild(scriptElement);
 }
 
-JiraApiHandler.prototype.requestRapidViews = function(sprintId) {
+JiraApiHandler.prototype.requestRapidViews = function() {
 	//https://jira.caplin.com/rest/greenhopper/latest/rapidviews/list
 	var callbackName = this.getCallbackName();
 	var jiraUrl = this.baseUrl + "/rest/greenhopper/latest/rapidviews/list" + "?jsonp-callback=" + callbackName;
@@ -50,14 +50,27 @@ JiraApiHandler.prototype.requestRapidViews = function(sprintId) {
 	document.head.appendChild(scriptElement);
 }
 
-JiraApiHandler.prototype.requestRapidSprints = function(sprintId) {
+JiraApiHandler.prototype.requestProjects = function() {
+	//https://jira.springsource.org/rest/api/latest/project
 	var callbackName = this.getCallbackName();
-	jiraUrl = this.baseUrl + "/rest/greenhopper/latest/sprints/" + sprintId + "?jsonp-callback=" + callbackName;
+	var jiraUrl = this.baseUrl + "/rest/api/latest/project" + "?jsonp-callback=" + callbackName;
 	var scriptElement = document.createElement("script");
 	scriptElement.setAttribute("type", "text/javascript");
 	scriptElement.setAttribute("src", jiraUrl);
 	document.head.appendChild(scriptElement);
 }
+
+JiraApiHandler.prototype.requestFixVersions = function(project) {
+	//https://jira.springsource.org/rest/api/latest/project/BATCH/versions
+	var callbackName = this.getCallbackName();
+	var jiraUrl = this.baseUrl + "/rest/api/latest/project/" + project + "/versions" + "?jsonp-callback=" + callbackName;
+	var scriptElement = document.createElement("script");
+	scriptElement.setAttribute("type", "text/javascript");
+	scriptElement.setAttribute("src", jiraUrl);
+	document.head.appendChild(scriptElement);
+}
+
+
 
 JiraApiHandler.prototype.requestFixVersion = function(project, fixversion) {
 	var callbackName = this.getCallbackName();
@@ -128,6 +141,14 @@ JiraApiHandler.prototype.processRapidBoardViews = function(jiraData) {
 	this.listener.receiveRapidBoardViews(jiraData);
 };
 
+JiraApiHandler.prototype.processProjectData = function(jiraData) {
+	this.listener.receiveProjectData(jiraData);
+};
+
+JiraApiHandler.prototype.processFixVersionsData = function(jiraData) {
+	this.listener.receiveFixVersionsData(jiraData);
+};
+
 JiraApiHandler.prototype.processRapidBoardSprints = function(jiraData) {
 	var callbackName = this.getCallbackName();
 	var sprintId = RapidBoardHandler.getOpenSprintFromJSON(jiraData)[0];
@@ -158,12 +179,16 @@ JiraApiHandler.prototype.processJiraData = function(jiraData) {
 		this.processRapidBoardSprints(jiraData);
 	} else if (jiraData.contents != null) {
 		this.processRapidBoardSprint(jiraData);
+	} else if (jiraData.issues != null) {
+		this.processCardsData(jiraData);
+	} else if (jiraData.length != 0 && jiraData[0].self.indexOf("project") != -1) {
+		console.log(jiraData[0])
+		this.processProjectData(jiraData);
+	} else if (jiraData.length != 0 && jiraData[0].self.indexOf("version") != -1) {
+		this.processFixVersionsData(jiraData);
 	} else {
-		if (jiraData.issues != null) {
-			this.processCardsData(jiraData);
-		} else {
-			throw "Data received from JiraAPI unrecognized";
-		}
+		console.log(jiraData);
+		throw "Data received from JiraAPI unrecognized";
 	}
 };
 
