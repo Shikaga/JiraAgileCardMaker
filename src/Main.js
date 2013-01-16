@@ -210,9 +210,9 @@ function setConfigFromCookies() {
 		setConfigFromBooleanCookie("componentdescription", "componentEnabled", true);
 		setConfigFromBooleanCookie("tagdescription", "tagEnabled", false);
 		setConfigFromBooleanCookie("businessvalue", "businessValueEnabled", false);
-		document.getElementById("project").value = Cookies.get("projectName") || "";
-		document.getElementById("fixversion").value = Cookies.get("fixVersion") || ""
-		document.getElementById("wizard").value = Cookies.get("wizard") || "https://jira.springsource.org/browse/BATCH/fixforversion/11327";
+	//	document.getElementById("project").value = Cookies.get("projectName") || "";
+	//	document.getElementById("fixversion").value = Cookies.get("fixVersion") || ""
+	//	document.getElementById("wizard").value = Cookies.get("wizard") || "https://jira.springsource.org/browse/BATCH/fixforversion/11327";
 	}
 }
 
@@ -248,7 +248,6 @@ key('esc', function(){ showInterface(); });
 
 //
 
-var x = document.createElement("div");
-document.body.appendChild(x);
-var jn = new JiraNavigator();
-jn.renderInElement(x);
+var jiraNavigatorDiv = document.getElementById("jiraNavigator");
+var jn = new JiraNavigator("https://jira.caplin.com");
+jn.renderInElement(jiraNavigatorDiv);

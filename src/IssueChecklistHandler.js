@@ -27,6 +27,7 @@ IssueChecklistHandler.prototype.addCheckList = function(ul, name, callback, clas
 
 
 IssueChecklistHandler.prototype.addJirasToInterface = function(issues) {
+	this.issueChecklistUl.innerHTML = "";
 	this.addCheckList("jiraListUrl", "All", this.allJirasClicked, null);
 	for (var i = 0; i < issues.length; i++) {
 		var issue = issues[i];

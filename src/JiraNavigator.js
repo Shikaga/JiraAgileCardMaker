@@ -1,8 +1,8 @@
-var JiraNavigator = function() {
+var JiraNavigator = function(jiraUrl) {
 	this.renderElement = null;
 	this.navigationTypes = this.getNavigationTypes();
 	this.viewDropDown = null;
-	this.jah = new JiraApiHandler("http://jira.caplin.com", this);
+	this.jah = new JiraApiHandler(jiraUrl, this);
 }
 
 JiraNavigator.prototype.renderInElement = function(element) {
@@ -16,6 +16,7 @@ JiraNavigator.prototype.render = function() {
 	if (this.navigationTypes.value == "rapidboard") {
 		this.renderElement.appendChild(this.navigationTypes);
 		if (this.viewDropDown != null) {
+			this.renderElement.appendChild(document.createElement("br"));
 			this.renderElement.appendChild(this.viewDropDown);
 		}
 	}
@@ -144,5 +145,5 @@ JiraNavigator.prototype.receiveRapidBoardViews = function(views) {
 }
 
 JiraNavigator.prototype.receiveJiraCallback = function(jiras) {
-	debugger;
+	receiveJiraCallback(jiras);
 }
