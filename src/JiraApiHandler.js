@@ -40,6 +40,31 @@ JiraApiHandler.prototype.requestRapidBoard = function(sprintId) {
 	document.head.appendChild(scriptElement);
 }
 
+JiraApiHandler.prototype.requestRapidViews = function(sprintId) {
+	//https://jira.caplin.com/rest/greenhopper/latest/rapidviews/list
+	var callbackName = this.getCallbackName();
+	//https://jira.caplin.com/rest/greenhopper/latest/sprints/11
+	var jiraUrl = this.baseUrl + "/rest/greenhopper/latest/rapidviews/list" + "?jsonp-callback=" + callbackName;
+	var scriptElement = document.createElement("script");
+	scriptElement.setAttribute("type", "text/javascript");
+	scriptElement.setAttribute("src", jiraUrl);
+	document.head.appendChild(scriptElement);
+}
+
+JiraApiHandler.prototype.requestRapidSprints = function(sprin) {
+
+
+//	var callbackName = this.getCallbackName();
+//	jiraUrl = this.baseUrl + "/rest/greenhopper/latest/sprints/" + sprintId + "?jsonp-callback=" + callbackName;
+//	var scriptElement = document.createElement("script");
+//	scriptElement.setAttribute("type", "text/javascript");
+//	scriptElement.setAttribute("src", jiraUrl);
+//	document.head.appendChild(scriptElement);
+}
+
+
+
+
 JiraApiHandler.prototype.requestFixVersion = function(project, fixversion) {
 	var callbackName = this.getCallbackName();
 	if (project != "" && fixversion != "") {
@@ -105,6 +130,10 @@ JiraApiHandler.prototype.processCardsData = function(jiraData) {
 	this.listener.receiveJiraCallback(jiraKeys);
 };
 
+JiraApiHandler.prototype.processRapidBoardViews = function(jiraData) {
+	this.listener.receiveRapidBoardViews(jiraData);
+};
+
 JiraApiHandler.prototype.processRapidBoardSprints = function(jiraData) {
 	var callbackName = this.getCallbackName();
 	var sprintId = RapidBoardHandler.getOpenSprintFromJSON(jiraData)[0];
@@ -129,7 +158,9 @@ this.callbacksReceived++;
 };
 
 JiraApiHandler.prototype.processJiraData = function(jiraData) {
-	if (jiraData.sprints != null) {
+	if (jiraData.views != null) {
+		this.processRapidBoardViews(jiraData);
+	} else if (jiraData.sprints != null) {
 		this.processRapidBoardSprints(jiraData);
 	} else if (jiraData.contents != null) {
 		this.processRapidBoardSprint(jiraData);
@@ -137,7 +168,7 @@ JiraApiHandler.prototype.processJiraData = function(jiraData) {
 		if (jiraData.issues != null) {
 			this.processCardsData(jiraData);
 		} else {
-			this.processCardData(jiraData);
+			throw "Data received from JiraAPI unrecognized";
 		}
 	}
 };

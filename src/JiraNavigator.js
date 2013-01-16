@@ -1,11 +1,43 @@
 var JiraNavigator = function() {
+	this.renderElement = null;
+	this.navigationTypes = this.getNavigationTypes();
+	this.viewDropDown = null;
+	this.jah = new JiraApiHandler("http://jira.caplin.com", this);
+}
 
+JiraNavigator.prototype.renderInElement = function(element) {
+	this.renderElement = element;
+	this.render();
+}
+
+JiraNavigator.prototype.render = function() {
+	this.renderElement.innerHTML = "";
+	this.renderElement.appendChild(this.navigationTypes);
+	if (this.navigationTypes.value == "rapidboard") {
+		this.renderElement.appendChild(this.navigationTypes);
+		if (this.viewDropDown != null) {
+			this.renderElement.appendChild(this.viewDropDown);
+		}
+	}
+}
+
+JiraNavigator.prototype.onchange = function() {
+	console.log(this.navigationTypes.value)
+	this.render();
+	this.jah.requestRapidViews();
 }
 
 JiraNavigator.prototype.getNavigationTypes = function(projects) {
 	var select = document.createElement("select");
 	select.style.width = "300px";
-	select.onchange = function() {alert('Project Switched')};
+	var self = this;
+	select.onchange = function() {self.onchange()};
+
+	var blankOption;
+	blankOption = document.createElement("option");
+	blankOption.setAttribute("value", "none");
+	blankOption.innerHTML = "None"
+	select.appendChild(blankOption);
 
 	var option;
 	option = document.createElement("option");
@@ -89,4 +121,9 @@ JiraNavigator.prototype.getRapidViewSprintDropDown = function(sprints) {
 		select.appendChild(option);
 	}
 	return select;
+}
+
+JiraNavigator.prototype.receiveRapidBoardViews = function(views) {
+	this.viewDropDown = this.getRapidViewDropDown(views);
+	this.render();
 }
