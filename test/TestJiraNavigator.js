@@ -13,6 +13,8 @@ var listOfRapidViewSprints = {"sprints":[{"id":15,"name":"Sprint 0","closed":fal
 
 test( "JiraNavigator Test", function() {
 	var jn = new JiraNavigator();
+	var navigationTypeDropDown = jn.getNavigationTypes(listOfProjects);
+	document.body.appendChild(navigationTypeDropDown);
 	var projectDropDown = jn.getProjectDropDown(listOfProjects);
 	document.body.appendChild(projectDropDown);
 	var fixVersions = jn.getFixVersionsDropDown(listOfVersions);

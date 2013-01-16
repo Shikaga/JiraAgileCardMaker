@@ -2,6 +2,26 @@ var JiraNavigator = function() {
 
 }
 
+JiraNavigator.prototype.getNavigationTypes = function(projects) {
+	var select = document.createElement("select");
+	select.style.width = "300px";
+	select.onchange = function() {alert('Project Switched')};
+
+	var option;
+	option = document.createElement("option");
+	option.setAttribute("value", "fixversion");
+	option.innerHTML = "FixVersion"
+	select.appendChild(option);
+
+	var option2;
+	option2 = document.createElement("option");
+	option2.setAttribute("value", "rapidboard");
+	option2.innerHTML = "Rapid Board"
+	select.appendChild(option2);
+
+	return select;
+}
+
 JiraNavigator.prototype.getProjectDropDown = function(projects) {
 	var select = document.createElement("select");
 	select.style.width = "300px";
@@ -11,8 +31,6 @@ JiraNavigator.prototype.getProjectDropDown = function(projects) {
 		var project = projects[i];
 		var option;
 
-		/* we are going to add two options */
-		/* create options elements */
 		option = document.createElement("option");
 		option.setAttribute("value", project.key);
 		option.innerHTML = project.name;
@@ -30,8 +48,6 @@ JiraNavigator.prototype.getFixVersionsDropDown = function(fixVersions) {
 		var fixVersion = fixVersions[i];
 		var option;
 
-		/* we are going to add two options */
-		/* create options elements */
 		option = document.createElement("option");
 		option.setAttribute("value", fixVersion.id);
 		option.innerHTML = fixVersion.description;
@@ -49,8 +65,6 @@ JiraNavigator.prototype.getRapidViewDropDown = function(rapidViews) {
 		var rapidView = rapidViews.views[i];
 		var option;
 
-		/* we are going to add two options */
-		/* create options elements */
 		option = document.createElement("option");
 		option.setAttribute("value", rapidView.id);
 		option.innerHTML = rapidView.name;
@@ -69,8 +83,6 @@ JiraNavigator.prototype.getRapidViewSprintDropDown = function(sprints) {
 		var sprint = sprints.sprints[i];
 		var option;
 
-		/* we are going to add two options */
-		/* create options elements */
 		option = document.createElement("option");
 		option.setAttribute("value", sprint.id);
 		option.innerHTML = sprint.name;
