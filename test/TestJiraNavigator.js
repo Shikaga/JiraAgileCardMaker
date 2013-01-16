@@ -10,9 +10,23 @@ var listOfRapidViews = {"views":[{"id":8,"name":"FatBoy","canEdit":true,"owner":
 //https://jira.caplin.com/rest/greenhopper/latest/sprints/8
 var listOfRapidViewSprints = {"sprints":[{"id":15,"name":"Sprint 0","closed":false}],"rapidViewId":8};
 
+var JiraApiHandler = function(url, jn) {
+	this.jn = jn;
+};
+
+JiraApiHandler.prototype.requestRapidViews = function() {
+	var listOfRapidViews = {"views":[{"id":8,"name":"FatBoy","canEdit":true,"owner":{"userName":"avinashk","renderedLink":"        <a class=\"user-hover\" rel=\"avinashk\" id=\"_avinashk\" href=\"/secure/ViewProfile.jspa?name=avinashk\">Avinash Kendagannaswamy </a>"},"filter":{"id":11697,"name":"New FatBoy","query":"project in (\"Product: StreamLink for Java\", \"Product: Liberator\", \"Product: Streamlink\", \"Product: Transformer\", \"Product: DataSource SDK\",  \"Product: DataSource SDK for Java\",  \"Product: StreamLink for iOS\", \"Product: Caplin Xaqua Deployment Framework\") AND status in (Backlog, \"Awaiting Test\", \"In Progress\", \"In Progress: Development\", \"In Progress: QA/Test\", Open, Resolved) ORDER BY Rank ASC","owner":{"userName":"avinashk","renderedLink":"        <a class=\"user-hover\" rel=\"avinashk\" id=\"_avinashk\" href=\"/secure/ViewProfile.jspa?name=avinashk\">Avinash Kendagannaswamy </a>"},"canEdit":false,"isOrderedByRank":true,"permissionEntries":[{"values":[{"type":"Project","name":"Product: Caplin Integration Suite"}]},{"values":[{"type":"Project","name":"Product: Caplin Management Console"}]},{"values":[{"type":"Project","name":"Product: DataSource for IDC"}]},{"values":[{"type":"Project","name":"Product: Liberator"}]},{"values":[{"type":"Project","name":"Product: StreamLink for .Net"}]},{"values":[{"type":"Project","name":"Product: StreamLink for Java"}]}]}},{"id":11,"name":"Jackhammer","canEdit":true,"owner":{"userName":"richardc","renderedLink":"        <a class=\"user-hover\" rel=\"richardc\" id=\"_richardc\" href=\"/secure/ViewProfile.jspa?name=richardc\">Richard Chamberlain</a>"},"filter":{"id":11711,"name":"Jackhammer","query":"project = \"Internal: Release Engineering\" ORDER BY Rank ASC","owner":{"userName":"richardc","renderedLink":"        <a class=\"user-hover\" rel=\"richardc\" id=\"_richardc\" href=\"/secure/ViewProfile.jspa?name=richardc\">Richard Chamberlain</a>"},"canEdit":false,"isOrderedByRank":true,"permissionEntries":[{"values":[{"type":"Project","name":"Internal: Release Engineering"}]}]}},{"id":16,"name":"Sabre","canEdit":true,"owner":{"userName":"adami","renderedLink":"        <a class=\"user-hover\" rel=\"adami\" id=\"_adami\" href=\"/secure/ViewProfile.jspa?name=adami\">Adam Iley</a>"},"filter":{"id":11714,"name":"Sabre","query":"project in (\"Product: CT2\", \"Product: CT3\", \"BladeRunner Beta\", \"Product: BladeRunner\") ORDER BY Rank ASC","owner":{"userName":"adami","renderedLink":"        <a class=\"user-hover\" rel=\"adami\" id=\"_adami\" href=\"/secure/ViewProfile.jspa?name=adami\">Adam Iley</a>"},"canEdit":false,"isOrderedByRank":true,"permissionEntries":[{"values":[{"type":"Project","name":"Product: BladeRunner"}]},{"values":[{"type":"Project","name":"Product: CT2"}]},{"values":[{"type":"Project","name":"Product: CT3"}]},{"values":[{"type":"Project","name":"zzOBS - Product: Presenter Library"}]}]}}]};
+
+	this.jn.receiveRapidBoardViews(listOfRapidViews)
+}
+
+JiraApiHandler.prototype.requestRapidSprints = function() {
+
+}
+
 
 test( "JiraNavigator Test", function() {
-	var jn = new JiraNavigator();
+	jn = new JiraNavigator();
 	var element = document.createElement("div");
 	jn.renderInElement(element);
 	document.body.appendChild(element);

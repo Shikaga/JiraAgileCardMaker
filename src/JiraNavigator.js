@@ -24,7 +24,14 @@ JiraNavigator.prototype.render = function() {
 JiraNavigator.prototype.onchange = function() {
 	console.log(this.navigationTypes.value)
 	this.render();
-	this.jah.requestRapidViews();
+	if (this.navigationTypes.value == "rapidboard") {
+		if (this.viewDropDown != null && this.viewDropDown.value != "None") {
+			this.jah.requestRapidSprints(this.viewDropDown.value);
+		} else {
+			this.jah.requestRapidViews();
+		}
+
+	}
 }
 
 JiraNavigator.prototype.getNavigationTypes = function(projects) {
@@ -91,7 +98,14 @@ JiraNavigator.prototype.getFixVersionsDropDown = function(fixVersions) {
 JiraNavigator.prototype.getRapidViewDropDown = function(rapidViews) {
 	var select = document.createElement("select");
 	select.style.width = "300px";
-	select.onchange = function() {alert('Rapid Views Switched')};
+	var self = this;
+	select.onchange = function() {self.onchange()};
+
+	var option;
+	option = document.createElement("option");
+	option.setAttribute("value", "none");
+	option.innerHTML = "None";
+	select.appendChild(option);
 
 	for (var i=0; i < rapidViews.views.length; i++) {
 		var rapidView = rapidViews.views[i];
@@ -109,7 +123,8 @@ JiraNavigator.prototype.getRapidViewSprintDropDown = function(sprints) {
 	console.log(sprints);
 	var select = document.createElement("select");
 	select.style.width = "300px";
-	select.onchange = function() {alert('Rapid Views Switched')};
+	var self = this;
+	select.onchange = function() {self.onchange()};
 
 	for (var i=0; i < sprints.sprints.length; i++) {
 		var sprint = sprints.sprints[i];
@@ -126,4 +141,8 @@ JiraNavigator.prototype.getRapidViewSprintDropDown = function(sprints) {
 JiraNavigator.prototype.receiveRapidBoardViews = function(views) {
 	this.viewDropDown = this.getRapidViewDropDown(views);
 	this.render();
+}
+
+JiraNavigator.prototype.receiveJiraCallback = function(jiras) {
+	debugger;
 }

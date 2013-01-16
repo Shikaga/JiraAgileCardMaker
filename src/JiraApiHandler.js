@@ -43,7 +43,6 @@ JiraApiHandler.prototype.requestRapidBoard = function(sprintId) {
 JiraApiHandler.prototype.requestRapidViews = function(sprintId) {
 	//https://jira.caplin.com/rest/greenhopper/latest/rapidviews/list
 	var callbackName = this.getCallbackName();
-	//https://jira.caplin.com/rest/greenhopper/latest/sprints/11
 	var jiraUrl = this.baseUrl + "/rest/greenhopper/latest/rapidviews/list" + "?jsonp-callback=" + callbackName;
 	var scriptElement = document.createElement("script");
 	scriptElement.setAttribute("type", "text/javascript");
@@ -51,19 +50,14 @@ JiraApiHandler.prototype.requestRapidViews = function(sprintId) {
 	document.head.appendChild(scriptElement);
 }
 
-JiraApiHandler.prototype.requestRapidSprints = function(sprin) {
-
-
-//	var callbackName = this.getCallbackName();
-//	jiraUrl = this.baseUrl + "/rest/greenhopper/latest/sprints/" + sprintId + "?jsonp-callback=" + callbackName;
-//	var scriptElement = document.createElement("script");
-//	scriptElement.setAttribute("type", "text/javascript");
-//	scriptElement.setAttribute("src", jiraUrl);
-//	document.head.appendChild(scriptElement);
+JiraApiHandler.prototype.requestRapidSprints = function(sprintId) {
+	var callbackName = this.getCallbackName();
+	jiraUrl = this.baseUrl + "/rest/greenhopper/latest/sprints/" + sprintId + "?jsonp-callback=" + callbackName;
+	var scriptElement = document.createElement("script");
+	scriptElement.setAttribute("type", "text/javascript");
+	scriptElement.setAttribute("src", jiraUrl);
+	document.head.appendChild(scriptElement);
 }
-
-
-
 
 JiraApiHandler.prototype.requestFixVersion = function(project, fixversion) {
 	var callbackName = this.getCallbackName();
