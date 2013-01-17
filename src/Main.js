@@ -113,7 +113,7 @@ function generateTickets() {
 	var tagDescription = document.getElementById("tagdescription").checked;
 	var businessValue = document.getElementById("businessvalue").checked;
 
-	oApp = new jira.App(document.getElementById('tickets'), jiraUrl, jn.fixVersionsDropDown.value, color, qrcode, parentDescription, componentDescription, tagDescription, businessValue);
+	oApp = new jira.App(document.getElementById('tickets'), jiraUrl, null, color, qrcode, parentDescription, componentDescription, tagDescription, businessValue);
 	oApp.requestIssues(checklistToDisplay);
 }
 
