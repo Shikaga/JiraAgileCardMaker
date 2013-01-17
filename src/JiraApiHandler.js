@@ -181,14 +181,15 @@ JiraApiHandler.prototype.processJiraData = function(jiraData) {
 		this.processRapidBoardSprint(jiraData);
 	} else if (jiraData.issues != null) {
 		this.processCardsData(jiraData);
-	} else if (jiraData.length != 0 && jiraData[0].self.indexOf("project") != -1) {
+	} else if (jiraData.length != undefined && jiraData[0].self.indexOf("project") != -1) {
 		console.log(jiraData[0])
 		this.processProjectData(jiraData);
-	} else if (jiraData.length != 0 && jiraData[0].self.indexOf("version") != -1) {
+	} else if (jiraData.length != undefined && jiraData[0].self.indexOf("version") != -1) {
 		this.processFixVersionsData(jiraData);
 	} else {
-		console.log(jiraData);
-		throw "Data received from JiraAPI unrecognized";
+		this.processCardData(jiraData);
+		//console.log(jiraData);
+		//throw "Data received from JiraAPI unrecognized";
 	}
 };
 

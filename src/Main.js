@@ -113,7 +113,7 @@ function generateTickets() {
 	var tagDescription = document.getElementById("tagdescription").checked;
 	var businessValue = document.getElementById("businessvalue").checked;
 
-	oApp = new jira.App(document.getElementById('tickets'), jiraUrl, document.getElementById("fixversion").value, color, qrcode, parentDescription, componentDescription, tagDescription, businessValue);
+	oApp = new jira.App(document.getElementById('tickets'), jiraUrl, jn.fixVersionsDropDown.value, color, qrcode, parentDescription, componentDescription, tagDescription, businessValue);
 	oApp.requestIssues(checklistToDisplay);
 }
 
@@ -201,7 +201,7 @@ function setConfigFromBooleanCookie(elementId, cookie, def) {
 }
 
 function setConfigFromCookies() {
-	var location = Cookies.get("jiraLocation") || "https://jira.springsource.org";
+	var location = Cookies.get("jiraLocation") || "https://jira.caplin.com";
 	if (location != null && document.getElementById("jiraLocation") != null) {
 		document.getElementById("jiraLocation").value = location;
 		setConfigFromBooleanCookie("color", "colorEnabled", true);
