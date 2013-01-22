@@ -24,7 +24,7 @@
 
 		<div id="optionsPanel">
 			<ul>
-				<li>Jira Location : <input id="jiraLocation" value="https://jira.springsource.org" /></li>
+				<li>Jira Location : <input id="jiraLocation" value="https://jira.springsource.org" onchange="updateJiraNavigator()"/> </li>
 				<li>Color Enabled: <input checked type="checkbox" id="color" onclick="drawExampleCard()" /></li>
 				<li>QR Code Enabled: <input checked type="checkbox" id="qrcode" onclick="drawExampleCard()" /></li>
 				<li>Show Parent Description: <input checked type="checkbox" id="parentdescription" onclick="drawExampleCard()"/></li>
