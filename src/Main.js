@@ -26,10 +26,6 @@ function wizard() {
 	} else {
 
 		document.getElementById("jiraLocation").value = hostName;
-		document.getElementById("project").value = "";
-		document.getElementById("fixversion").value = "";
-		document.getElementById("wizard").value = "";
-		document.getElementById("rapidSprint").value = "";
 		var urlType = getUrlType(url);
 		if (urlType == "fixVersion") {
 			var projectStart = url.indexOf("browse/");
@@ -39,17 +35,19 @@ function wizard() {
 				setWizardCookie();
 				project = url.substring(projectStart + 7, fixVersionStart - 1);
 				fixversion = url.substring(fixVersionStart + 14);
-				document.getElementById("project").value = project;
-				document.getElementById("fixversion").value = fixversion;
-				document.getElementById("wizard").value = "";
+				debugger;
 			} else {
 				alert("This url was unrecognized");
 				alert("try: \"http://jira.caplin.com/browse/PSL/fixforversion/12733\"")
 			}
 		} else if (urlType == "rapidBoard") {
 			var sprint = RapidBoardHandler.getSprintIfFromURL(url);
-			document.getElementById("rapidSprint").value = sprint;
+			debugger;
+			//document.getElementById("rapidSprint").value = sprint;
+		} else if (urlType == "jira") {
+			jn.setJira(getJiraFromUrl(url));
 		}
+		document.getElementById("wizard").value = "";
 	}
 }
 
@@ -63,6 +61,10 @@ function getUrlType(url) {
 	} else {
 		return "null";
 	}
+}
+
+function getJiraFromUrl(url) {
+	return url.split("/browse/")[1];
 }
 
 function getHostFromUrl(url) {
@@ -249,9 +251,12 @@ key('esc', function(){ showInterface(); });
 //
 var jiraNavigatorDiv = document.getElementById("jiraNavigator");
 function updateJiraNavigator() {
-	var location = document.getElementById("jiraLocation").value;
-	var jn = new JiraNavigator(location);
-	jn.renderInElement(jiraNavigatorDiv);
+	var locationElement = document.getElementById("jiraLocation");
+	if (locationElement != null) {
+		var location = locationElement.value;
+		jn = new JiraNavigator(location);
+		jn.renderInElement(jiraNavigatorDiv);
+	}
 }
 
 updateJiraNavigator();

@@ -244,3 +244,10 @@ JiraNavigator.prototype.receiveFixVersionsData = function(views) {
 JiraNavigator.prototype.receiveJiraCallback = function(jiras) {
 	receiveJiraCallback(jiras);
 }
+
+JiraNavigator.prototype.setJira = function(jira) {
+	this.navigationTypes.selectedIndex = 3;
+	this.onchange(this);
+	this.jirasField.value = jira;
+	this.onchange(this.jirasField);
+}

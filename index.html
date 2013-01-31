@@ -23,6 +23,9 @@
 		<h1>Jira Ticket Generator</h1>
 
 		<div id="optionsPanel">
+			<h2>Wizard</h2>
+			<input id="wizard" /><button onclick="wizard()">Wizard</button>
+			<h2>Options</h2>
 			<ul>
 				<li>Jira Location : <input id="jiraLocation" value="https://jira.springsource.org" onchange="updateJiraNavigator()"/> </li>
 				<li>Color Enabled: <input checked type="checkbox" id="color" onclick="drawExampleCard()" /></li>

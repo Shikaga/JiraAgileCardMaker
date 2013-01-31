@@ -19,6 +19,12 @@ test( "getUrlType recognizes bad URLs", function() {
 	equal("null", urlType );
 });
 
+test( "getUrlType recognizes Jira URLs", function() {
+	var jira = getJiraFromUrl("https://jira.springsource.org/browse/BATCH-915")
+	equal("BATCH-915", jira );
+});
+
+
 test( "get host from secure URL", function() {
 	var urlType = getHostFromUrl("https://jira.caplin.com/secure/RapidBoard.jspa?rapidView=8")
 	equal("https://jira.caplin.com", urlType );
