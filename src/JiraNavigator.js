@@ -4,6 +4,7 @@ var JiraNavigator = function(jiraUrl) {
 	this.viewDropDown = null;
 	this.projectDropDown = null;
 	this.fixVersionsDropDown = null;
+	this.jirasField = null;
 	this.jah = new JiraApiHandler(jiraUrl, this);
 }
 
@@ -30,11 +31,18 @@ JiraNavigator.prototype.render = function() {
 				this.renderElement.appendChild(this.fixVersionsDropDown);
 			}
 		}
+	} else if (this.navigationTypes.value == "jiras") {
+		this.renderElement.appendChild(document.createElement("br"));
+		this.renderElement.appendChild(this.jirasField);
 	}
 }
 
 JiraNavigator.prototype.onchange = function(dropdown) {
 	console.log(dropdown.name);
+	if (dropdown.name == "jiras") {
+		this.updateJiraListWithIndividualJiras();
+		return;
+	}
 	if (dropdown.name == "navigationTypes") {
 		this.viewDropDown = null;
 		this.projectDropDown = null;
@@ -48,23 +56,46 @@ JiraNavigator.prototype.onchange = function(dropdown) {
 
 	console.log(this.navigationTypes.value)
 	if (this.navigationTypes.value == "rapidboard") {
-		if (this.viewDropDown != null && this.viewDropDown.value != "None") {
-			this.jah.requestRapidSprints(this.viewDropDown.value);
-		} else {
-			this.jah.requestRapidViews();
-		}
+		this.clearRapidViewsIfNecessary();
 	} else if (this.navigationTypes.value == "fixversion") {
-		if (this.projectDropDown != null && this.projectDropDown.value != "None") {
-			if (this.fixVersionsDropDown != null && this.fixVersionsDropDown.value != "None") {
-				this.jah.requestFixVersion(this.projectDropDown.value, this.fixVersionsDropDown.value);
-			} else {
-				this.jah.requestFixVersions(this.projectDropDown.value);
-			}
-		} else {
-			this.jah.requestProjects();
-		}
+		this.clearFixViewIfNecessary();
+	} else if (this.navigationTypes.value == "jiras") {
+		this.showIndividualJirasField();
 	}
 	this.render();
+}
+
+JiraNavigator.prototype.updateJiraListWithIndividualJiras = function() {
+	var jiras = this.jirasField.value.split(",");
+	this.receiveJiraCallback(jiras);
+}
+
+JiraNavigator.prototype.clearRapidViewsIfNecessary = function() {
+	if (this.viewDropDown != null && this.viewDropDown.value != "None") {
+		this.jah.requestRapidSprints(this.viewDropDown.value);
+	} else {
+		this.jah.requestRapidViews();
+	}
+}
+
+JiraNavigator.prototype.clearFixViewIfNecessary = function() {
+	if (this.projectDropDown != null && this.projectDropDown.value != "None") {
+		if (this.fixVersionsDropDown != null && this.fixVersionsDropDown.value != "None") {
+			this.jah.requestFixVersion(this.projectDropDown.value, this.fixVersionsDropDown.value);
+		} else {
+			this.jah.requestFixVersions(this.projectDropDown.value);
+		}
+	} else {
+		this.jah.requestProjects();
+	}
+}
+
+JiraNavigator.prototype.showIndividualJirasField = function() {
+	var self = this;
+	var input = document.createElement("input");
+	input.onkeyup = function() {self.onchange(this)};
+	input.name = "jiras";
+	this.jirasField = input;
 }
 
 JiraNavigator.prototype.getNavigationTypes = function(projects) {
@@ -91,6 +122,12 @@ JiraNavigator.prototype.getNavigationTypes = function(projects) {
 	option2.setAttribute("value", "rapidboard");
 	option2.innerHTML = "Rapid Board"
 	select.appendChild(option2);
+
+	var option3;
+	option3 = document.createElement("option");
+	option3.setAttribute("value", "jiras");
+	option3.innerHTML = "Comma Seperated Jiras"
+	select.appendChild(option3);
 
 	return select;
 }
@@ -200,7 +237,6 @@ JiraNavigator.prototype.receiveProjectData = function(views) {
 }
 
 JiraNavigator.prototype.receiveFixVersionsData = function(views) {
-	console.log("AASD");
 	this.fixVersionsDropDown = this.getFixVersionsDropDown(views);
 	this.render();
 }
