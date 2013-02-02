@@ -105,32 +105,32 @@ JiraNavigator.prototype.getNavigationTypes = function(projects) {
 	var self = this;
 	select.onchange = function() {self.onchange(this)};
 
-	select.appendChild(this._createNoneOption());
-	select.appendChild(this._createOption("fixversion", "FixVersion"));
-	select.appendChild(this._createOption("rapidboard", "Rapid Board"));
-	select.appendChild(this._createOption("jiras", "Comma Seperated Jiras"));
+	select.appendChild(SelectUtilities._createNoneOption());
+	select.appendChild(SelectUtilities._createOption("fixversion", "FixVersion"));
+	select.appendChild(SelectUtilities._createOption("rapidboard", "Rapid Board"));
+	select.appendChild(SelectUtilities._createOption("jiras", "Comma Seperated Jiras"));
 
 	return select;
 }
 
 JiraNavigator.prototype.getProjectDropDown = function(projects) {
-	var select = this._getBasicDropDown("project");
-	select.appendChild(this._createNoneOption());
-	this._populateSelect(select, projects, "key", "name");
+	var select = SelectUtilities._getBasicDropDown("project", this, "onchange");
+	select.appendChild(SelectUtilities._createNoneOption());
+	SelectUtilities._populateSelect(select, projects, "key", "name");
 	return select;
 }
 
 JiraNavigator.prototype.getFixVersionsDropDown = function(fixVersions) {
-	var select = this._getBasicDropDown("fixVersions");
-	select.appendChild(this._createNoneOption());
-	this._populateSelect(select, fixVersions, "id", "name");
+	var select = SelectUtilities._getBasicDropDown("fixVersions", this, "onchange");
+	select.appendChild(SelectUtilities._createNoneOption());
+	SelectUtilities._populateSelect(select, fixVersions, "id", "name");
 	return select;
 }
 
 JiraNavigator.prototype.getRapidViewDropDown = function(rapidViews) {
-	var select = this._getBasicDropDown("rapidView");
-	select.appendChild(this._createNoneOption());
-	this._populateSelect(select, rapidViews.views, "id", "name");
+	var select = SelectUtilities._getBasicDropDown("rapidView", this, "onchange");
+	select.appendChild(SelectUtilities._createNoneOption());
+	SelectUtilities._populateSelect(select, rapidViews.views, "id", "name");
 	return select;
 }
 
@@ -158,37 +158,4 @@ JiraNavigator.prototype.setJira = function(jira) {
 	this.onchange(this);
 	this.jirasField.value = jira;
 	this.onchange(this.jirasField);
-}
-
-JiraNavigator.prototype._getBasicDropDown = function(name) {
-	var select = document.createElement("select");
-	select.name = name;
-	select.style.width = "300px";
-	var self = this;
-	select.onchange = function() {self.onchange(this)};
-	return select;
-}
-
-
-JiraNavigator.prototype._createOption = function(value, display) {
-	var option = document.createElement("option");
-	option.setAttribute("value", value);
-	option.innerHTML = display;
-	return option;
-}
-
-JiraNavigator.prototype._createNoneOption = function() {
-	return this._createOption("none", "None")
-}
-
-JiraNavigator.prototype._populateSelect = function(select, array, valueKey, nameKey) {
-	for (var i=0; i < array.length; i++) {
-		var value = array[i][valueKey];
-		var name = array[i][nameKey];
-		var option;
-		option = document.createElement("option");
-		option.setAttribute("value", value);
-		option.innerHTML = name;
-		select.appendChild(option);
-	}
 }
