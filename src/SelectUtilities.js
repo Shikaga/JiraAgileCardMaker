@@ -25,10 +25,7 @@ SelectUtilities._populateSelect = function(select, array, valueKey, nameKey) {
 	for (var i=0; i < array.length; i++) {
 		var value = array[i][valueKey];
 		var name = array[i][nameKey];
-		var option;
-		option = document.createElement("option");
-		option.setAttribute("value", value);
-		option.innerHTML = name;
+		var option = this._createOption(value, name);
 		select.appendChild(option);
 	}
 }
