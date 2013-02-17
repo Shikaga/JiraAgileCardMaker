@@ -38,7 +38,6 @@ JiraApiHandler.prototype.isParentLoaded = function (card) {
 };
 
 JiraApiHandler.prototype.parentsNotLoaded = function () {
-	debugger;
 	var parentsNotLoaded = [];
 	for (var index in this.jiraMap) {
 		var card = this.jiraMap[index];
