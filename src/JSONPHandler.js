@@ -1,5 +1,5 @@
 JiraApiHandler.prototype.requestRapidSprints = function(sprintId) {
-
+	this.showLoadingIndicator();
 //https://jira.caplin.com/rest/greenhopper/latest/sprint/10/issues
 	var callbackName = this.getCallbackName();
 	//https://jira.caplin.com/rest/greenhopper/latest/sprints/11
@@ -11,6 +11,7 @@ JiraApiHandler.prototype.requestRapidSprints = function(sprintId) {
 }
 
 JiraApiHandler.prototype.requestRapidViews = function() {
+	this.showLoadingIndicator();
 	//https://jira.caplin.com/rest/greenhopper/latest/rapidviews/list
 	var callbackName = this.getCallbackName();
 	var jiraUrl = this.baseUrl + "/rest/greenhopper/latest/rapidviews/list" + "?jsonp-callback=" + callbackName;
@@ -21,6 +22,7 @@ JiraApiHandler.prototype.requestRapidViews = function() {
 }
 
 JiraApiHandler.prototype.requestProjects = function() {
+	this.showLoadingIndicator();
 	//https://jira.springsource.org/rest/api/latest/project
 	var callbackName = this.getCallbackName();
 	var jiraUrl = this.baseUrl + "/rest/api/latest/project" + "?jsonp-callback=" + callbackName;
@@ -31,6 +33,7 @@ JiraApiHandler.prototype.requestProjects = function() {
 }
 
 JiraApiHandler.prototype.requestFixVersions = function(project) {
+	this.showLoadingIndicator();
 	//https://jira.springsource.org/rest/api/latest/project/BATCH/versions
 	var callbackName = this.getCallbackName();
 	var jiraUrl = this.baseUrl + "/rest/api/latest/project/" + project + "/versions" + "?jsonp-callback=" + callbackName;
@@ -43,6 +46,7 @@ JiraApiHandler.prototype.requestFixVersions = function(project) {
 
 
 JiraApiHandler.prototype.requestFixVersion = function(project, fixversion) {
+	this.showLoadingIndicator();
 	var callbackName = this.getCallbackName();
 	if (project != "" && fixversion != "") {
 		jiraUrl = this.baseUrl + "/rest/api/latest/search?jql=project=" + project + "%20AND%20fixversion=" + fixversion + "&fields=key&jsonp-callback=" + callbackName + "&maxResults=1000";
@@ -60,6 +64,7 @@ JiraApiHandler.prototype.requestFixVersion = function(project, fixversion) {
 };
 
 JiraApiHandler.prototype.requestJira = function(jiraId) {
+	this.showLoadingIndicator();
 	var callbackName = this.getCallbackName();
 	var jiraUrl = this.baseUrl + "/rest/api/latest/issue/" + jiraId + "?jsonp-callback="+callbackName;
 	var scriptElement = document.createElement("script");
@@ -78,4 +83,10 @@ JiraApiHandler.prototype.getCallbackName = function() {
 		delete window[callbackName];
 	}.bind(this);
 	return callbackName
+}
+
+
+JiraApiHandler.prototype.showLoadingIndicator= function() {
+	var li = document.getElementById("loading");
+	li.style.display = "block";
 }

@@ -96,6 +96,7 @@ this.callbacksReceived++;
 };
 
 JiraApiHandler.prototype.processJiraData = function(jiraData) {
+	this.hideLoadingIndicator();
 	if (jiraData.length == 0)
 	{
 		alert('No data was returned! Are there any Jiras in this bucket?');
@@ -151,3 +152,8 @@ JiraApiHandler.prototype.renderCardsIfReady = function () {
 		this.listener.onIssuesAvailable(this.chosenIssues, this.jiraMap);
 	}
 };
+
+JiraApiHandler.prototype.hideLoadingIndicator = function() {
+	var li = document.getElementById("loading");
+	li.style.display = "none";
+}
