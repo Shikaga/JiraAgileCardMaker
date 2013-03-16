@@ -100,13 +100,15 @@ function getJiras() {
 	}
 }
 
+function toggleOptions()
+{
+	var stageFour = document.getElementById("stageFour");
+	stageFour.style.display = "block";
+}
 
 function receiveJiraCallback(issues) {
 	var stageThree = document.getElementById("stageThree");
 	stageThree.style.display = "block";
-
-	var optionsPanel = document.getElementById("optionsPanel");
-	optionsPanel.style.display = "block";
 
 	clearTimeout(jiraRequestedTimeout);
 	issueChecklistUl = document.getElementById("jiraListUrl");

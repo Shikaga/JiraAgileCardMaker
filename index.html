@@ -24,21 +24,24 @@
 	<div style="min-height:100%" id="ticketManager">
 		<h1>Jira Ticket Generator</h1>
 
-		<div id="optionsPanel" style="display:none">
+		<div id="optionsPanel">
 			<!--<h2>Wizard</h2>
 			<input id="wizard" /><button onclick="wizard()">Wizard</button>-->
-			<h2>Options</h2>
-			<ul>
-				<li>Color Enabled: <input checked type="checkbox" id="color" onclick="drawExampleCard()" /></li>
-				<li>QR Code Enabled: <input checked type="checkbox" id="qrcode" onclick="drawExampleCard()" /></li>
-				<li>Show Parent Description: <input checked type="checkbox" id="parentdescription" onclick="drawExampleCard()"/></li>
-				<li>Show Component Description: <input checked type="checkbox" id="componentdescription" onclick="drawExampleCard()" /></li>
-				<li>Show Tag Description: <input type="checkbox" id="tagdescription" onclick="drawExampleCard()"/></li>
-				<li>Show Business Value: <input type="checkbox" id="businessvalue" onclick="drawExampleCard()"/></li>
-			</ul>
-			<div style="float:left; width: 50%">
+			<div style="width: 50%">
 				<div id = "example-card">
 				</div>
+			</div>
+			<button onclick="toggleOptions()">Show Options</button>
+			<div id="stageFour" style="display:none">
+				<h2>Options</h2>
+				<ul>
+					<li>Color Enabled: <input checked type="checkbox" id="color" onclick="drawExampleCard()" /></li>
+					<li>QR Code Enabled: <input checked type="checkbox" id="qrcode" onclick="drawExampleCard()" /></li>
+					<li>Show Parent Description: <input checked type="checkbox" id="parentdescription" onclick="drawExampleCard()"/></li>
+					<li>Show Component Description: <input checked type="checkbox" id="componentdescription" onclick="drawExampleCard()" /></li>
+					<li>Show Tag Description: <input type="checkbox" id="tagdescription" onclick="drawExampleCard()"/></li>
+					<li>Show Business Value: <input type="checkbox" id="businessvalue" onclick="drawExampleCard()"/></li>
+				</ul>
 			</div>
 		</div>
 		<div id="stageOne">
