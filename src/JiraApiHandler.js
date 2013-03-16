@@ -92,6 +92,10 @@ this.callbacksReceived++;
 };
 
 JiraApiHandler.prototype.processJiraData = function(jiraData) {
+	if (jiraData.length == 0)
+	{
+		alert('No data was returned! Are there any Jiras in this bucket?');
+	}
 	if (jiraData.views != null) {
 		this.processRapidBoardViews(jiraData);
 	} else if (jiraData.sprints != null) {
