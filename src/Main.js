@@ -63,6 +63,11 @@ function getUrlType(url) {
 	}
 }
 
+function setJiraLocation(url) {
+	document.getElementById("jiraLocation").value = url;
+	updateJiraNavigator();
+}
+
 function getJiraFromUrl(url) {
 	return url.split("/browse/")[1];
 }
@@ -97,6 +102,12 @@ function getJiras() {
 
 
 function receiveJiraCallback(issues) {
+	var stageThree = document.getElementById("stageThree");
+	stageThree.style.display = "block";
+
+	var optionsPanel = document.getElementById("optionsPanel");
+	optionsPanel.style.display = "block";
+
 	clearTimeout(jiraRequestedTimeout);
 	issueChecklistUl = document.getElementById("jiraListUrl");
 	var ich = new IssueChecklistHandler(issueChecklistUl, issues);
@@ -251,6 +262,9 @@ key('esc', function(){ showInterface(); });
 //
 var jiraNavigatorDiv = document.getElementById("jiraNavigator");
 function updateJiraNavigator() {
+	var stageTwo = document.getElementById("stageTwo");
+	stageTwo.style.display = "block";
+
 	var locationElement = document.getElementById("jiraLocation");
 	if (locationElement != null) {
 		var location = locationElement.value;
@@ -259,4 +273,4 @@ function updateJiraNavigator() {
 	}
 }
 
-updateJiraNavigator();
+//updateJiraNavigator();

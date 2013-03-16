@@ -24,12 +24,11 @@
 	<div style="min-height:100%" id="ticketManager">
 		<h1>Jira Ticket Generator</h1>
 
-		<div id="optionsPanel">
-			<h2>Wizard</h2>
-			<input id="wizard" /><button onclick="wizard()">Wizard</button>
+		<div id="optionsPanel" style="display:none">
+			<!--<h2>Wizard</h2>
+			<input id="wizard" /><button onclick="wizard()">Wizard</button>-->
 			<h2>Options</h2>
 			<ul>
-				<li>Jira Location : <input id="jiraLocation" value="https://jira.springsource.org" onchange="updateJiraNavigator()"/> </li>
 				<li>Color Enabled: <input checked type="checkbox" id="color" onclick="drawExampleCard()" /></li>
 				<li>QR Code Enabled: <input checked type="checkbox" id="qrcode" onclick="drawExampleCard()" /></li>
 				<li>Show Parent Description: <input checked type="checkbox" id="parentdescription" onclick="drawExampleCard()"/></li>
@@ -37,20 +36,24 @@
 				<li>Show Tag Description: <input type="checkbox" id="tagdescription" onclick="drawExampleCard()"/></li>
 				<li>Show Business Value: <input type="checkbox" id="businessvalue" onclick="drawExampleCard()"/></li>
 			</ul>
+			<div style="float:left; width: 50%">
+				<div id = "example-card">
+				</div>
+			</div>
 		</div>
-		<div>
+		<div id="stageOne">
+			<h2>Set your Jira Location</h2>
+			<input id="jiraLocation"/><button  onclick="updateJiraNavigator()">Go</button>
+			<br />
+			Examples : <button onclick="setJiraLocation('https://jira.caplin.com')">Caplin (private)</button>
+			<button onclick="setJiraLocation('https://jira.secondlife.com')">Second Life</button>
+			<button onclick="setJiraLocation('http://jira.codehaus.org')">JRuby</button>
+		</div>
+		<div id="stageTwo" style="display:none">
 			<h2>Select Project Type</h2>
-			<!--<ul>
-				<li>Wizard : <input id="wizard" value="https://jira.caplin.com/secure/RapidBoard.jspa?rapidView=11" style="width: 400px" />
-					<button onclick="wizard();">Generate</button>
-				</li>
-				<li>Project Name : <input id="project" /></li>
-				<li>Fix Version : <input id="fixversion" /></li>
-				<li>Sprint : <input id="rapidSprint"></li>
-			</ul>-->
 			<div id="jiraNavigator"></div>
 		</div>
-		<div style="float:left; width: 50%">
+		<div id="stageThree" style="float:left; width: 50%; display:none">
 			<h1>Jira List</h1>
 
 			<div class="list" id="jiraList">
@@ -59,10 +62,6 @@
 				</ul>
 			</div>
 			<button onClick="generateTickets()">Generate!</button>
-		</div>
-		<div style="float:left; width: 50%">
-			<div id = "example-card">
-			</div>
 		</div>
 		<div style="clear:both"></div>
 	</div>
