@@ -272,6 +272,7 @@ function updateJiraNavigator() {
 		var location = locationElement.value;
 		jn = new JiraNavigator(location);
 		jn.renderInElement(jiraNavigatorDiv);
+		jn.clearJiraList();
 	}
 }
 
