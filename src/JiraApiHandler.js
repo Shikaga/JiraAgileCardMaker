@@ -71,11 +71,15 @@ JiraApiHandler.prototype.processFixVersionsData = function(jiraData) {
 JiraApiHandler.prototype.processRapidBoardSprints = function(jiraData) {
 	var callbackName = this.getCallbackName();
 	var sprintId = RapidBoardHandler.getOpenSprintFromJSON(jiraData)[0];
-	jiraUrl = this.baseUrl + "/rest/greenhopper/latest/sprint/" + sprintId + "/issues?jsonp-callback=" + callbackName;
-	var scriptElement = document.createElement("script");
-	scriptElement.setAttribute("type", "text/javascript");
-	scriptElement.setAttribute("src", jiraUrl);
-	document.head.appendChild(scriptElement);
+	if (sprintId == undefined) {
+		alert("There appears to be no available data. You may need to login");
+	} else {
+		jiraUrl = this.baseUrl + "/rest/greenhopper/latest/sprint/" + sprintId + "/issues?jsonp-callback=" + callbackName;
+		var scriptElement = document.createElement("script");
+		scriptElement.setAttribute("type", "text/javascript");
+		scriptElement.setAttribute("src", jiraUrl);
+		document.head.appendChild(scriptElement);
+	}
 };
 
 JiraApiHandler.prototype.processRapidBoardSprint = function(jiraData) {
