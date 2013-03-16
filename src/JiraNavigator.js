@@ -26,7 +26,6 @@ JiraNavigator.prototype.render = function() {
 			this.renderElement.appendChild(document.createElement("br"));
 			this.renderElement.appendChild(this.projectDropDown);
 			if (this.fixVersionsDropDown != null ) {
-
 				this.renderElement.appendChild(document.createElement("br"));
 				this.renderElement.appendChild(this.fixVersionsDropDown);
 			}
@@ -58,6 +57,7 @@ JiraNavigator.prototype.onchange = function(dropdown) {
 	if (this.navigationTypes.value == "rapidboard") {
 		this.clearRapidViewsIfNecessary();
 	} else if (this.navigationTypes.value == "fixversion") {
+		this.clearJiraList();
 		this.clearFixViewIfNecessary();
 	} else if (this.navigationTypes.value == "jiras") {
 		this.showIndividualJirasField();
@@ -151,6 +151,11 @@ JiraNavigator.prototype.receiveFixVersionsData = function(views) {
 
 JiraNavigator.prototype.receiveJiraCallback = function(jiras) {
 	receiveJiraCallback(jiras);
+}
+
+JiraNavigator.prototype.clearJiraList = function(jiras) {
+	var stageThree = document.getElementById("stageThree");
+	stageThree.style.display = "none";
 }
 
 JiraNavigator.prototype.setJira = function(jira) {
