@@ -162,6 +162,9 @@ JiraApiHandler.prototype.hideLoadingIndicator = function() {
 JiraApiHandler.prototype.showLoadingIndicator= function() {
 	var li = document.getElementById("loading");
 	li.style.display = "block";
+	if (typeof timeoutCallback !== "undefined") {
+		clearTimeout(timeoutCallback);
+	}
 	timeoutCallback = setTimeout(function() {
 		alert("Haven't received any data in 5 seconds. Something may have failed");
 	}, 5000);
