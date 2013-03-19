@@ -84,9 +84,3 @@ JiraApiHandler.prototype.getCallbackName = function() {
 	}.bind(this);
 	return callbackName
 }
-
-
-JiraApiHandler.prototype.showLoadingIndicator= function() {
-	var li = document.getElementById("loading");
-	li.style.display = "block";
-}

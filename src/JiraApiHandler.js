@@ -156,4 +156,13 @@ JiraApiHandler.prototype.renderCardsIfReady = function () {
 JiraApiHandler.prototype.hideLoadingIndicator = function() {
 	var li = document.getElementById("loading");
 	li.style.display = "none";
+	clearTimeout(timeoutCallback);
+}
+
+JiraApiHandler.prototype.showLoadingIndicator= function() {
+	var li = document.getElementById("loading");
+	li.style.display = "block";
+	timeoutCallback = setTimeout(function() {
+		alert("Haven't received any data in 5 seconds. Something may have failed");
+	}, 5000);
 }

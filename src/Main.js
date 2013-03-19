@@ -273,7 +273,6 @@ key('esc', function(){ showInterface(); });
 var jiraNavigatorDiv = document.getElementById("jiraNavigator");
 
 function updateJiraNavigator() {
-	debugger;
 	var locationElement = document.getElementById("jiraLocation");
 	if (locationElement != null) {
 		var location = locationElement.value;
