@@ -103,7 +103,15 @@ function getJiras() {
 function toggleOptions()
 {
 	var stageFour = document.getElementById("stageFour");
-	stageFour.style.display = "block";
+	var toggleOptionsButton = document.getElementById("toggleOptionsButton");
+	if (stageFour.style.display == "none") {
+		stageFour.style.display = "block";
+		toggleOptionsButton.innerHTML = "Hide Options";
+	} else {
+		stageFour.style.display = "none";
+		toggleOptionsButton.innerHTML = "Show Options";
+	}
+
 }
 
 function receiveJiraCallback(issues) {
