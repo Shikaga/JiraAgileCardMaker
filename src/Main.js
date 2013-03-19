@@ -271,13 +271,21 @@ key('esc', function(){ showInterface(); });
 
 //
 var jiraNavigatorDiv = document.getElementById("jiraNavigator");
-function updateJiraNavigator() {
-	var stageTwo = document.getElementById("stageTwo");
-	stageTwo.style.display = "block";
 
+function updateJiraNavigator() {
+	debugger;
 	var locationElement = document.getElementById("jiraLocation");
 	if (locationElement != null) {
 		var location = locationElement.value;
+
+		if (location == "") {
+			alert("You need to set a valid Jira Location")
+			jn = null;
+			return;
+		}
+
+		var stageTwo = document.getElementById("stageTwo");
+		stageTwo.style.display = "block";
 		jn = new JiraNavigator(location);
 		jn.renderInElement(jiraNavigatorDiv);
 		jn.clearJiraList();

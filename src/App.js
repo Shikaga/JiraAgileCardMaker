@@ -9,6 +9,10 @@
 var jira = {};
 
 jira.App = function (element, baseUrl, fixVersion, color, qrcode, parentEnabled, componentEnabled, tagEnabled, businessValue) {
+	if (baseUrl == "") {
+		alert("You need to set a valid Jira Location")
+		return;
+	}
 	this.baseUrl = baseUrl;
 	this.element = element;
 	this.colorEnabled = color;
