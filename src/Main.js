@@ -124,6 +124,7 @@ function receiveJiraCallback(issues) {
 }
 
 function generateTickets() {
+	window.location.hash = "#tickets";
 	var jiraUrl = document.getElementById("jiraLocation").value;
 	var jiraChecklists = document.getElementsByClassName("jiracheck");
 	var checklistToDisplay = getChecked("jiracheck");
@@ -254,11 +255,6 @@ function showInterface() {
 	interf.style.display = "block";
 }
 
-setConfigFromCookies();
-drawExampleCard();
-key('esc', function(){ showInterface(); });
-
-
 //Greenhopper data
 
 //https://jira.caplin.com/secure/RapidBoard.jspa?rapidView=11
@@ -291,4 +287,12 @@ function updateJiraNavigator() {
 	}
 }
 
+
+setConfigFromCookies();
+drawExampleCard();
+window.onhashchange = function() {
+	if (window.location.hash !== "#tickets") {
+		showInterface();
+	}
+}
 //updateJiraNavigator();
