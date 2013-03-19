@@ -15,23 +15,28 @@ JiraNavigator.prototype.renderInElement = function(element) {
 
 JiraNavigator.prototype.render = function() {
 	this.renderElement.innerHTML = "";
+	this.renderElement.appendChild(document.createTextNode("Select Jiras by : "));
 	this.renderElement.appendChild(this.navigationTypes);
 	if (this.navigationTypes.value == "rapidboard") {
 		if (this.viewDropDown != null) {
 			this.renderElement.appendChild(document.createElement("br"));
+			this.renderElement.appendChild(document.createTextNode("Select RapidBoard : "));
 			this.renderElement.appendChild(this.viewDropDown);
 		}
 	} else if (this.navigationTypes.value == "fixversion") {
 		if (this.projectDropDown != null) {
 			this.renderElement.appendChild(document.createElement("br"));
+			this.renderElement.appendChild(document.createTextNode("Select Project: "));
 			this.renderElement.appendChild(this.projectDropDown);
 			if (this.fixVersionsDropDown != null ) {
 				this.renderElement.appendChild(document.createElement("br"));
+				this.renderElement.appendChild(document.createTextNode("Select Sprint: "));
 				this.renderElement.appendChild(this.fixVersionsDropDown);
 			}
 		}
 	} else if (this.navigationTypes.value == "jiras") {
 		this.renderElement.appendChild(document.createElement("br"));
+		this.renderElement.appendChild(document.createTextNode("Enter Jira IDs seperated by comma: "));
 		this.renderElement.appendChild(this.jirasField);
 	}
 }
@@ -106,7 +111,7 @@ JiraNavigator.prototype.getNavigationTypes = function(projects) {
 	select.onchange = function() {self.onchange(this)};
 
 	select.appendChild(SelectUtilities._createNoneOption());
-	select.appendChild(SelectUtilities._createOption("fixversion", "FixVersion"));
+	select.appendChild(SelectUtilities._createOption("fixversion", "Sprint"));
 	select.appendChild(SelectUtilities._createOption("rapidboard", "Rapid Board"));
 	select.appendChild(SelectUtilities._createOption("jiras", "Comma Seperated Jiras"));
 
