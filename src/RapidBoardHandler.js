@@ -19,5 +19,22 @@ RapidBoardHandler.getOpenSprintFromJSON = function(json) {
 
 RapidBoardHandler.getJirasFromJSON = function(json) {
 	var object = json;
-	return object.contents.issueKeys;
+	//There are two different APIs, handle both
+	if (typeof object.contents.issueKeys !== "undefined") {
+		return object.contents.issueKeys;	
+	} else {
+		var issues = [];
+		issues = issues.concat(RapidBoardHandler.getArrayOfIssueIdsFromArrayOfIssueObjects(object.contents.completedIssues));
+		issues = issues.concat(RapidBoardHandler.getArrayOfIssueIdsFromArrayOfIssueObjects(object.contents.incompletedIssues));
+		issues = issues.concat(RapidBoardHandler.getArrayOfIssueIdsFromArrayOfIssueObjects(object.contents.puntedIssues));
+		return issues;
+	}
+}
+
+RapidBoardHandler.getArrayOfIssueIdsFromArrayOfIssueObjects = function(issueObjects) {
+	var stringArray = [];
+	for (var i=0; i < issueObjects.length; i++) {
+		stringArray.push(issueObjects[i].key)
+	}
+	return stringArray;
 }

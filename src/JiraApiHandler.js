@@ -79,6 +79,13 @@ JiraApiHandler.prototype.processRapidBoardSprints = function(jiraData) {
 		scriptElement.setAttribute("type", "text/javascript");
 		scriptElement.setAttribute("src", jiraUrl);
 		document.head.appendChild(scriptElement);
+
+		//There are two different APIs, try them both
+		jiraUrl = this.baseUrl + "/rest/greenhopper/latest/rapid/charts/sprintreport?rapidViewId=2&sprintId=3&jsonp-callback=" + callbackName;
+		var scriptElement = document.createElement("script");
+		scriptElement.setAttribute("type", "text/javascript");
+		scriptElement.setAttribute("src", jiraUrl);
+		document.head.appendChild(scriptElement);
 	}
 };
 
@@ -106,6 +113,7 @@ JiraApiHandler.prototype.processJiraData = function(jiraData) {
 	} else if (jiraData.sprints != null) {
 		this.processRapidBoardSprints(jiraData);
 	} else if (jiraData.contents != null) {
+		debugger;
 		this.processRapidBoardSprint(jiraData);
 	} else if (jiraData.issues != null) {
 		this.processCardsData(jiraData);
