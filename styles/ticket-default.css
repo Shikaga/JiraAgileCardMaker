@@ -82,6 +82,10 @@
 	color: white;
 }
 
+.color.Front_End .key {
+    background-color: #6c3;
+}
+
 /* parts of the card */
 
 .titleElement {
