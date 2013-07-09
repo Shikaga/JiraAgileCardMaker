@@ -71,7 +71,7 @@ JiraNavigator.prototype.onchange = function(dropdown) {
 }
 
 JiraNavigator.prototype.updateJiraListWithIndividualJiras = function() {
-	var jiras = this.jirasField.value.split(",");
+	var jiras = this.jirasField.value.split(",").map(function(jira) { return jira.trim()});
 	this.receiveJiraCallback(jiras);
 }
 
