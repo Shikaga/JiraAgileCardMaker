@@ -11,7 +11,8 @@
 	<script type="text/javascript" src="src/Card.js"></script>
 	<script type="text/javascript" src="src/IssueChecklistHandler.js"></script>
 	<script type="text/javascript" src="src/RapidBoardHandler.js"></script>
-	<script type="text/javascript" src="src/JiraNavigator.js"></script>
+    <script type="text/javascript" src="src/JiraNavigator.js"></script>
+    <script type="text/javascript" src="src/JiraApi.js"></script>
 
 
 	<link rel="stylesheet" type="text/css" href="styles/style.css">
@@ -46,6 +47,8 @@
 		</div>
 		<div id="stageOne">
 			<h2>Set your Jira Location</h2>
+            Username: <input id="username"/><br />
+            Password: <input type="password" id="password"/><br />
 			Jira Location : <input id="jiraLocation" style="width:300px"/><button onclick="updateJiraNavigator()">Go</button>
 			<br />
 			Examples : <button onclick="setJiraLocation('https://jira.caplin.com')">Caplin (private)</button>

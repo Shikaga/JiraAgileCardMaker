@@ -1,4 +1,7 @@
 var JiraApiHandler = function(jiraUrl, listener) {
+    var username = document.getElementById("username").value;
+    var password = document.getElementById("password").value;
+    this.jiraApi = new JiraApi(jiraUrl, true, username, password);
 	this.baseUrl = jiraUrl;
 	this.listener = listener;
 	this.jiraMap = {};
@@ -74,18 +77,7 @@ JiraApiHandler.prototype.processRapidBoardSprints = function(jiraData) {
 	if (sprintId == undefined) {
 		alert("There appears to be no available data. You may need to login");
 	} else {
-		jiraUrl = this.baseUrl + "/rest/greenhopper/latest/sprint/" + sprintId + "/issues?jsonp-callback=" + callbackName;
-		var scriptElement = document.createElement("script");
-		scriptElement.setAttribute("type", "text/javascript");
-		scriptElement.setAttribute("src", jiraUrl);
-		document.head.appendChild(scriptElement);
-
-		//There are two different APIs, try them both
-		jiraUrl = this.baseUrl + "/rest/greenhopper/latest/rapid/charts/sprintreport?rapidViewId=2&sprintId=3&jsonp-callback=" + callbackName;
-		var scriptElement = document.createElement("script");
-		scriptElement.setAttribute("type", "text/javascript");
-		scriptElement.setAttribute("src", jiraUrl);
-		document.head.appendChild(scriptElement);
+	    this.jiraApi.getGreenhopperSprint(function(data) {window[callbackName](data)}, jiraData.rapidViewId, sprintId);
 	}
 };
 
