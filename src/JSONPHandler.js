@@ -14,7 +14,7 @@ JiraApiHandler.prototype.requestRapidViews = function() {
 
 JiraApiHandler.prototype.requestProjects = function() {
 	this.showLoadingIndicator();
-	var callbackName = this.getCallbackName();
+	var callbackName = this.getCallbackName(); 
     this.jiraApi.getProjects(function(data) {window[callbackName](data)});
 }
 
