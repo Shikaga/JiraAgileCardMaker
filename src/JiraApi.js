@@ -8,6 +8,8 @@ var JiraApi = function(domain, json, username, password) {
 	this.domain = domain
     this.jsonApiUrl = this.domain + "/rest/api/latest/";
     this.jsonGreenhopperApiUrl = this.domain + "/rest/greenhopper/latest/";
+
+    this.jch = new JiraCommunicationHandler(domain, username, password);
 }
 
 JiraApi.getRandomString = function() {
@@ -60,36 +62,10 @@ JiraApi.prototype.getGreenhopperSprint = function(callback, rapidViewId, sprintI
 
 JiraApi.prototype.getData = function(callback, type, isGreenhopper) {
 
-    var randomFunctionName = JiraApi.getRandomFunction(callback);
-    if (type.indexOf("?") == -1) {
-        var callbackAppend = "?jsonp-callback=" + randomFunctionName;
-    } else {
-        var callbackAppend = "&jsonp-callback=" + randomFunctionName;
-    }
     var requestUrl = this.jsonApiUrl + type;
     if (isGreenhopper === true) {
         requestUrl = this.jsonGreenhopperApiUrl + type;
     }
 
-    if (this.dataType === "jsonp") {
-        $.ajax({
-            type: "GET",
-            url: requestUrl + callbackAppend,
-            contentType: "application/javascript; charset=utf-8",
-            dataType: "jsonp",
-            success: function (data) { },
-            error: function (errormessage) { }
-        });
-    } else {
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", "https://cors-anywhere.herokuapp.com/" + requestUrl)
-        var authHeader = "Basic "+btoa(this.username + ":" + this.password);
-        xhr.setRequestHeader("Authorization", authHeader);
-        xhr.setRequestHeader("x-requested-with", "love");
-        xhr.send();
-        xhr.onload = function(response) {
-            var data = JSON.parse(response.target.response);
-            callback(data);
-        };
-    }
+    this.jch.getData(callback, requestUrl);
 }
