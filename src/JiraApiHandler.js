@@ -73,13 +73,18 @@ JiraApiHandler.prototype.processFixVersionsData = function(jiraData) {
 
 JiraApiHandler.prototype.processRapidBoardSprints = function(jiraData) {
 	var callbackName = this.getCallbackName();
-	var sprintId = RapidBoardHandler.getOpenSprintFromJSON(jiraData)[0];
-	if (sprintId == undefined) {
+	var sprintIds = RapidBoardHandler.getOpenSprintsFromJSON(jiraData);
+	if (sprintIds == undefined || sprintIds.length == 0) {
 		alert("There appears to be no available data. You may need to login");
 	} else {
-	    this.jiraApi.getGreenhopperSprint(function(data) {window[callbackName](data)}, jiraData.rapidViewId, sprintId);
+        this.listener.receiveOpenRapidBoardSprints(sprintIds);
 	}
 };
+
+JiraApiHandler.prototype.getRapidBoardSprint = function(viewId, sprintId) {
+    var callbackName = this.getCallbackName();
+    this.jiraApi.getGreenhopperSprint(function(data) {window[callbackName](data)}, viewId, sprintId);
+}
 
 JiraApiHandler.prototype.processRapidBoardSprint = function(jiraData) {
 	var issues = RapidBoardHandler.getJirasFromJSON(jiraData);
@@ -105,7 +110,6 @@ JiraApiHandler.prototype.processJiraData = function(jiraData) {
 	} else if (jiraData.sprints != null) {
 		this.processRapidBoardSprints(jiraData);
 	} else if (jiraData.contents != null) {
-		debugger;
 		this.processRapidBoardSprint(jiraData);
 	} else if (jiraData.issues != null) {
 		this.processCardsData(jiraData);

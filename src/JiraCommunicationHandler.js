@@ -89,8 +89,6 @@ JiraCommunicationHandler.prototype.getDataWithJSON = function(callback, requestU
 
 }
 
-
-
 JiraCommunicationHandler.prototype.setAuthorizationHeader = function(xhr) {
     var authHeader = "Basic "+btoa(this.username + ":" + this.password);
     xhr.setRequestHeader("Authorization", authHeader);

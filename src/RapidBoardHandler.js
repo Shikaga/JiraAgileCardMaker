@@ -5,13 +5,13 @@ RapidBoardHandler.getSprintIfFromURL = function(url) {
 	return url.split("=")[1];
 }
 
-RapidBoardHandler.getOpenSprintFromJSON = function(json) {
+RapidBoardHandler.getOpenSprintsFromJSON = function(json) {
 	var object = json;
 	var sprints = object.sprints;
 	var openSprintIds = [];
 	for (var i=0; i < sprints.length; i++) {
 		if (sprints[i].closed == false) {
-			openSprintIds.push(sprints[i].id.toString());
+			openSprintIds.push({name: sprints[i].name, id: sprints[i].id.toString()});
 		}
 	}
 	return openSprintIds;
