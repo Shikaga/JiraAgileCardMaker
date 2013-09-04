@@ -284,6 +284,8 @@ function updateJiraNavigator() {
 		jn = new JiraNavigator(location);
 		jn.renderInElement(jiraNavigatorDiv);
 		jn.clearJiraList();
+
+		ko.applyBindings(jn);
 	}
 }
 
@@ -295,4 +297,3 @@ window.onhashchange = function() {
 		showInterface();
 	}
 }
-//updateJiraNavigator();

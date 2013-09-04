@@ -1,6 +1,22 @@
 var JiraNavigator = function(jiraUrl) {
+	this._noneOptionArray = [{value: "none", text: "None"}];
+	this.selectionMethod = {
+		value: ko.observable(),
+		visible: ko.observable(true),
+		options: this._noneOptionArray.concat(this.getNavigationTypes()),
+		change: function() {
+			var value = this.selectionMethod.value().value
+			if (value == "rapidboard") {
+				this.clearRapidViewsIfNecessary();
+			} else if (value == "fixversion") {
+				this.clearJiraList();
+				this.clearFixViewIfNecessary();
+			} else if (value == "jiras") {
+				this.showIndividualJirasField();
+			}
+		}
+	}
 	this.renderElement = null;
-	this.navigationTypes = this.getNavigationTypes();
 	this.viewDropDown = null;
 	this.projectDropDown = null;
 	this.fixVersionsDropDown = null;
@@ -15,35 +31,35 @@ JiraNavigator.prototype.renderInElement = function(element) {
 
 JiraNavigator.prototype.render = function() {
 	this.renderElement.innerHTML = "";
-	this.renderElement.appendChild(document.createTextNode("Select Jiras by : "));
-	this.renderElement.appendChild(this.navigationTypes);
-	if (this.navigationTypes.value == "rapidboard") {
-		if (this.viewDropDown != null) {
+	if (this.selectionMethod.value()) {
+		if (this.selectionMethod.value().value == "rapidboard") {
+			if (this.viewDropDown != null) {
 
-			this.renderElement.appendChild(document.createElement("br"));
-			this.renderElement.appendChild(document.createTextNode("Select RapidBoard : "));
-			this.renderElement.appendChild(this.viewDropDown);
-            if (this.openRapidBoardSprintDropDown != null) {
-                this.renderElement.appendChild(document.createElement("br"));
-                this.renderElement.appendChild(document.createTextNode("Select RapidBoard Sprint: "));
-                this.renderElement.appendChild(this.openRapidBoardSprintDropDown);
-            }
-		}
-	} else if (this.navigationTypes.value == "fixversion") {
-		if (this.projectDropDown != null) {
-			this.renderElement.appendChild(document.createElement("br"));
-			this.renderElement.appendChild(document.createTextNode("Select Project: "));
-			this.renderElement.appendChild(this.projectDropDown);
-			if (this.fixVersionsDropDown != null ) {
 				this.renderElement.appendChild(document.createElement("br"));
-				this.renderElement.appendChild(document.createTextNode("Select Sprint: "));
-				this.renderElement.appendChild(this.fixVersionsDropDown);
+				this.renderElement.appendChild(document.createTextNode("Select RapidBoard : "));
+				this.renderElement.appendChild(this.viewDropDown);
+				if (this.openRapidBoardSprintDropDown != null) {
+					this.renderElement.appendChild(document.createElement("br"));
+					this.renderElement.appendChild(document.createTextNode("Select RapidBoard Sprint: "));
+					this.renderElement.appendChild(this.openRapidBoardSprintDropDown);
+				}
 			}
+		} else if (this.selectionMethod.value().value == "fixversion") {
+			if (this.projectDropDown != null) {
+				this.renderElement.appendChild(document.createElement("br"));
+				this.renderElement.appendChild(document.createTextNode("Select Project: "));
+				this.renderElement.appendChild(this.projectDropDown);
+				if (this.fixVersionsDropDown != null ) {
+					this.renderElement.appendChild(document.createElement("br"));
+					this.renderElement.appendChild(document.createTextNode("Select Sprint: "));
+					this.renderElement.appendChild(this.fixVersionsDropDown);
+				}
+			}
+		} else if (this.selectionMethod.value().value == "jiras") {
+			this.renderElement.appendChild(document.createElement("br"));
+			this.renderElement.appendChild(document.createTextNode("Enter Jira IDs seperated by comma: "));
+			this.renderElement.appendChild(this.jirasField);
 		}
-	} else if (this.navigationTypes.value == "jiras") {
-		this.renderElement.appendChild(document.createElement("br"));
-		this.renderElement.appendChild(document.createTextNode("Enter Jira IDs seperated by comma: "));
-		this.renderElement.appendChild(this.jirasField);
 	}
 }
 
@@ -64,17 +80,18 @@ JiraNavigator.prototype.onchange = function(dropdown) {
 		this.fixVersionsDropDown = null;
 	}
 
-	console.log(this.navigationTypes.value)
-	if (this.navigationTypes.value == "rapidboard") {
+	console.log(this.selectionMethod.value().value)
+	if (this.selectionMethod.value().value == "rapidboard") {
 		this.clearRapidViewsIfNecessary();
-	} else if (this.navigationTypes.value == "fixversion") {
+	} else if (this.selectionMethod.value().value == "fixversion") {
 		this.clearJiraList();
 		this.clearFixViewIfNecessary();
-	} else if (this.navigationTypes.value == "jiras") {
+	} else if (this.selectionMethod.value().value == "jiras") {
 		this.showIndividualJirasField();
 	}
 	this.render();
 }
+
 
 JiraNavigator.prototype.updateJiraListWithIndividualJiras = function() {
 	var jiras = this.jirasField.value.split(",").map(function(jira) { return jira.trim()});
@@ -113,19 +130,12 @@ JiraNavigator.prototype.showIndividualJirasField = function() {
 	this.jirasField = input;
 }
 
-JiraNavigator.prototype.getNavigationTypes = function(projects) {
-	var select = document.createElement("select");
-	select.name = "navigationTypes";
-	select.style.width = "300px";
-	var self = this;
-	select.onchange = function() {self.onchange(this)};
-
-	select.appendChild(SelectUtilities._createNoneOption());
-	select.appendChild(SelectUtilities._createOption("fixversion", "Sprint"));
-	select.appendChild(SelectUtilities._createOption("rapidboard", "Rapid Board"));
-	select.appendChild(SelectUtilities._createOption("jiras", "Comma Seperated Jiras"));
-
-	return select;
+JiraNavigator.prototype.getNavigationTypes = function() {
+	return [
+		{value: "fixversion", text: "Sprint"},
+		{value: "rapidboard", text: "Rapid Board"},
+		{value: "jiras", text: "Comma Seperated Jiras"}
+	];
 }
 
 JiraNavigator.prototype.getProjectDropDown = function(projects) {

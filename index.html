@@ -14,7 +14,8 @@
     <script type="text/javascript" src="src/JiraNavigator.js"></script>
     <script type="text/javascript" src="src/JiraApi.js"></script>
     <script type="text/javascript" src="src/JiraCommunicationHandler.js"></script>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript" src="lib/knockout.js"></script>
 
 
 	<link rel="stylesheet" type="text/css" href="styles/style.css">
@@ -59,6 +60,7 @@
 		</div>
 		<div id="stageTwo" style="display:none">
 			<h2>Select Jiras</h2>
+			<select data-bind="visible: selectionMethod.visible, options: selectionMethod.options, optionsText: 'text', value: selectionMethod.value, event: {change: selectionMethod.change}"></select>
 			<div id="jiraNavigator"></div>
 		</div>
 		<div id="stageThree" style="float:left; width: 50%; display:none">
