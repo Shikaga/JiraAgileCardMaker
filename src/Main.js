@@ -138,7 +138,10 @@ function generateTickets() {
 	var businessValue = document.getElementById("businessvalue").checked;
 
 	oApp = new jira.App(document.getElementById('tickets'), jiraUrl, null, color, qrcode, parentDescription, componentDescription, tagDescription, businessValue);
-	oApp.requestIssues(checklistToDisplay);
+    setTimeout(function() {
+        oApp.requestIssues(checklistToDisplay);
+    },3000);
+
 }
 
 function drawExampleCard() {
