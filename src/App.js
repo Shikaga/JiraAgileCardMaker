@@ -23,12 +23,11 @@ jira.App = function (element, baseUrl, fixVersion, color, qrcode, parentEnabled,
 	this.businessValue = businessValue;
 	this.cardsAdded = 0;
 	this.currentPage = null;
+    this.issueRequester = new JiraApiHandler(this.baseUrl, this);
 };
 
 jira.App.prototype.requestIssues = function(selectedIssueIds) {
 	this.selectedIssueIds = selectedIssueIds;
-
-	this.issueRequester = new JiraApiHandler(this.baseUrl, this);
 	this.issueRequester.requestIssues(selectedIssueIds);
 };
 
