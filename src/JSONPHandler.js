@@ -4,10 +4,7 @@ JiraApiHandler.prototype.requestRapidSprints = function(sprintId) {
 	var callbackName = this.getCallbackName();
 	//https://jira.caplin.com/rest/greenhopper/latest/sprints/11
 	jiraUrl = this.baseUrl + "/rest/greenhopper/latest/sprints/" + sprintId + "?jsonp-callback=" + callbackName;
-	var scriptElement = document.createElement("script");
-	scriptElement.setAttribute("type", "text/javascript");
-	scriptElement.setAttribute("src", jiraUrl);
-	document.head.appendChild(scriptElement);
+	this.jiraApi.jch.getData(window[callbackName], jiraUrl);
 }
 
 JiraApiHandler.prototype.requestRapidViews = function() {
@@ -15,10 +12,7 @@ JiraApiHandler.prototype.requestRapidViews = function() {
 	//https://jira.caplin.com/rest/greenhopper/latest/rapidviews/list
 	var callbackName = this.getCallbackName();
 	var jiraUrl = this.baseUrl + "/rest/greenhopper/latest/rapidviews/list" + "?jsonp-callback=" + callbackName;
-	var scriptElement = document.createElement("script");
-	scriptElement.setAttribute("type", "text/javascript");
-	scriptElement.setAttribute("src", jiraUrl);
-	document.head.appendChild(scriptElement);
+	this.jiraApi.jch.getData(window[callbackName], jiraUrl);
 }
 
 JiraApiHandler.prototype.requestProjects = function() {
@@ -26,10 +20,7 @@ JiraApiHandler.prototype.requestProjects = function() {
 	//https://jira.springsource.org/rest/api/latest/project
 	var callbackName = this.getCallbackName();
 	var jiraUrl = this.baseUrl + "/rest/api/latest/project" + "?jsonp-callback=" + callbackName;
-	var scriptElement = document.createElement("script");
-	scriptElement.setAttribute("type", "text/javascript");
-	scriptElement.setAttribute("src", jiraUrl);
-	document.head.appendChild(scriptElement);
+	this.jiraApi.jch.getData(window[callbackName], jiraUrl);
 }
 
 JiraApiHandler.prototype.requestFixVersions = function(project) {
@@ -37,10 +28,7 @@ JiraApiHandler.prototype.requestFixVersions = function(project) {
 	//https://jira.springsource.org/rest/api/latest/project/BATCH/versions
 	var callbackName = this.getCallbackName();
 	var jiraUrl = this.baseUrl + "/rest/api/latest/project/" + project + "/versions" + "?jsonp-callback=" + callbackName;
-	var scriptElement = document.createElement("script");
-	scriptElement.setAttribute("type", "text/javascript");
-	scriptElement.setAttribute("src", jiraUrl);
-	document.head.appendChild(scriptElement);
+	this.jiraApi.jch.getData(window[callbackName], jiraUrl);
 }
 
 
@@ -50,11 +38,8 @@ JiraApiHandler.prototype.requestFixVersion = function(project, fixversion) {
 	var callbackName = this.getCallbackName();
 	if (project != "" && fixversion != "") {
 		jiraUrl = this.baseUrl + "/rest/api/latest/search?jql=project=" + project + "%20AND%20fixversion=" + fixversion + "&fields=key&jsonp-callback=" + callbackName + "&maxResults=1000";
+		this.jiraApi.jch.getData(window[callbackName], jiraUrl);
 
-		var scriptElement = document.createElement("script");
-		scriptElement.setAttribute("type", "text/javascript");
-		scriptElement.setAttribute("src", jiraUrl);
-		document.head.appendChild(scriptElement);
 		jiraRequestedTimeout = setTimeout(function () {
 			alert("The Jira's have not loaded after 2 seconds. Are you sure you are logged in?");
 		}, 2000);
@@ -67,10 +52,7 @@ JiraApiHandler.prototype.requestJira = function(jiraId) {
 	this.showLoadingIndicator();
 	var callbackName = this.getCallbackName();
 	var jiraUrl = this.baseUrl + "/rest/api/latest/issue/" + jiraId + "?jsonp-callback="+callbackName;
-	var scriptElement = document.createElement("script");
-	scriptElement.setAttribute("type", "text/javascript");
-	scriptElement.setAttribute("src", jiraUrl);
-	document.head.appendChild(scriptElement);
+	this.jiraApi.jch.getData(window[callbackName], jiraUrl);
 };
 
 JiraApiHandler.prototype.getCallbackName = function() {
