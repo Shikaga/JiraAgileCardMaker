@@ -66,46 +66,17 @@ var JiraNavigator = function(jiraUrl) {
 JiraNavigator.prototype.handleSelectionMethodChanged = function() {
 	var value = this.selectionMethod.value().value
 	if (value == "rapidboard") {
-		this.clearRapidViewsIfNecessary();
+		this.jah.requestRapidViews();
 	} else if (value == "fixversion") {
-		this.clearJiraList();
-		this.clearFixViewIfNecessary();
+		this.jah.requestProjects();
 	} else if (value == "jiras") {
-		this.showIndividualJirasField();
+		this.csvJirasField.visible(true);
 	}
 }
 
 JiraNavigator.prototype.updateJiraListWithIndividualJiras = function() {
 	var jiras = this.csvJirasField.value().split(",").map(λ("_.trim()"));
 	this.receiveJiraCallback(jiras);
-}
-
-JiraNavigator.prototype.clearRapidViewsIfNecessary = function() {
-	if (this.viewDropDown != null && this.viewDropDown.value != "None") {
-		if (this.openRapidBoardSprintDropDown != null && this.openRapidBoardSprintDropDown.value != "None") {
-			this.jah.getRapidBoardSprint(this.viewDropDown.value, this.openRapidBoardSprintDropDown.value);
-		} else {
-			this.jah.requestRapidSprints(this.viewDropDown.value);
-		}
-	} else {
-		this.jah.requestRapidViews();
-	}
-}
-
-JiraNavigator.prototype.clearFixViewIfNecessary = function() {
-	if (this.projectDropDown != null && this.projectDropDown.value != "None") {
-		if (this.fixVersionsDropDown != null && this.fixVersionsDropDown.value != "None") {
-			this.jah.requestFixVersion(this.projectDropDown.value, this.fixVersionsDropDown.value);
-		} else {
-			this.jah.requestFixVersions(this.projectDropDown.value);
-		}
-	} else {
-		this.jah.requestProjects();
-	}
-}
-
-JiraNavigator.prototype.showIndividualJirasField = function() {
-	this.csvJirasField.visible(true);
 }
 
 JiraNavigator.prototype.getNavigationTypes = function() {
@@ -136,26 +107,14 @@ JiraNavigator.prototype.receiveOpenRapidBoardSprints = function(ids) {
 	this.setDropDown(this.rapidBoardSprintsDropDown.options, ids, "id", "name")
 }
 
+JiraNavigator.prototype.receiveJiraCallback = function(jiras) {
+	receiveJiraCallback(jiras);
+}
+
 JiraNavigator.prototype.setDropDown = function(dropDown, views, value, text) {
 	dropDown.splice(0,dropDown().length);
 	dropDown.push(this._noneOption);
 	views.forEach(function(view) {
 		dropDown.push({value: view[value], text: view[text]});
 	}.bind(this));
-}
-
-JiraNavigator.prototype.receiveJiraCallback = function(jiras) {
-	receiveJiraCallback(jiras);
-}
-
-JiraNavigator.prototype.clearJiraList = function(jiras) {
-	var stageThree = document.getElementById("stageThree");
-	stageThree.style.display = "none";
-}
-
-JiraNavigator.prototype.setJira = function(jira) {
-	this.navigationTypes.selectedIndex = 3;
-	this.onchange(this);
-	this.jirasField.value = jira;
-	this.onchange(this.jirasField);
 }
