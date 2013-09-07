@@ -63,7 +63,16 @@ var JiraNavigator = function(jiraUrl) {
 	this.jah = new JiraApiHandler(jiraUrl, this);
 }
 
+JiraNavigator.prototype.hideAllDropDown = function() {
+	this.projectsDropDown.visible(false);
+	this.sprintsDropDown.visible(false);
+	this.rapidBoardsDropDown.visible(false);
+	this.rapidBoardSprintsDropDown.visible(false);
+	this.csvJirasField.visible(false);
+}
+
 JiraNavigator.prototype.handleSelectionMethodChanged = function() {
+	this.hideAllDropDown();
 	var value = this.selectionMethod.value().value
 	if (value == "rapidboard") {
 		this.jah.requestRapidViews();
@@ -106,6 +115,12 @@ JiraNavigator.prototype.receiveOpenRapidBoardSprints = function(ids) {
 	this.rapidBoardSprintsDropDown.visible(true);
 	this.setDropDown(this.rapidBoardSprintsDropDown.options, ids, "id", "name")
 }
+
+JiraNavigator.prototype.clearJiraList = function(jiras) {
+	var stageThree = document.getElementById("stageThree");
+	stageThree.style.display = "none";
+}
+
 
 JiraNavigator.prototype.receiveJiraCallback = function(jiras) {
 	receiveJiraCallback(jiras);

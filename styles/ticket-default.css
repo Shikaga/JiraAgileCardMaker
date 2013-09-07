@@ -11,6 +11,10 @@
 	font-size: 250%;
 }
 
+select {
+	display: block;
+}
+
 .ticket {
 	background-color: white;
 	margin: auto;
