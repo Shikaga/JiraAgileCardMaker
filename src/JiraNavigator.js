@@ -121,7 +121,6 @@ JiraNavigator.prototype.clearJiraList = function(jiras) {
 	stageThree.style.display = "none";
 }
 
-
 JiraNavigator.prototype.receiveJiraCallback = function(jiras) {
 	receiveJiraCallback(jiras);
 }
