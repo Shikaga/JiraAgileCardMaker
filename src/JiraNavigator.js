@@ -10,11 +10,6 @@ var JiraNavigator = function(jiraUrl) {
 		options: this._noneOptionArray.concat(this.getNavigationTypes()),
 		change: this.handleSelectionMethodChanged
 	}
-	this.renderElement = null;
-	this.viewDropDown = null;
-	this.projectDropDown = null;
-	this.fixVersionsDropDown = null;
-	this.jirasField = null;
 	this.jah = new JiraApiHandler(jiraUrl, this);
 	this.fvn = new FixVersionNavigator(jiraUrl, this);
 	this.rbn = new RapidBoardNavigator(jiraUrl, this);
