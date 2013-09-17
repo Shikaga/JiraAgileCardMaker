@@ -286,11 +286,10 @@ function updateJiraNavigator() {
 
 		var stageTwo = document.getElementById("stageTwo");
 		stageTwo.style.display = "block";
+		
 		jn = new JiraNavigator(location);
-		//jn.renderInElement(jiraNavigatorDiv);
 		jn.clearJiraList();
-
-		ko.applyBindings(jn);
+		jn.init();
 	}
 }
 

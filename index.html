@@ -10,8 +10,11 @@
 	<script type="text/javascript" src="src/JSONPHandler.js"></script>
 	<script type="text/javascript" src="src/Card.js"></script>
 	<script type="text/javascript" src="src/IssueChecklistHandler.js"></script>
+	<script type="text/javascript" src="src/JiraNavigator.js"></script>
 	<script type="text/javascript" src="src/RapidBoardHandler.js"></script>
-    <script type="text/javascript" src="src/JiraNavigator.js"></script>
+	<script type="text/javascript" src="src/FixVersionNavigator.js"></script>
+	<script type="text/javascript" src="src/RapidBoardNavigator.js"></script>
+	<script type="text/javascript" src="src/CSVNavigator.js"></script>
     <script type="text/javascript" src="src/JiraApi.js"></script>
     <script type="text/javascript" src="src/JiraCommunicationHandler.js"></script>
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
@@ -50,8 +53,8 @@
 		</div>
 		<div id="stageOne">
 			<h2>Set your Jira Location</h2>
-            Username: <input id="username" value=""/><br />
-            Password: <input type="password" id="password" value=""/><br />
+            Username: <input id="username" value="jonp"/><br />
+            Password: <input type="password" id="password" value="Kwer44tres!"/><br />
 			Jira Location : <input id="jiraLocation" style="width:300px"/><button onclick="updateJiraNavigator()">Go</button>
 			<br />
 			Examples : <button onclick="setJiraLocation('https://jira.caplin.com')">Caplin (private)</button>
@@ -60,12 +63,12 @@
 		</div>
 		<div id="stageTwo" style="display:none">
 			<h2>Select Jiras</h2>
-			<select data-bind="visible: selectionMethod.visible, options: selectionMethod.options, optionsText: 'text', value: selectionMethod.value, event: {change: selectionMethod.change}"></select>
-			<select data-bind="visible: projectsDropDown.visible, options: projectsDropDown.options, optionsText: 'text', value: projectsDropDown.value, event: {change: projectsDropDown.change}"></select>
-			<select data-bind="visible: sprintsDropDown.visible, options: sprintsDropDown.options, optionsText: 'text', value: sprintsDropDown.value, event: {change: sprintsDropDown.change}"></select>
-			<select data-bind="visible: rapidBoardsDropDown.visible, options: rapidBoardsDropDown.options, optionsText: 'text', value: rapidBoardsDropDown.value, event: {change: rapidBoardsDropDown.change}"></select>
-			<select data-bind="visible: rapidBoardSprintsDropDown.visible, options: rapidBoardSprintsDropDown.options, optionsText: 'text', value: rapidBoardSprintsDropDown.value, event: {change: rapidBoardSprintsDropDown.change}"></select>
-			<input data-bind="visible: csvJirasField.visible, value: csvJirasField.value, valueUpdate: 'afterkeydown', event: {keyup: csvJirasField.change}">
+			<select id="selectionMethod" data-bind="visible: selectionMethod.visible, options: selectionMethod.options, optionsText: 'text', value: selectionMethod.value, event: {change: selectionMethod.change}"></select>
+			<select id="projectsDropDown" data-bind="visible: projectsDropDown.visible, options: projectsDropDown.options, optionsText: 'text', value: projectsDropDown.value, event: {change: projectsDropDown.change}"></select>
+			<select id="sprintsDropDown" data-bind="visible: sprintsDropDown.visible, options: sprintsDropDown.options, optionsText: 'text', value: sprintsDropDown.value, event: {change: sprintsDropDown.change}"></select>
+			<select id="rapidBoardsDropDown" data-bind="visible: rapidBoardsDropDown.visible, options: rapidBoardsDropDown.options, optionsText: 'text', value: rapidBoardsDropDown.value, event: {change: rapidBoardsDropDown.change}"></select>
+			<select id="rapidBoardSprintsDropDown" data-bind="visible: rapidBoardSprintsDropDown.visible, options: rapidBoardSprintsDropDown.options, optionsText: 'text', value: rapidBoardSprintsDropDown.value, event: {change: rapidBoardSprintsDropDown.change}"></select>
+			<input id="csvJiras" data-bind="visible: csvJirasField.visible, value: csvJirasField.value, valueUpdate: 'afterkeydown', event: {keyup: csvJirasField.change}">
 
 			<div id="jiraNavigator"></div>
 		</div>

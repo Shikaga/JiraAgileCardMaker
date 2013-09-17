@@ -1,59 +1,14 @@
+_noneOption = {value: "none", text: "None"};
+_noneOptionArray = [this._noneOption];
+
 var JiraNavigator = function(jiraUrl) {
-	this._noneOption = {value: "none", text: "None"};
-	this._noneOptionArray = [this._noneOption];
+	this._noneOption = _noneOption;
+	this._noneOptionArray = _noneOptionArray;
 	this.selectionMethod = {
 		value: ko.observable(),
 		visible: ko.observable(true),
 		options: this._noneOptionArray.concat(this.getNavigationTypes()),
 		change: this.handleSelectionMethodChanged
-	}
-	this.projectsDropDown = {
-		value: ko.observable(),
-		visible: ko.observable(false),
-		options: ko.observableArray(),
-		change: function() {
-			if (this.projectsDropDown.value().value !== "none") {
-				this.jah.requestFixVersions(this.projectsDropDown.value().value);
-			}
-		}
-	}
-	this.sprintsDropDown = {
-		value: ko.observable(),
-		visible: ko.observable(false),
-		options: ko.observableArray(),
-		change: function() {
-			if (this.sprintsDropDown.value().value !== "none") {
-				this.jah.requestFixVersion(this.projectsDropDown.value().value,this.sprintsDropDown.value().value);
-			}
-		}
-	}
-	this.rapidBoardsDropDown = {
-		value: ko.observable(),
-		visible: ko.observable(false),
-		options: ko.observableArray(),
-		change: function() {
-			if (this.rapidBoardsDropDown.value().value !== "none") {
-				this.jah.requestRapidSprints(this.rapidBoardsDropDown.value().value);
-			}
-		}
-	}
-	this.rapidBoardSprintsDropDown = {
-		value: ko.observable(),
-		visible: ko.observable(false),
-		options: ko.observableArray(),
-		change: function() {
-			if (this.rapidBoardSprintsDropDown.value().value !== "none") {
-				this.jah.getRapidBoardSprint(this.rapidBoardsDropDown.value().value, this.rapidBoardSprintsDropDown.value().value);
-			}
-		}
-	}
-	this.csvJirasField = {
-		value: ko.observable(),
-		visible: ko.observable(false),
-		change: function() {
-			this.updateJiraListWithIndividualJiras();
-			return
-		}
 	}
 	this.renderElement = null;
 	this.viewDropDown = null;
@@ -61,31 +16,34 @@ var JiraNavigator = function(jiraUrl) {
 	this.fixVersionsDropDown = null;
 	this.jirasField = null;
 	this.jah = new JiraApiHandler(jiraUrl, this);
+	this.fvn = new FixVersionNavigator(jiraUrl, this);
+	this.rbn = new RapidBoardNavigator(jiraUrl, this);
+	this.csvn = new CSVNavigator(jiraUrl, this);
+}
+
+JiraNavigator.prototype.init = function() {
+	ko.applyBindingsToNode(document.getElementById("selectionMethod"), null, this);
+	this.fvn.init();
+	this.rbn.init();
+	this.csvn.init();
 }
 
 JiraNavigator.prototype.hideAllDropDown = function() {
-	this.projectsDropDown.visible(false);
-	this.sprintsDropDown.visible(false);
-	this.rapidBoardsDropDown.visible(false);
-	this.rapidBoardSprintsDropDown.visible(false);
-	this.csvJirasField.visible(false);
+	this.fvn.hideAll();
+	this.rbn.hideAll();
+	this.csvn.hideAll();
 }
 
 JiraNavigator.prototype.handleSelectionMethodChanged = function() {
 	this.hideAllDropDown();
 	var value = this.selectionMethod.value().value
 	if (value == "rapidboard") {
-		this.jah.requestRapidViews();
+		this.rbn.requestTopLevelData();
 	} else if (value == "fixversion") {
-		this.jah.requestProjects();
+		this.fvn.requestTopLevelData();
 	} else if (value == "jiras") {
-		this.csvJirasField.visible(true);
+		this.csvn.requestTopLevelData();
 	}
-}
-
-JiraNavigator.prototype.updateJiraListWithIndividualJiras = function() {
-	var jiras = this.csvJirasField.value().split(",").map(λ("_.trim()"));
-	this.receiveJiraCallback(jiras);
 }
 
 JiraNavigator.prototype.getNavigationTypes = function() {
@@ -94,26 +52,6 @@ JiraNavigator.prototype.getNavigationTypes = function() {
 		{value: "rapidboard", text: "Rapid Board"},
 		{value: "jiras", text: "Comma Seperated Jiras"}
 	];
-}
-
-JiraNavigator.prototype.receiveRapidBoardViews = function(views) {
-	this.rapidBoardsDropDown.visible(true);
-	this.setDropDown(this.rapidBoardsDropDown.options, views.views, "id", "name");
-}
-
-JiraNavigator.prototype.receiveProjectData = function(views) {
-	this.projectsDropDown.visible(true);
-	this.setDropDown(this.projectsDropDown.options, views, "key", "name");
-}
-
-JiraNavigator.prototype.receiveFixVersionsData = function(views) {
-	this.sprintsDropDown.visible(true);
-	this.setDropDown(this.sprintsDropDown.options, views, "id", "name");
-}
-
-JiraNavigator.prototype.receiveOpenRapidBoardSprints = function(ids) {
-	this.rapidBoardSprintsDropDown.visible(true);
-	this.setDropDown(this.rapidBoardSprintsDropDown.options, ids, "id", "name")
 }
 
 JiraNavigator.prototype.clearJiraList = function(jiras) {
@@ -125,9 +63,9 @@ JiraNavigator.prototype.receiveJiraCallback = function(jiras) {
 	receiveJiraCallback(jiras);
 }
 
-JiraNavigator.prototype.setDropDown = function(dropDown, views, value, text) {
+JiraNavigator.setDropDown = function(dropDown, views, value, text) {
 	dropDown.splice(0,dropDown().length);
-	dropDown.push(this._noneOption);
+	dropDown.push(_noneOption);
 	views.forEach(function(view) {
 		dropDown.push({value: view[value], text: view[text]});
 	}.bind(this));
