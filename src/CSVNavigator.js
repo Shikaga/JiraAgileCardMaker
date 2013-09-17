@@ -12,6 +12,10 @@ var CSVNavigator = function(jiraUrl, jiraNavigator) {
 	}
 }
 
+CSVNavigator.prototype.getDisplayName = function() {
+	return "Comma Seperated Jiras";
+}
+
 CSVNavigator.prototype.requestTopLevelData = function() {
 	this.csvJirasField.visible(true);
 }

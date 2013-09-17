@@ -4,6 +4,12 @@ _noneOptionArray = [this._noneOption];
 var JiraNavigator = function(jiraUrl) {
 	this._noneOption = _noneOption;
 	this._noneOptionArray = _noneOptionArray;
+
+	this.navigatorMap = {};
+	this.navigatorMap["fixversion"] = new FixVersionNavigator(jiraUrl, this);
+	this.navigatorMap["rapidboard"] = new RapidBoardNavigator(jiraUrl, this);
+	this.navigatorMap["jiras"] = new CSVNavigator(jiraUrl, this);
+
 	this.selectionMethod = {
 		value: ko.observable(),
 		visible: ko.observable(true),
@@ -11,42 +17,39 @@ var JiraNavigator = function(jiraUrl) {
 		change: this.handleSelectionMethodChanged
 	}
 	this.jah = new JiraApiHandler(jiraUrl, this);
-	this.fvn = new FixVersionNavigator(jiraUrl, this);
-	this.rbn = new RapidBoardNavigator(jiraUrl, this);
-	this.csvn = new CSVNavigator(jiraUrl, this);
 }
 
 JiraNavigator.prototype.init = function() {
 	ko.applyBindingsToNode(document.getElementById("selectionMethod"), null, this);
-	this.fvn.init();
-	this.rbn.init();
-	this.csvn.init();
+	for (var key in this.navigatorMap) {
+		var navigator = this.navigatorMap[key];
+		navigator.init();
+	}
 }
 
 JiraNavigator.prototype.hideAllDropDown = function() {
-	this.fvn.hideAll();
-	this.rbn.hideAll();
-	this.csvn.hideAll();
+	for (var key in this.navigatorMap) {
+		var navigator = this.navigatorMap[key];
+		navigator.hideAll();
+	}
 }
 
 JiraNavigator.prototype.handleSelectionMethodChanged = function() {
 	this.hideAllDropDown();
 	var value = this.selectionMethod.value().value
-	if (value == "rapidboard") {
-		this.rbn.requestTopLevelData();
-	} else if (value == "fixversion") {
-		this.fvn.requestTopLevelData();
-	} else if (value == "jiras") {
-		this.csvn.requestTopLevelData();
+	var navigator = this.navigatorMap[value];
+	if (navigator !== undefined) {
+		navigator.requestTopLevelData();
 	}
 }
 
 JiraNavigator.prototype.getNavigationTypes = function() {
-	return [
-		{value: "fixversion", text: "Sprint"},
-		{value: "rapidboard", text: "Rapid Board"},
-		{value: "jiras", text: "Comma Seperated Jiras"}
-	];
+	var returnArray = [];
+	for (var key in this.navigatorMap) {
+		var navigator = this.navigatorMap[key];
+		returnArray.push({value: key, text: navigator.getDisplayName()});
+	}
+	return returnArray;
 }
 
 JiraNavigator.prototype.clearJiraList = function(jiras) {

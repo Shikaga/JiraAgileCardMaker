@@ -23,6 +23,10 @@ var FixVersionNavigator = function(jiraUrl, jiraNavigator) {
 	}
 }
 
+FixVersionNavigator.prototype.getDisplayName = function() {
+	return "Sprint";
+}
+
 FixVersionNavigator.prototype.init = function() {
 	ko.applyBindingsToNode(document.getElementById("projectsDropDown"), null, this);
 	ko.applyBindingsToNode(document.getElementById("sprintsDropDown"), null, this);

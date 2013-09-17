@@ -23,6 +23,10 @@ var RapidBoardNavigator = function(jiraUrl, jiraNavigator) {
 	}
 }
 
+RapidBoardNavigator.prototype.getDisplayName = function() {
+	return "Rapid Board";
+}
+
 RapidBoardNavigator.prototype.requestTopLevelData = function() {
 	this.jah.requestRapidViews();
 }
