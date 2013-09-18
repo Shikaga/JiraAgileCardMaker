@@ -8,7 +8,8 @@ var JiraNavigator = function(jiraUrl) {
 	this.navigatorMap = {};
 	this.navigatorMap["fixversion"] = new FixVersionNavigator(jiraUrl, this);
 	this.navigatorMap["rapidboard"] = new RapidBoardNavigator(jiraUrl, this);
-	this.navigatorMap["jiras"] = new CSVNavigator(jiraUrl, this);
+    this.navigatorMap["jiras"] = new CSVNavigator(jiraUrl, this);
+    this.navigatorMap["xboard"] = new XBoardNavigator(jiraUrl, this);
 
 	this.selectionMethod = {
 		value: ko.observable(),

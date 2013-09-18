@@ -1,56 +1,56 @@
-var RapidBoardNavigator = function(jiraUrl, jiraNavigator) {
+var XBoardNavigator = function(jiraUrl, jiraNavigator) {
 	this.jiraNavigator = jiraNavigator;
 	this.jah = new JiraApiHandler(jiraUrl, this);
-	this.rapidBoardsDropDown = {
+	this.xBoardIdField = {
 		value: ko.observable(),
 		visible: ko.observable(false),
 		options: ko.observableArray(),
 		change: function() {
-			if (this.rapidBoardsDropDown.value().value !== "none") {
-				this.jah.requestRapidSprints(this.rapidBoardsDropDown.value().value);
-			}
+            debugger;
+			this.jah.requestXBoard(this.xBoardIdField.value());
 		}
 	}
-	this.rapidBoardSprintsDropDown = {
-		value: ko.observable(),
-		visible: ko.observable(false),
-		options: ko.observableArray(),
-		change: function() {
-			if (this.rapidBoardSprintsDropDown.value().value !== "none") {
-				this.jah.getRapidBoardSprint(this.rapidBoardsDropDown.value().value, this.rapidBoardSprintsDropDown.value().value);
-			}
-		}
-	}
+//	this.rapidBoardSprintsDropDown = {
+//		value: ko.observable(),
+//		visible: ko.observable(false),
+//		options: ko.observableArray(),
+//		change: function() {
+//			if (this.rapidBoardSprintsDropDown.value().value !== "none") {
+//				this.jah.getRapidBoardSprint(this.rapidBoardsDropDown.value().value, this.rapidBoardSprintsDropDown.value().value);
+//			}
+//		}
+//	}
 }
 
-RapidBoardNavigator.prototype.getDisplayName = function() {
-	return "Rapid Board";
+XBoardNavigator.prototype.getDisplayName = function() {
+	return "XBoard";
 }
 
-RapidBoardNavigator.prototype.requestTopLevelData = function() {
-	this.jah.requestRapidViews();
+XBoardNavigator.prototype.requestTopLevelData = function() {
+    this.xBoardIdField.visible(true);
 }
 
-RapidBoardNavigator.prototype.init = function() {
-	ko.applyBindingsToNode(document.getElementById("rapidBoardsDropDown"), null, this);
-	ko.applyBindingsToNode(document.getElementById("rapidBoardSprintsDropDown"), null, this);
+XBoardNavigator.prototype.init = function() {
+	ko.applyBindingsToNode(document.getElementById("xBoardId"), null, this);
+//	ko.applyBindingsToNode(document.getElementById("rapidBoardSprintsDropDown"), null, this);
+}
+//
+//XBoardNavigator.prototype.receiveRapidBoardViews = function(views) {
+//	this.xBoardIdField.visible(true);
+//	JiraNavigator.setDropDown(this.xBoardIdField.options, views.views, "id", "name");
+//}
+//
+//XBoardNavigator.prototype.receiveOpenRapidBoardSprints = function(ids) {
+//	this.xBoardIdField.visible(true);
+//	JiraNavigator.setDropDown(this.xBoardIdField.options, ids, "id", "name")
+//}
+
+XBoardNavigator.prototype.hideAll = function() {
+	this.xBoardIdField.visible(false);
+//	this.rapidBoardSprintsDropDown.visible(false);
 }
 
-RapidBoardNavigator.prototype.receiveRapidBoardViews = function(views) {
-	this.rapidBoardsDropDown.visible(true);
-	JiraNavigator.setDropDown(this.rapidBoardsDropDown.options, views.views, "id", "name");
-}
-
-RapidBoardNavigator.prototype.receiveOpenRapidBoardSprints = function(ids) {
-	this.rapidBoardSprintsDropDown.visible(true);
-	JiraNavigator.setDropDown(this.rapidBoardSprintsDropDown.options, ids, "id", "name")
-}
-
-RapidBoardNavigator.prototype.hideAll = function() {
-	this.rapidBoardsDropDown.visible(false);
-	this.rapidBoardSprintsDropDown.visible(false);
-}
-
-RapidBoardNavigator.prototype.receiveJiraCallback = function(jiras) {
+XBoardNavigator.prototype.receiveJiraCallback = function(jiras) {
+    debugger;
 	this.jiraNavigator.receiveJiraCallback(jiras);
 }

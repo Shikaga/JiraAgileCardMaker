@@ -14,7 +14,8 @@
 	<script type="text/javascript" src="src/RapidBoardHandler.js"></script>
 	<script type="text/javascript" src="src/FixVersionNavigator.js"></script>
 	<script type="text/javascript" src="src/RapidBoardNavigator.js"></script>
-	<script type="text/javascript" src="src/CSVNavigator.js"></script>
+    <script type="text/javascript" src="src/CSVNavigator.js"></script>
+    <script type="text/javascript" src="src/XBoardNavigator.js"></script>
     <script type="text/javascript" src="src/JiraApi.js"></script>
     <script type="text/javascript" src="src/JiraCommunicationHandler.js"></script>
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
@@ -67,8 +68,9 @@
 			<select id="projectsDropDown" data-bind="visible: projectsDropDown.visible, options: projectsDropDown.options, optionsText: 'text', value: projectsDropDown.value, event: {change: projectsDropDown.change}"></select>
 			<select id="sprintsDropDown" data-bind="visible: sprintsDropDown.visible, options: sprintsDropDown.options, optionsText: 'text', value: sprintsDropDown.value, event: {change: sprintsDropDown.change}"></select>
 			<select id="rapidBoardsDropDown" data-bind="visible: rapidBoardsDropDown.visible, options: rapidBoardsDropDown.options, optionsText: 'text', value: rapidBoardsDropDown.value, event: {change: rapidBoardsDropDown.change}"></select>
-			<select id="rapidBoardSprintsDropDown" data-bind="visible: rapidBoardSprintsDropDown.visible, options: rapidBoardSprintsDropDown.options, optionsText: 'text', value: rapidBoardSprintsDropDown.value, event: {change: rapidBoardSprintsDropDown.change}"></select>
-			<input id="csvJiras" data-bind="visible: csvJirasField.visible, value: csvJirasField.value, valueUpdate: 'afterkeydown', event: {keyup: csvJirasField.change}">
+            <select id="rapidBoardSprintsDropDown" data-bind="visible: rapidBoardSprintsDropDown.visible, options: rapidBoardSprintsDropDown.options, optionsText: 'text', value: rapidBoardSprintsDropDown.value, event: {change: rapidBoardSprintsDropDown.change}"></select>
+            <input id="csvJiras" data-bind="visible: csvJirasField.visible, value: csvJirasField.value, valueUpdate: 'afterkeydown', event: {keyup: csvJirasField.change}">
+            <input id="xBoardId" data-bind="visible: xBoardIdField.visible, value: xBoardIdField.value, valueUpdate: 'afterkeydown', event: {blur: xBoardIdField.change}">
 
 			<div id="jiraNavigator"></div>
 		</div>
