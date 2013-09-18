@@ -117,6 +117,8 @@ JiraApiHandler.prototype.processJiraData = function(jiraData) {
 		this.processRapidBoardSprint(jiraData);
 	} else if (jiraData.epicData != null) {
         this.processXBoard(jiraData);
+    } else if (jiraData.views != null) {
+        this.processXBoards(jiraData);
     } else if (jiraData.issues != null) {
         this.processCardsData(jiraData);
     } else if (jiraData.length != undefined && jiraData[0].self.indexOf("project") != -1) {

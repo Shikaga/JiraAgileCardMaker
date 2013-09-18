@@ -1,12 +1,14 @@
 var XBoardNavigator = function(jiraUrl, jiraNavigator) {
 	this.jiraNavigator = jiraNavigator;
 	this.jah = new JiraApiHandler(jiraUrl, this);
-	this.xBoardIdField = {
+	this.xBoardDropDown = {
 		value: ko.observable(),
 		visible: ko.observable(false),
 		options: ko.observableArray(),
 		change: function() {
-			this.jah.requestXBoard(this.xBoardIdField.value());
+            if (this.xBoardDropDown.value().value !== "none") {
+                this.jah.requestXBoard(this.xBoardDropDown.value().value);
+            }
 		}
 	}
 	this.xBoardSprintsDropDown = {
@@ -31,16 +33,16 @@ XBoardNavigator.prototype.getDisplayName = function() {
 }
 
 XBoardNavigator.prototype.requestTopLevelData = function() {
-    this.xBoardIdField.visible(true);
+    this.jah.requestXBoards();
 }
 
 XBoardNavigator.prototype.init = function() {
-	ko.applyBindingsToNode(document.getElementById("xBoardId"), null, this);
+	ko.applyBindingsToNode(document.getElementById("xBoardDropDown"), null, this);
 	ko.applyBindingsToNode(document.getElementById("xBoardSprints"), null, this);
 }
 
 XBoardNavigator.prototype.hideAll = function() {
-	this.xBoardIdField.visible(false);
+	this.xBoardDropDown.visible(false);
     this.xBoardSprintsDropDown.visible(false);
 }
 
@@ -49,6 +51,12 @@ XBoardNavigator.prototype.receiveXBoardData = function(jiraData) {
     this.sprints = this.getSprints(jiraData);
     this.xBoardSprintsDropDown.visible(true);
     JiraNavigator.setDropDown(this.xBoardSprintsDropDown.options, this.sprints, "name", "name");
+}
+
+XBoardNavigator.prototype.receiveRapidBoardViews = function(jiraData) {
+    debugger;
+    this.xBoardDropDown.visible(true);
+    JiraNavigator.setDropDown(this.xBoardDropDown.options, jiraData.views, "id", "name");
 }
 
 XBoardNavigator.prototype.getSprints = function(jiraData) {

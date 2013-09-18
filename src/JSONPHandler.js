@@ -23,6 +23,14 @@ JiraApiHandler.prototype.requestXBoard = function(rapidViewId) {
     this.jiraApi.jch.getData(window[callbackName], jiraUrl);
 }
 
+JiraApiHandler.prototype.requestXBoards = function(rapidViewId) {
+    this.showLoadingIndicator();
+    //https://jira.caplin.com/rest/greenhopper/1.0/rapidviews/viewsData.json
+    var callbackName = this.getCallbackName();
+    var jiraUrl = this.baseUrl + "/rest/greenhopper/1.0/rapidviews/viewsData.json" + "?jsonp-callback=" + callbackName;
+    this.jiraApi.jch.getData(window[callbackName], jiraUrl);
+}
+
 JiraApiHandler.prototype.requestProjects = function() {
 	this.showLoadingIndicator();
 	//https://jira.springsource.org/rest/api/latest/project
