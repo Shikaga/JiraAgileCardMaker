@@ -91,6 +91,10 @@ JiraApiHandler.prototype.processRapidBoardSprint = function(jiraData) {
 	this.listener.receiveJiraCallback(issues);
 }
 
+JiraApiHandler.prototype.processXBoard = function(jiraData) {
+    this.listener.receiveXBoardData(jiraData);
+}
+
 JiraApiHandler.prototype.processCardData = function(jiraData) {
 this.callbacksReceived++;
 	this.jiraMap[jiraData.key] = this.getCard(jiraData);
@@ -111,9 +115,11 @@ JiraApiHandler.prototype.processJiraData = function(jiraData) {
 		this.processRapidBoardSprints(jiraData);
 	} else if (jiraData.contents != null) {
 		this.processRapidBoardSprint(jiraData);
-	} else if (jiraData.issues != null) {
-		this.processCardsData(jiraData);
-	} else if (jiraData.length != undefined && jiraData[0].self.indexOf("project") != -1) {
+	} else if (jiraData.epicData != null) {
+        this.processXBoard(jiraData);
+    } else if (jiraData.issues != null) {
+        this.processCardsData(jiraData);
+    } else if (jiraData.length != undefined && jiraData[0].self.indexOf("project") != -1) {
 		console.log(jiraData[0])
 		this.processProjectData(jiraData);
 	} else if (jiraData.length != undefined && jiraData[0].self.indexOf("version") != -1) {
