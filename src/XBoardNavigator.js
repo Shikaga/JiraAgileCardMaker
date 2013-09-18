@@ -60,14 +60,18 @@ XBoardNavigator.prototype.getSprints = function(jiraData) {
     for (var i=0; i < jiraData.markers.length; i++) {
         var marker = jiraData.markers[i];
         var sprint = {name: marker.name, jiras: []}
+        sprints.push(sprint);
         while (jiraData.issues.length !== 0){
+            if (marker.afterIssueKey === undefined) {
+                break;
+            }
             var jira = jiraData.issues.shift();
             sprint.jiras.push(jira.key);
             if (jira.key == marker.afterIssueKey) {
                 break
             }
         }
-        sprints.push(sprint);
+
     }
     sprints.push({name: "Backlog", jiras: this.getKeyFromIssue(jiraData.issues)});
     return sprints
