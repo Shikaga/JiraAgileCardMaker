@@ -15,20 +15,20 @@ JiraApiHandler.prototype.requestRapidViews = function() {
 	this.jiraApi.jch.getData(window[callbackName], jiraUrl);
 }
 
-JiraApiHandler.prototype.requestXBoard = function(rapidViewId) {
+JiraApiHandler.prototype.requestXBoard = function(rapidViewId, callback) {
     this.showLoadingIndicator();
+    
     //https://jira.caplin.com/rest/greenhopper/1.0/xboard/plan/backlog/data.json?rapidViewId=43
-    var callbackName = this.getCallbackName();
-    var jiraUrl = this.baseUrl + "/rest/greenhopper/1.0/xboard/plan/backlog/data.json?rapidViewId=" + rapidViewId + "&jsonp-callback=" + callbackName;
-    this.jiraApi.jch.getData(window[callbackName], jiraUrl);
+    var jiraUrl = this.baseUrl + "/rest/greenhopper/1.0/xboard/plan/backlog/data.json?rapidViewId=" + rapidViewId;
+    this.jiraApi.jch.getData(callback, jiraUrl);
 }
 
-JiraApiHandler.prototype.requestXBoards = function(rapidViewId) {
+JiraApiHandler.prototype.requestXBoards = function(callback) {
     this.showLoadingIndicator();
+
     //https://jira.caplin.com/rest/greenhopper/1.0/rapidviews/viewsData.json
-    var callbackName = this.getCallbackName();
-    var jiraUrl = this.baseUrl + "/rest/greenhopper/1.0/rapidviews/viewsData.json" + "?jsonp-callback=" + callbackName;
-    this.jiraApi.jch.getData(window[callbackName], jiraUrl);
+    var jiraUrl = this.baseUrl + "/rest/greenhopper/1.0/rapidviews/viewsData.json";
+    this.jiraApi.jch.getData(callback, jiraUrl);
 }
 
 JiraApiHandler.prototype.requestProjects = function() {

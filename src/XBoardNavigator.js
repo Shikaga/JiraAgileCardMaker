@@ -7,7 +7,7 @@ var XBoardNavigator = function(jiraUrl, jiraNavigator) {
 		options: ko.observableArray(),
 		change: function() {
             if (this.xBoardDropDown.value().value !== "none") {
-                this.jah.requestXBoard(this.xBoardDropDown.value().value);
+                this.jah.requestXBoard(this.xBoardDropDown.value().value, this.receiveXBoardData.bind(this));
             }
 		}
 	}
@@ -33,7 +33,7 @@ XBoardNavigator.prototype.getDisplayName = function() {
 }
 
 XBoardNavigator.prototype.requestTopLevelData = function() {
-    this.jah.requestXBoards();
+    this.jah.requestXBoards(this.receiveXBoardList.bind(this));
 }
 
 XBoardNavigator.prototype.init = function() {
@@ -53,8 +53,7 @@ XBoardNavigator.prototype.receiveXBoardData = function(jiraData) {
     JiraNavigator.setDropDown(this.xBoardSprintsDropDown.options, this.sprints, "name", "name");
 }
 
-XBoardNavigator.prototype.receiveRapidBoardViews = function(jiraData) {
-    debugger;
+XBoardNavigator.prototype.receiveXBoardList = function(jiraData) {
     this.xBoardDropDown.visible(true);
     JiraNavigator.setDropDown(this.xBoardDropDown.options, jiraData.views, "id", "name");
 }
