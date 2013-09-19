@@ -39,7 +39,9 @@ FixVersionNavigator.prototype.hideAll = function() {
 
 FixVersionNavigator.prototype.requestTopLevelData = function() {
     this.jah = new JiraApiHandler(this.jiraUrl, this);
-    this.jah.requestProjects();
+    this.jah.requestProjects(function(data) {
+        this.receiveProjectData(data);
+    }.bind(this));
 }
 
 FixVersionNavigator.prototype.receiveProjectData = function(views) {

@@ -31,12 +31,10 @@ JiraApiHandler.prototype.requestXBoards = function(callback) {
     this.jiraApi.jch.getData(callback, jiraUrl);
 }
 
-JiraApiHandler.prototype.requestProjects = function() {
-	this.showLoadingIndicator();
+JiraApiHandler.prototype.requestProjects = function(callback) {
 	//https://jira.springsource.org/rest/api/latest/project
-	var callbackName = this.getCallbackName();
-	var jiraUrl = this.baseUrl + "/rest/api/latest/project" + "?jsonp-callback=" + callbackName;
-	this.jiraApi.jch.getData(window[callbackName], jiraUrl);
+	var jiraUrl = this.baseUrl + "/rest/api/latest/project";
+	this.jiraApi.jch.getData(callback, jiraUrl);
 }
 
 JiraApiHandler.prototype.requestFixVersions = function(project) {
