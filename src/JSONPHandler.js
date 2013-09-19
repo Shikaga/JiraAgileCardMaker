@@ -1,18 +1,13 @@
-JiraApiHandler.prototype.requestRapidSprints = function(sprintId) {
-	this.showLoadingIndicator();
-//https://jira.caplin.com/rest/greenhopper/latest/sprint/10/issues
-	var callbackName = this.getCallbackName();
+JiraApiHandler.prototype.requestRapidSprints = function(sprintId, callback) {
 	//https://jira.caplin.com/rest/greenhopper/latest/sprints/11
-	jiraUrl = this.baseUrl + "/rest/greenhopper/latest/sprints/" + sprintId + "?jsonp-callback=" + callbackName;
-	this.jiraApi.jch.getData(window[callbackName], jiraUrl);
+	jiraUrl = this.baseUrl + "/rest/greenhopper/latest/sprints/" + sprintId;
+	this.jiraApi.jch.getData(callback, jiraUrl);
 }
 
-JiraApiHandler.prototype.requestRapidViews = function() {
-	this.showLoadingIndicator();
+JiraApiHandler.prototype.requestRapidViews = function(callback) {
 	//https://jira.caplin.com/rest/greenhopper/latest/rapidviews/list
-	var callbackName = this.getCallbackName();
-	var jiraUrl = this.baseUrl + "/rest/greenhopper/latest/rapidviews/list" + "?jsonp-callback=" + callbackName;
-	this.jiraApi.jch.getData(window[callbackName], jiraUrl);
+	var jiraUrl = this.baseUrl + "/rest/greenhopper/latest/rapidviews/list";
+	this.jiraApi.jch.getData(callback, jiraUrl);
 }
 
 JiraApiHandler.prototype.requestXBoard = function(rapidViewId, callback) {
@@ -49,9 +44,6 @@ JiraApiHandler.prototype.requestFixVersion = function(project, fixversion, callb
 	if (project != "" && fixversion != "") {
 		jiraUrl = this.baseUrl + "/rest/api/latest/search?jql=project=" + project + "%20AND%20fixversion=" + fixversion + "&fields=key&maxResults=1000";
 		this.jiraApi.jch.getData(callback, jiraUrl);
-//		jiraRequestedTimeout = setTimeout(function () {
-//			alert("The Jira's have not loaded after 2 seconds. Are you sure you are logged in?");
-//		}, 2000);
 	} else {
 		alert("You have not set the Project Name or Fix Version");
 	}

@@ -81,9 +81,8 @@ JiraApiHandler.prototype.processRapidBoardSprints = function(jiraData) {
 	}
 };
 
-JiraApiHandler.prototype.getRapidBoardSprint = function(viewId, sprintId) {
-    var callbackName = this.getCallbackName();
-    this.jiraApi.getGreenhopperSprint(function(data) {window[callbackName](data)}, viewId, sprintId);
+JiraApiHandler.prototype.getRapidBoardSprint = function(viewId, sprintId, callback) {
+    this.jiraApi.getGreenhopperSprint(callback, viewId, sprintId);
 }
 
 JiraApiHandler.prototype.processRapidBoardSprint = function(jiraData) {
@@ -168,7 +167,9 @@ JiraApiHandler.prototype.renderCardsIfReady = function () {
 JiraApiHandler.prototype.hideLoadingIndicator = function() {
 	var li = document.getElementById("loading");
 	li.style.display = "none";
-	clearTimeout(timeoutCallback);
+	if (typeof timeoutCallback !== "undefined") {
+		clearTimeout(timeoutCallback);
+	}
 }
 
 JiraApiHandler.prototype.showLoadingIndicator= function() {

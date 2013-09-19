@@ -7,7 +7,9 @@ var RapidBoardNavigator = function(jiraUrl, jiraNavigator) {
 		options: ko.observableArray(),
 		change: function() {
 			if (this.rapidBoardsDropDown.value().value !== "none") {
-				this.jah.requestRapidSprints(this.rapidBoardsDropDown.value().value);
+				this.jah.requestRapidSprints(this.rapidBoardsDropDown.value().value, function(data) {
+					this.receiveOpenRapidBoardSprints(data.sprints)
+				}.bind(this));
 			}
 		}
 	}
@@ -17,7 +19,10 @@ var RapidBoardNavigator = function(jiraUrl, jiraNavigator) {
 		options: ko.observableArray(),
 		change: function() {
 			if (this.rapidBoardSprintsDropDown.value().value !== "none") {
-				this.jah.getRapidBoardSprint(this.rapidBoardsDropDown.value().value, this.rapidBoardSprintsDropDown.value().value);
+				this.jah.getRapidBoardSprint(this.rapidBoardsDropDown.value().value, this.rapidBoardSprintsDropDown.value().value, function(data) {
+					var issues = RapidBoardHandler.getJirasFromJSON(data);
+					this.receiveJiraCallback(issues);
+				}.bind(this));
 			}
 		}
 	}
@@ -29,7 +34,9 @@ RapidBoardNavigator.prototype.getDisplayName = function() {
 
 RapidBoardNavigator.prototype.requestTopLevelData = function() {
     this.jah = new JiraApiHandler(this.jiraUrl, this);
-    this.jah.requestRapidViews();
+    this.jah.requestRapidViews(function(data) {
+		this.receiveRapidBoardViews(data);
+	}.bind(this));
 }
 
 RapidBoardNavigator.prototype.init = function() {
