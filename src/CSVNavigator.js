@@ -1,6 +1,6 @@
 var CSVNavigator = function(jiraUrl, jiraNavigator) {
 	this.jiraNavigator = jiraNavigator;
-	this.jah = new JiraApiHandler(jiraUrl, this);
+    this.jiraUrl = jiraUrl;
 
 	this.csvJirasField = {
 		value: ko.observable(),
@@ -17,7 +17,8 @@ CSVNavigator.prototype.getDisplayName = function() {
 }
 
 CSVNavigator.prototype.requestTopLevelData = function() {
-	this.csvJirasField.visible(true);
+    this.jah = new JiraApiHandler(this.jiraUrl, this);
+    this.csvJirasField.visible(true);
 }
 
 CSVNavigator.prototype.init = function() {

@@ -1,6 +1,6 @@
 var RapidBoardNavigator = function(jiraUrl, jiraNavigator) {
 	this.jiraNavigator = jiraNavigator;
-	this.jah = new JiraApiHandler(jiraUrl, this);
+    this.jiraUrl = jiraUrl;
 	this.rapidBoardsDropDown = {
 		value: ko.observable(),
 		visible: ko.observable(false),
@@ -28,7 +28,8 @@ RapidBoardNavigator.prototype.getDisplayName = function() {
 }
 
 RapidBoardNavigator.prototype.requestTopLevelData = function() {
-	this.jah.requestRapidViews();
+    this.jah = new JiraApiHandler(this.jiraUrl, this);
+    this.jah.requestRapidViews();
 }
 
 RapidBoardNavigator.prototype.init = function() {

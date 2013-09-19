@@ -1,6 +1,6 @@
 var FixVersionNavigator = function(jiraUrl, jiraNavigator) {
 	this.jiraNavigator = jiraNavigator;
-	this.jah = new JiraApiHandler(jiraUrl, this);
+    this.jiraUrl = jiraUrl;
 	this.projectsDropDown = {
 		value: ko.observable(),
 		visible: ko.observable(false),
@@ -38,7 +38,8 @@ FixVersionNavigator.prototype.hideAll = function() {
 }
 
 FixVersionNavigator.prototype.requestTopLevelData = function() {
-	this.jah.requestProjects();
+    this.jah = new JiraApiHandler(this.jiraUrl, this);
+    this.jah.requestProjects();
 }
 
 FixVersionNavigator.prototype.receiveProjectData = function(views) {

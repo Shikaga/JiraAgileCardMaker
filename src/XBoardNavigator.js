@@ -1,6 +1,6 @@
 var XBoardNavigator = function(jiraUrl, jiraNavigator) {
 	this.jiraNavigator = jiraNavigator;
-	this.jah = new JiraApiHandler(jiraUrl, this);
+    this.jiraUrl = jiraUrl;
 	this.xBoardDropDown = {
 		value: ko.observable(),
 		visible: ko.observable(false),
@@ -33,6 +33,7 @@ XBoardNavigator.prototype.getDisplayName = function() {
 }
 
 XBoardNavigator.prototype.requestTopLevelData = function() {
+    this.jah = new JiraApiHandler(this.jiraUrl, this);
     this.jah.requestXBoards(this.receiveXBoardList.bind(this));
 }
 
