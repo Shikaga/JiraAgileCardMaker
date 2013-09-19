@@ -37,26 +37,21 @@ JiraApiHandler.prototype.requestProjects = function(callback) {
 	this.jiraApi.jch.getData(callback, jiraUrl);
 }
 
-JiraApiHandler.prototype.requestFixVersions = function(project) {
-	this.showLoadingIndicator();
+JiraApiHandler.prototype.requestFixVersions = function(project, callback) {
 	//https://jira.springsource.org/rest/api/latest/project/BATCH/versions
-	var callbackName = this.getCallbackName();
-	var jiraUrl = this.baseUrl + "/rest/api/latest/project/" + project + "/versions" + "?jsonp-callback=" + callbackName;
-	this.jiraApi.jch.getData(window[callbackName], jiraUrl);
+	var jiraUrl = this.baseUrl + "/rest/api/latest/project/" + project + "/versions"
+	this.jiraApi.jch.getData(callback, jiraUrl);
 }
 
 
 
-JiraApiHandler.prototype.requestFixVersion = function(project, fixversion) {
-	this.showLoadingIndicator();
-	var callbackName = this.getCallbackName();
+JiraApiHandler.prototype.requestFixVersion = function(project, fixversion, callback) {
 	if (project != "" && fixversion != "") {
-		jiraUrl = this.baseUrl + "/rest/api/latest/search?jql=project=" + project + "%20AND%20fixversion=" + fixversion + "&fields=key&jsonp-callback=" + callbackName + "&maxResults=1000";
-		this.jiraApi.jch.getData(window[callbackName], jiraUrl);
-
-		jiraRequestedTimeout = setTimeout(function () {
-			alert("The Jira's have not loaded after 2 seconds. Are you sure you are logged in?");
-		}, 2000);
+		jiraUrl = this.baseUrl + "/rest/api/latest/search?jql=project=" + project + "%20AND%20fixversion=" + fixversion + "&fields=key&maxResults=1000";
+		this.jiraApi.jch.getData(callback, jiraUrl);
+//		jiraRequestedTimeout = setTimeout(function () {
+//			alert("The Jira's have not loaded after 2 seconds. Are you sure you are logged in?");
+//		}, 2000);
 	} else {
 		alert("You have not set the Project Name or Fix Version");
 	}

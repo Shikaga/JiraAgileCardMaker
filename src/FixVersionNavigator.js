@@ -7,7 +7,9 @@ var FixVersionNavigator = function(jiraUrl, jiraNavigator) {
 		options: ko.observableArray(),
 		change: function() {
 			if (this.projectsDropDown.value().value !== "none") {
-				this.jah.requestFixVersions(this.projectsDropDown.value().value);
+				this.jah.requestFixVersions(this.projectsDropDown.value().value, function(data) {
+					this.receiveFixVersionsData(data);
+				}.bind(this));
 			}
 		}
 	}
@@ -17,7 +19,9 @@ var FixVersionNavigator = function(jiraUrl, jiraNavigator) {
 		options: ko.observableArray(),
 		change: function() {
 			if (this.sprintsDropDown.value().value !== "none") {
-				this.jah.requestFixVersion(this.projectsDropDown.value().value,this.sprintsDropDown.value().value);
+				this.jah.requestFixVersion(this.projectsDropDown.value().value,this.sprintsDropDown.value().value, function(data) {
+					this.receiveJiraCallback(data.issues.map(λ("_.key")));
+				}.bind(this));
 			}
 		}
 	}
