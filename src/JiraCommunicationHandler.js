@@ -83,7 +83,11 @@ JiraCommunicationHandler.prototype.getDataWithJSONP = function(callback, request
 		contentType: "application/javascript; charset=utf-8",
 		dataType: "jsonp",
 		success: function (data) { },
-		error: function (errormessage) { callback("failed") }
+		error: function (errormessage) {
+            if (errormessage.status !== 200) {
+                callback("failed")
+            }
+        }
 	});
 }
 
