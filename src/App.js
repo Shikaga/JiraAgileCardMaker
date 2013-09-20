@@ -28,7 +28,9 @@ jira.App = function (element, baseUrl, fixVersion, color, qrcode, parentEnabled,
 
 jira.App.prototype.requestIssues = function(selectedIssueIds) {
 	this.selectedIssueIds = selectedIssueIds;
-	this.issueRequester.requestIssues(selectedIssueIds);
+	this.issueRequester.requestIssues(selectedIssueIds, function(issues, issueMap) {
+        this.onIssuesAvailable(issues, issueMap);
+    }.bind(this));
 };
 
 jira.App.prototype.onIssuesAvailable = function(issueIds, issueMap) {
