@@ -103,33 +103,7 @@ this.callbacksReceived++;
 };
 
 JiraApiHandler.prototype.processJiraData = function(jiraData) {
-	this.hideLoadingIndicator();
-	if (jiraData.length == 0)
-	{
-		alert('No data was returned! Are there any Jiras in this bucket?');
-	}
-	if (jiraData.views != null) {
-		this.processRapidBoardViews(jiraData);
-	} else if (jiraData.sprints != null) {
-		this.processRapidBoardSprints(jiraData);
-	} else if (jiraData.contents != null) {
-		this.processRapidBoardSprint(jiraData);
-	} else if (jiraData.epicData != null) {
-        this.processXBoard(jiraData);
-    } else if (jiraData.views != null) {
-        this.processXBoards(jiraData);
-    } else if (jiraData.issues != null) {
-        this.processCardsData(jiraData);
-    } else if (jiraData.length != undefined && jiraData[0].self.indexOf("project") != -1) {
-		console.log(jiraData[0])
-		this.processProjectData(jiraData);
-	} else if (jiraData.length != undefined && jiraData[0].self.indexOf("version") != -1) {
-		this.processFixVersionsData(jiraData);
-	} else {
-		this.processCardData(jiraData);
-		//console.log(jiraData);
-		//throw "Data received from JiraAPI unrecognized";
-	}
+	this.processCardData(jiraData);
 };
 
 JiraApiHandler.prototype.getCard = function (jira) {
