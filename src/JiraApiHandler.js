@@ -59,41 +59,6 @@ JiraApiHandler.prototype.processCardsData = function(jiraData) {
 	this.listener.receiveJiraCallback(jiraKeys);
 };
 
-JiraApiHandler.prototype.processRapidBoardViews = function(jiraData) {
-	this.listener.receiveRapidBoardViews(jiraData);
-};
-
-JiraApiHandler.prototype.processProjectData = function(jiraData) {
-	this.listener.receiveProjectData(jiraData);
-};
-
-JiraApiHandler.prototype.processFixVersionsData = function(jiraData) {
-	this.listener.receiveFixVersionsData(jiraData);
-};
-
-JiraApiHandler.prototype.processRapidBoardSprints = function(jiraData) {
-	var callbackName = this.getCallbackName();
-	var sprintIds = RapidBoardHandler.getOpenSprintsFromJSON(jiraData);
-	if (sprintIds == undefined || sprintIds.length == 0) {
-		alert("There appears to be no available data. You may need to login");
-	} else {
-        this.listener.receiveOpenRapidBoardSprints(sprintIds);
-	}
-};
-
-JiraApiHandler.prototype.getRapidBoardSprint = function(viewId, sprintId, callback) {
-    this.jiraApi.getGreenhopperSprint(callback, viewId, sprintId);
-}
-
-JiraApiHandler.prototype.processRapidBoardSprint = function(jiraData) {
-	var issues = RapidBoardHandler.getJirasFromJSON(jiraData);
-	this.listener.receiveJiraCallback(issues);
-}
-
-JiraApiHandler.prototype.processXBoard = function(jiraData) {
-    this.listener.receiveXBoardData(jiraData);
-}
-
 JiraApiHandler.prototype.processCardData = function(jiraData) {
 this.callbacksReceived++;
 	this.jiraMap[jiraData.key] = this.getCard(jiraData);
@@ -157,6 +122,10 @@ JiraApiHandler.prototype.showLoadingIndicator= function() {
 	}, 5000);
 }
 
+JiraApiHandler.prototype.getRapidBoardSprint = function(viewId, sprintId, callback) {
+    this.jiraApi.getGreenhopperSprint(callback, viewId, sprintId);
+}
+
 JiraApiHandler.prototype.requestRapidSprints = function(sprintId, callback) {
 	//https://jira.caplin.com/rest/greenhopper/latest/sprints/11
 	jiraUrl = this.baseUrl + "/rest/greenhopper/latest/sprints/" + sprintId;
@@ -193,15 +162,10 @@ JiraApiHandler.prototype.requestFixVersions = function(project, callback) {
 	this.jiraApi.jch.getData(callback, jiraUrl);
 }
 
-
-
 JiraApiHandler.prototype.requestFixVersion = function(project, fixversion, callback) {
-	if (project != "" && fixversion != "") {
-		jiraUrl = this.baseUrl + "/rest/api/latest/search?jql=project=" + project + "%20AND%20fixversion=" + fixversion + "&fields=key&maxResults=1000";
-		this.jiraApi.jch.getData(callback, jiraUrl);
-	} else {
-		alert("You have not set the Project Name or Fix Version");
-	}
+
+    jiraUrl = this.baseUrl + "/rest/api/latest/search?jql=project=" + project + "%20AND%20fixversion=" + fixversion + "&fields=key&maxResults=1000";
+    this.jiraApi.jch.getData(callback, jiraUrl);
 };
 
 JiraApiHandler.prototype.requestJira = function(jiraId) {
