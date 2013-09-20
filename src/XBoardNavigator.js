@@ -48,7 +48,8 @@ XBoardNavigator.prototype.hideAll = function() {
 }
 
 XBoardNavigator.prototype.receiveXBoardData = function(jiraData) {
-    this.epics = jiraData.epicData.epics;
+    //TODO: Cleanup this architecture, we need to pass epics data to the app nicely somehow
+    epics = jiraData.epicData.epics;
     this.sprints = this.getSprints(jiraData);
     this.xBoardSprintsDropDown.visible(true);
     JiraNavigator.setDropDown(this.xBoardSprintsDropDown.options, this.sprints, "name", "name");

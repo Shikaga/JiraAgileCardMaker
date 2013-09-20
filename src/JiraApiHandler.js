@@ -90,7 +90,8 @@ JiraApiHandler.prototype.getCard = function (jira) {
 		jira.fields.summary,
 		componentString,
 		jira.fields["customfield_10151"],
-		jira.fields["customfield_10261"],
+        jira.fields["customfield_10261"],
+        jira.fields["customfield_10870"],
 		jira.fields.parent ? jira.fields.parent.key : null
 	);
 	return card;

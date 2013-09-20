@@ -1,4 +1,4 @@
-var CardView = function(cardModel, issueMap, checkBoxes, isParentDescriptionEnabled, isComponentEnabled, isTagEnabled, isColorEnabled, isQRCodeEnabled, isBusinessValueEnabled) {
+var CardView = function(cardModel, issueMap, checkBoxes, isParentDescriptionEnabled, isComponentEnabled, isTagEnabled, isColorEnabled, isQRCodeEnabled, isBusinessValueEnabled, isEpicEnabled) {
 	this.cardModel = cardModel;
 	this.issueMap = issueMap;
 	this.checkBoxes = checkBoxes;
@@ -8,7 +8,7 @@ var CardView = function(cardModel, issueMap, checkBoxes, isParentDescriptionEnab
 	this.isColorEnabled = isColorEnabled;
 	this.isQRCodeEnabled = isQRCodeEnabled;
 	this.isBusinessValueEnabled = isBusinessValueEnabled;
-
+    this.isEpicEnabled = isEpicEnabled;
 	this.element = null;
 };
 
@@ -19,7 +19,7 @@ CardView.prototype.getElement = function () {
 
 		this.addTitle(this.cardModel.issueId, this.cardModel.estimate, this.cardModel.parentIssueId);
 		this.addSideBar(this.isQRCodeEnabled, this.cardModel.issueUrl);
-		this.addSummary(this.cardModel.summary, this.getCardParentSummary(), this.cardModel.component, this.cardModel.tag, this.cardModel.businessValue);
+		this.addSummary(this.cardModel.summary, this.getCardParentSummary(), this.cardModel.component, this.cardModel.tag, this.cardModel.businessValue, this.cardModel.epic);
 	}
 	return this.element;
 };
@@ -53,13 +53,20 @@ CardView.prototype.addTitle = function (issueId, estimate, parent) {
 	this.element.appendChild(titleElement);
 };
 
-CardView.prototype.addSummary = function (summary, parentSummary, component, tag, businessvalue) {
+CardView.prototype.addSummary = function (summary, parentSummary, component, tag, businessvalue, epic) {
 	var sideElement = document.createElement("div");
 	sideElement.className = "summaryElement";
 
-	if (this.isComponentEnabled && component != null) {
-		sideElement.innerHTML += "<span class='component'>" + component + "</span>";
-	}
+    if (this.isComponentEnabled && component != null) {
+        sideElement.innerHTML += "<span class='component'>" + component + "</span>";
+    }
+
+    if (this.isEpicEnabled && epic != null) {
+        var epicData = epics.filter(function(_) {
+            return _.key === epic
+        })[0];
+        sideElement.innerHTML += "<span class='epic' style='background-color: " + epicData.epicColor + "'>" + epicData.epicLabel + "</span>";
+    }
 
 	if (this.isParentDescriptionEnabled && parentSummary != null) {
 		sideElement.innerHTML += "<span class='parentSummary'>" + parentSummary + "</span>"

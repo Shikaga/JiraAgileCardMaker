@@ -46,7 +46,8 @@ jira.App.prototype.onIssuesAvailable = function(issueIds, issueMap) {
 			this.tagEnabled,
 			this.colorEnabled,
 			this.qrcodeEnabled,
-			this.businessValue
+			this.businessValue,
+            true
 		);
 
 		this.addTicket(cardView);
