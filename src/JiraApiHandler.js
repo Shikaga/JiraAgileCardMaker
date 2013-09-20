@@ -105,25 +105,6 @@ JiraApiHandler.prototype.renderCardsIfReady = function () {
 	}
 };
 
-JiraApiHandler.prototype.hideLoadingIndicator = function() {
-	var li = document.getElementById("loading");
-	li.style.display = "none";
-	if (typeof timeoutCallback !== "undefined") {
-		clearTimeout(timeoutCallback);
-	}
-}
-
-JiraApiHandler.prototype.showLoadingIndicator= function() {
-	var li = document.getElementById("loading");
-	li.style.display = "block";
-	if (typeof timeoutCallback !== "undefined") {
-		clearTimeout(timeoutCallback);
-	}
-	timeoutCallback = setTimeout(function() {
-		alert("Haven't received any data in 5 seconds. Something may have failed");
-	}, 5000);
-}
-
 JiraApiHandler.prototype.getRapidBoardSprint = function(viewId, sprintId, callback) {
     this.jiraApi.getGreenhopperSprint(callback, viewId, sprintId);
 }
