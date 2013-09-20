@@ -12,8 +12,10 @@ var JiraApiHandler = function(jiraUrl, listener) {
 };
 
 // Interface method - requestIssues passing in an array of issue ids.
-JiraApiHandler.prototype.requestIssues = function(issueIds) {
+JiraApiHandler.prototype.requestIssues = function(issueIds, callback) {
+    //TODO: This will break if invoked twice quickly.
 	if (!this.requested) {
+        this.requestIssuesCallback = callback;
 		this.requested = true;
 		this.requestJiras(issueIds);
 		this.chosenIssues = issueIds;
@@ -99,7 +101,7 @@ JiraApiHandler.prototype.renderCardsIfReady = function () {
 		this.requestJiras(parentsNotLoaded);
 	if (parentsNotLoaded.length !== 0) {
 	} else {
-		this.listener.onIssuesAvailable(this.chosenIssues, this.jiraMap);
+        this.requestIssuesCallback(this.chosenIssues, this.jiraMap);
 	}
 };
 
