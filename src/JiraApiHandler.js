@@ -44,11 +44,20 @@ JiraApiHandler.prototype.isParentLoaded = function (card) {
 
 JiraApiHandler.prototype.parentsNotLoaded = function () {
 	var parentsNotLoaded = [];
+    debugger;
 	for (var index in this.jiraMap) {
 		var card = this.jiraMap[index];
-		if (!this.isParentLoaded(card)) {
-			parentsNotLoaded.push(card.parentIssueId);
-		}
+        if (!this.isParentLoaded(card)) {
+            parentsNotLoaded.push(card.parentIssueId);
+        }
+        for (var i=0; i < card.subtasks.length; i++) {
+            var subtaskId = card.subtasks[i];
+            if (this.jiraMap[subtaskId] == null) {
+                parentsNotLoaded.push(subtaskId);
+                this.chosenIssues.push(subtaskId);
+            }
+        }
+
 	}
 	return parentsNotLoaded
 };
@@ -92,7 +101,8 @@ JiraApiHandler.prototype.getCard = function (jira) {
 		jira.fields["customfield_10151"],
         jira.fields["customfield_10261"],
         jira.fields["customfield_10870"],
-		jira.fields.parent ? jira.fields.parent.key : null
+		jira.fields.parent ? jira.fields.parent.key : null,
+        jira.fields.subtasks.map(function(_) {return _.key})
 	);
 	return card;
 };

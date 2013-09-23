@@ -1,4 +1,4 @@
-var Card = function (issueId, issueUrl, issueType, estimate, summary, component, tag, businessValue, epic, parentIssueId) {
+var Card = function (issueId, issueUrl, issueType, estimate, summary, component, tag, businessValue, epic, parentIssueId, subtasks) {
 	if (issueId == null) throw new Error("An Issue must have an id.");
 
 	this.issueId = issueId;
@@ -11,4 +11,5 @@ var Card = function (issueId, issueUrl, issueType, estimate, summary, component,
 	this.businessValue = businessValue;
     this.epic = epic;
 	this.parentIssueId = parentIssueId;
+    this.subtasks = subtasks;
 };
