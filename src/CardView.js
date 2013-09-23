@@ -61,7 +61,7 @@ CardView.prototype.addSummary = function (summary, parentSummary, component, tag
         sideElement.innerHTML += "<span class='component'>" + component + "</span>";
     }
 
-    if (this.isEpicEnabled && epic != null) {
+    if (this.isEpicEnabled && epic != null && typeof epics !== "undefined") {
         var epicData = epics.filter(function(_) {
             return _.key === epic
         })[0];
