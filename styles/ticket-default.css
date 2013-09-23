@@ -30,6 +30,7 @@ select {
 .epic {
     border: 1px solid #d3d3d3;
     border-radius: 5px;
+    -webkit-print-color-adjust: exact;
 }
 /* row and column */
 
@@ -52,7 +53,7 @@ select {
 
 .color .key {
 
-	-webkit-print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
 }
 
 .color.Bug .key {
