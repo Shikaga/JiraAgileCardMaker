@@ -44,7 +44,6 @@ JiraApiHandler.prototype.isParentLoaded = function (card) {
 
 JiraApiHandler.prototype.parentsNotLoaded = function () {
 	var parentsNotLoaded = [];
-    debugger;
 	for (var index in this.jiraMap) {
 		var card = this.jiraMap[index];
         if (!this.isParentLoaded(card)) {
@@ -72,7 +71,7 @@ JiraApiHandler.prototype.processCardsData = function(jiraData) {
 
 JiraApiHandler.prototype.processCardData = function(jiraData) {
 this.callbacksReceived++;
-	this.jiraMap[jiraData.key] = this.getCard(jiraData);
+	this.jiraMap[jiraData.key] = this.createCard(jiraData);
 	if (this.callbacksReceived == this.expectedCallbacks) {
 		this.renderCardsIfReady();
 	}
@@ -82,7 +81,7 @@ JiraApiHandler.prototype.processJiraData = function(jiraData) {
 	this.processCardData(jiraData);
 };
 
-JiraApiHandler.prototype.getCard = function (jira) {
+JiraApiHandler.prototype.createCard = function (jira) {
 	var componentString = "";
 	var components = jira.fields.components;
 	if (components.length != 0) {
