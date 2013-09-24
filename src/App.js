@@ -34,8 +34,16 @@ jira.App.prototype.requestIssues = function(selectedIssueIds) {
 };
 
 jira.App.prototype.onIssuesAvailable = function(issueIds, issueMap) {
+
 	for (var i = 0; i < issueIds.length; i++) {
 		var cardModel = issueMap[issueIds[i]];
+
+		//TODO: May god have mercy on my soul
+		if (cardModel.parentIssueId !== null) {
+			if (issueMap[cardModel.parentIssueId].epic !== null) {
+				cardModel.epic = issueMap[cardModel.parentIssueId].epic;
+			}
+		}
 
 		var cardView = new CardView(
 			cardModel,
