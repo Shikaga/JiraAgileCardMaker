@@ -8,7 +8,7 @@
 
 var jira = {};
 
-jira.App = function (element, baseUrl, fixVersion, color, qrcode, parentEnabled, componentEnabled, tagEnabled, businessValue) {
+jira.App = function (element, baseUrl, fixVersion, color, qrcode, parentEnabled, componentEnabled, tagEnabled, businessValue, epicsEnabled) {
 	if (baseUrl == "") {
 		alert("You need to set a valid Jira Location")
 		return;
@@ -21,6 +21,7 @@ jira.App = function (element, baseUrl, fixVersion, color, qrcode, parentEnabled,
 	this.componentEnabled = componentEnabled;
 	this.tagEnabled = tagEnabled;
 	this.businessValue = businessValue;
+    this.epicsEnabled = epicsEnabled;
 	this.cardsAdded = 0;
 	this.currentPage = null;
     this.issueRequester = new JiraApiHandler(this.baseUrl, this);
@@ -55,7 +56,7 @@ jira.App.prototype.onIssuesAvailable = function(issueIds, issueMap) {
 			this.colorEnabled,
 			this.qrcodeEnabled,
 			this.businessValue,
-            true
+            this.epicsEnabled
 		);
 
 		this.addTicket(cardView);

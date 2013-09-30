@@ -140,9 +140,10 @@ function generateTickets() {
 	var parentDescription = document.getElementById("parentdescription").checked;
 	var componentDescription = document.getElementById("componentdescription").checked;
 	var tagDescription = document.getElementById("tagdescription").checked;
-	var businessValue = document.getElementById("businessvalue").checked;
+    var businessValue = document.getElementById("businessvalue").checked;
+    var epicsEnabled = document.getElementById("epicsEnabled").checked;
 
-	oApp = new jira.App(document.getElementById('tickets'), jiraUrl, null, color, qrcode, parentDescription, componentDescription, tagDescription, businessValue);
+	oApp = new jira.App(document.getElementById('tickets'), jiraUrl, null, color, qrcode, parentDescription, componentDescription, tagDescription, businessValue, epicsEnabled);
 	oApp.requestIssues(checklistToDisplay);
 }
 
@@ -233,12 +234,13 @@ function setConfigFromCookies() {
 	var location = Cookies.get("jiraLocation") || "https://jira.caplin.com";
 	if (location != null && document.getElementById("jiraLocation") != null) {
 		document.getElementById("jiraLocation").value = location;
-		setConfigFromBooleanCookie("color", "colorEnabled", true);
+        setConfigFromBooleanCookie("color", "colorEnabled", true);
 		setConfigFromBooleanCookie("qrcode", "qrCodeEnabled", true);
 		setConfigFromBooleanCookie("parentdescription", "parentDescriptionEnabled", true);
 		setConfigFromBooleanCookie("componentdescription", "componentEnabled", true);
 		setConfigFromBooleanCookie("tagdescription", "tagEnabled", false);
 		setConfigFromBooleanCookie("businessvalue", "businessValueEnabled", false);
+        setConfigFromBooleanCookie("epicsEnabled", "epicsEnabled", true);
 	//	document.getElementById("project").value = Cookies.get("projectName") || "";
 	//	document.getElementById("fixversion").value = Cookies.get("fixVersion") || ""
 	//	document.getElementById("wizard").value = Cookies.get("wizard") || "https://jira.springsource.org/browse/BATCH/fixforversion/11327";
