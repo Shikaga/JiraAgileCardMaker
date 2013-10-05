@@ -2,10 +2,10 @@
 
 test( "JiraRequestQueryTest", function() {
 	var query = JiraApiHandler.getJirasRequestQuery();
-	equal("", query);
+	equal(null, query);
 
 	var query = JiraApiHandler.getJirasRequestQuery(null);
-	equal("", query);
+	equal(null, query);
 
 	var query = JiraApiHandler.getJirasRequestQuery(["STORM-1471"]);
 	equal(query, "key=STORM-1471");
