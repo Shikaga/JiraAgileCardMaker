@@ -33,6 +33,11 @@ JiraApiHandler.prototype.requestJiras = function(jiraIds) {
 	}
 };
 
+JiraApiHandler.getJirasRequestQuery = function(jiraIds) {
+	if (jiraIds == null) return "";
+	return jiraIds.map(λ("'key='+_")).join("+or+");
+}
+
 
 JiraApiHandler.prototype.isParentLoaded = function (card) {
 	if (card.parentIssueId) {
