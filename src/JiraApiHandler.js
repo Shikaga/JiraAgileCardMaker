@@ -25,6 +25,7 @@ JiraApiHandler.prototype.requestIssues = function(issueIds, callback) {
 };
 
 JiraApiHandler.prototype.requestJiras = function(jiraIds) {
+    jiraIds = _.uniq(jiraIds);
 	this.expectedCallbacks = jiraIds.length;
 	this.callbacksReceived = 0;
 	this.requestJirasWithSQL(jiraIds, this.processCardsData.bind(this));
