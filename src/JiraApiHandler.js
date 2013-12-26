@@ -122,6 +122,14 @@ JiraApiHandler.prototype.getRapidBoardSprint = function(viewId, sprintId, callba
 JiraApiHandler.prototype.requestRapidSprints = function(sprintId, callback) {
 	//https://jira.caplin.com/rest/greenhopper/latest/sprints/11
 	jiraUrl = this.baseUrl + "/rest/greenhopper/latest/sprints/" + sprintId;
+
+	if (document.getElementById('jiraOnDemand').checked) {
+		//CJB. Modified to work around recent bug in RapidBoard API
+		//https://github.com/Shikaga/JiraAgileCardMaker/issues/20
+		//https://jira.caplin.com/rest/greenhopper/latest/sprintquery/11?includeFutureSprints=true&includeHistoricSprints=false
+		jiraUrl = this.baseUrl + "/rest/greenhopper/latest/sprintquery/" + sprintId + "?includeFutureSprints=true&includeHistoricSprints=false";
+	}
+
 	this.jiraApi.jch.getData(callback, jiraUrl);
 }
 
