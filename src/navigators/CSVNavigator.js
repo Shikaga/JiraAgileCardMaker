@@ -26,7 +26,7 @@ CSVNavigator.prototype.init = function() {
 }
 
 CSVNavigator.prototype.updateJiraListWithIndividualJiras = function() {
-	var jiras = this.csvJirasField.value().split(",").map(λ("_.trim()"));
+	var jiras = this.csvJirasField.value().split(",").map(λ("_.trim()")).map(λ("_.toUpperCase()"));
 	this.jiraNavigator.receiveJiraCallback(jiras);
 }
 
