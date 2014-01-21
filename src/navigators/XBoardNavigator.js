@@ -62,27 +62,49 @@ XBoardNavigator.prototype.receiveXBoardList = function(jiraData) {
 
 XBoardNavigator.prototype.getSprints = function(jiraData) {
     var sprints = [];
-    for (var i=0; i < jiraData.openSprints.length; i++) {
-        var openSprint = jiraData.openSprints[i];
-        sprints.push({name: openSprint.name, jiras: this.getKeyFromIssue(openSprint.issues)});
-    }
-    for (var i=0; i < jiraData.markers.length; i++) {
-        var marker = jiraData.markers[i];
-        var sprint = {name: marker.name, jiras: []}
-        sprints.push(sprint);
-        while (jiraData.issues.length !== 0){
-            if (marker.afterIssueKey === undefined) {
-                break;
-            }
-            var jira = jiraData.issues.shift();
-            sprint.jiras.push(jira.key);
-            if (jira.key == marker.afterIssueKey) {
-                break
-            }
+    if (jiraData.openSprints) {
+        for (var i=0; i < jiraData.openSprints.length; i++) {
+            var openSprint = jiraData.openSprints[i];
+            sprints.push({name: openSprint.name, jiras: this.getKeyFromIssue(openSprint.issues)});
         }
+        for (var i=0; i < jiraData.markers.length; i++) {
+            var marker = jiraData.markers[i];
+            var sprint = {name: marker.name, jiras: []}
+            sprints.push(sprint);
+            while (jiraData.issues.length !== 0){
+                if (marker.afterIssueKey === undefined) {
+                    break;
+                }
+                var jira = jiraData.issues.shift();
+                sprint.jiras.push(jira.key);
+                if (jira.key == marker.afterIssueKey) {
+                    break
+                }
+            }
+
+        }
+        sprints.push({name: "Backlog", jiras: this.getKeyFromIssue(jiraData.issues)});
+    } else {
+       var jiraMap = {};
+        jiraData.issues.forEach(function(issue) {
+            jiraMap[issue.id] = issue;
+        })
+        //var sprintIssueArray = [];
+        jiraData.sprints.forEach(function(sprint) {
+            var sprintIssues = [];
+            sprint.issuesIds.forEach(function(issueId) {
+                sprintIssues.push(jiraMap[issueId].key);
+                delete jiraMap[issueId];
+            })
+            sprints.push({name: sprint.name, jiras: sprintIssues});
+        });
+        var sprintIssues = [];
+        for (var key in jiraMap) {
+            sprintIssues.push(jiraMap[key].key);
+        }
+        sprints.push({name: "Backlog", jiras: sprintIssues});
 
     }
-    sprints.push({name: "Backlog", jiras: this.getKeyFromIssue(jiraData.issues)});
     return sprints
 
 }
