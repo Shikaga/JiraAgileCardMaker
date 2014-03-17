@@ -37,6 +37,9 @@ CardView.prototype.addTitle = function (issueId, estimate, parent) {
 	issueIdElement.className += " key";
 
 	var estimateElement = this.createTitleElement(estimate || "Estimate");
+	if (estimate) {
+		estimateElement.className += " estimate-number";
+	}
 	estimateElement.className += " estimate";
 
 	var actualElement = this.createTitleElement("Actual");

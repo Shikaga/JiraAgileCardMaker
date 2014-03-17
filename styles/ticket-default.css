@@ -122,10 +122,12 @@ select {
 
 .estimate {
 	width: 15%;
+}
+
+.estimate-number {
 	font-size: 250%;
 	font-weight: bold;
 }
-
 .actual {
 	width: 15%;
 }
