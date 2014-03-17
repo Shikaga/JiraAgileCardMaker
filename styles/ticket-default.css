@@ -122,6 +122,8 @@ select {
 
 .estimate {
 	width: 15%;
+	font-size: 250%;
+	font-weight: bold;
 }
 
 .actual {
