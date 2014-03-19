@@ -56,10 +56,16 @@ select {
     -webkit-print-color-adjust: exact;
 }
 
+.color.Epic .key {
+    background-color: #ff4500;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    color: white;
+}
+
 .color.Bug .key {
-	background-color: #c00;
-	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-	color: white;
+    background-color: #c00;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    color: white;
 }
 
 .color.Documentation .key {
