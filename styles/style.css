@@ -7,19 +7,6 @@ html, body {
 	margin: 0;
 }
 
-#ticketManager {
-	margin: 10px;
-	padding: 10px;
-	background-color: #DDD;
-}
-
 #optionsPanel {
 	float: right;
-}
-
-.list {
-	height: 300px;
-	overflow: auto;
-	background-color: #BBB;
-	margin: 5%;
 }

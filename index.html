@@ -26,13 +26,15 @@
 
 
 	<link rel="stylesheet" type="text/css" href="styles/style.css">
-	<link rel="stylesheet" type="text/css" href="styles/ticket-default.css">
+    <link rel="stylesheet" type="text/css" href="styles/ticket-default.css">
+    <link rel="stylesheet" type="text/css" href="styles/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/bootstrap-theme.min.css">
 </head>
 <body>
 <div id="tickets"></div>
 <div>
 
-	<div style="min-height:100%" id="ticketManager">
+	<div style="min-height:100%" class="container" id="ticketManager">
 		<h1>Jira Ticket Generator</h1>
 
 		<div id="optionsPanel">
@@ -56,37 +58,59 @@
 				</ul>
 			</div>
 		</div>
-		<div id="stageOne">
-			<li>Using Jira On Demand?<input type="checkbox" id="jiraOnDemand"/></li>
-			<h2>Set your Jira Location</h2>
-            Username: <input id="username" value=""/><br />
-            Password: <input type="password" id="password" value=""/><br />
-			Jira Location : <input id="jiraLocation" style="width:300px"/><button onclick="updateJiraNavigator()">Go</button>
-			<br />
-			Examples : <button onclick="setJiraLocation('https://jira.caplin.com')">Caplin (private)</button>
-			<button onclick="setJiraLocation('https://jira.secondlife.com')">Second Life</button>
-			<button onclick="setJiraLocation('http://jira.codehaus.org')">CodeHaus</button>
-		</div>
-		<div id="stageTwo" style="display:none">
+        <div id="stageOne" class="form-horizontal" style="clear:both">
+            <li>Using Jira On Demand?<input type="checkbox" id="jiraOnDemand"/></li>
+            <h2>Set your Jira Location</h2>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Username:</label>
+                <div class="col-sm-10"><input class="form-control"  id="username" value=""/></div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Password:</label>
+                <div class="col-sm-10"><input class="form-control"  type="password" id="password" value=""/></div>
+            </div>
+
+            <div class="form-group form-inline">
+                <label class="col-sm-2 control-label">Jira Location :</label>
+                <div class="col-sm-10"><input class="form-control" id="jiraLocation" style="width:300px"/>
+                    <button class="btn btn-default" onclick="setJiraLocation('https://jira.caplin.com')">Caplin (private)</button>
+                    <button class="btn btn-default" onclick="setJiraLocation('https://jira.secondlife.com')">Second Life</button>
+                    <button class="btn btn-default" onclick="setJiraLocation('http://jira.codehaus.org')">CodeHaus</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button class="btn btn-default" onclick="updateJiraNavigator()">Go</button>
+                </div>
+            </div>
+        </div>
+		<div class="form-horizontal" id="stageTwo" style="display:none">
 			<h2>Select Jiras</h2>
-			<select id="selectionMethod" data-bind="visible: selectionMethod.visible, options: selectionMethod.options, optionsText: 'text', value: selectionMethod.value, event: {change: selectionMethod.change}"></select>
-			<select id="projectsDropDown" data-bind="visible: projectsDropDown.visible, options: projectsDropDown.options, optionsText: 'text', value: projectsDropDown.value, event: {change: projectsDropDown.change}"></select>
-			<select id="sprintsDropDown" data-bind="visible: sprintsDropDown.visible, options: sprintsDropDown.options, optionsText: 'text', value: sprintsDropDown.value, event: {change: sprintsDropDown.change}"></select>
-			<select id="rapidBoardsDropDown" data-bind="visible: rapidBoardsDropDown.visible, options: rapidBoardsDropDown.options, optionsText: 'text', value: rapidBoardsDropDown.value, event: {change: rapidBoardsDropDown.change}"></select>
-            <select id="rapidBoardSprintsDropDown" data-bind="visible: rapidBoardSprintsDropDown.visible, options: rapidBoardSprintsDropDown.options, optionsText: 'text', value: rapidBoardSprintsDropDown.value, event: {change: rapidBoardSprintsDropDown.change}"></select>
-            <input id="csvJiras" data-bind="visible: csvJirasField.visible, value: csvJirasField.value, valueUpdate: 'afterkeydown', event: {keyup: csvJirasField.change}" />
-            <select id="xBoardDropDown" data-bind="visible: xBoardDropDown.visible, options: xBoardDropDown.options, optionsText: 'text', value: xBoardDropDown.value, event: {change: xBoardDropDown.change}"></select>
-            <select id="xBoardSprints" data-bind="visible: xBoardSprintsDropDown.visible, options: xBoardSprintsDropDown.options, optionsText: 'text', value: xBoardSprintsDropDown.value, event: {change: xBoardSprintsDropDown.change}"></select>
+            <div class="form-group"><div class="col-sm-10"><select class="form-control" id="selectionMethod" data-bind="visible: selectionMethod.visible, options: selectionMethod.options, optionsText: 'text', value: selectionMethod.value, event: {change: selectionMethod.change}"></select></div></div>
+            <div class="form-group"><div class="col-sm-10"><select class="form-control" id="projectsDropDown" data-bind="visible: projectsDropDown.visible, options: projectsDropDown.options, optionsText: 'text', value: projectsDropDown.value, event: {change: projectsDropDown.change}"></select></div></div>
+            <div class="form-group"><div class="col-sm-10"><select class="form-control" id="sprintsDropDown" data-bind="visible: sprintsDropDown.visible, options: sprintsDropDown.options, optionsText: 'text', value: sprintsDropDown.value, event: {change: sprintsDropDown.change}"></select></div></div>
+            <div class="form-group"><div class="col-sm-10"><select class="form-control" id="rapidBoardsDropDown" data-bind="visible: rapidBoardsDropDown.visible, options: rapidBoardsDropDown.options, optionsText: 'text', value: rapidBoardsDropDown.value, event: {change: rapidBoardsDropDown.change}"></select></div></div>
+            <div class="form-group"><div class="col-sm-10"><select class="form-control" id="rapidBoardSprintsDropDown" data-bind="visible: rapidBoardSprintsDropDown.visible, options: rapidBoardSprintsDropDown.options, optionsText: 'text', value: rapidBoardSprintsDropDown.value, event: {change: rapidBoardSprintsDropDown.change}"></select></div></div>
+            <div class="form-group"><div class="col-sm-10"><input class="form-control" id="csvJiras" data-bind="visible: csvJirasField.visible, value: csvJirasField.value, valueUpdate: 'afterkeydown', event: {keyup: csvJirasField.change}" /></div></div>
+            <div class="form-group"><div class="col-sm-10"><select class="form-control" id="xBoardDropDown" data-bind="visible: xBoardDropDown.visible, options: xBoardDropDown.options, optionsText: 'text', value: xBoardDropDown.value, event: {change: xBoardDropDown.change}"></select></div></div>
+            <div class="form-group"><div class="col-sm-10"> <select class="form-control" id="xBoardSprints" data-bind="visible: xBoardSprintsDropDown.visible, options: xBoardSprintsDropDown.options, optionsText: 'text', value: xBoardSprintsDropDown.value, event: {change: xBoardSprintsDropDown.change}"></select></div></div>
 
 			<div id="jiraNavigator"></div>
 		</div>
+        <br />
+        <br />
+        <br />
+        <br />
 		<div id="stageThree" style="float:left; width: 50%; display:none">
 			<h1>Jira List</h1>
 
 			<div class="list" id="jiraList">
-				<ul id="jiraListUrl">
+                    <ul id="jiraListUrl">
 
-				</ul>
+                    </ul>
 			</div>
 			<button onClick="generateTickets()">Generate!</button>
 		</div>
