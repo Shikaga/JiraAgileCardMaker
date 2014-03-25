@@ -5,8 +5,15 @@ function AuthenticationHandler() {
     this.username = ko.observable("");
     this.password = ko.observable("");
     this.setLocation = function() {
+        var jch = new JiraCommunicationHandler(this.location(), this.username(), this.password());
+        jch.detectConnectionType(function(error) {
+            if (error === JiraCommunicationHandler.errorEvents.SUCCESS) {
+                this.setCredentials();
+            } else {
+                this.showLogin();
+            }
+        }.bind(this));
         this.hideLocation();
-        this.showLogin();
     }
     this.setCredentials = function() {
         this.hideLogin();

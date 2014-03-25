@@ -29,7 +29,7 @@ var XBoardNavigator = function(jiraUrl, jiraNavigator) {
 }
 
 XBoardNavigator.prototype.getDisplayName = function() {
-	return "XBoard";
+	return "Rapid Board";
 }
 
 XBoardNavigator.prototype.requestTopLevelData = function() {

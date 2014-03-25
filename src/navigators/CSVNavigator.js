@@ -22,7 +22,7 @@ CSVNavigator.prototype.requestTopLevelData = function() {
 }
 
 CSVNavigator.prototype.init = function() {
-	ko.applyBindingsToNode(document.getElementById("csvJiras"), null, this);
+	ko.applyBindings(this, document.getElementById("csvJiras"));
 }
 
 CSVNavigator.prototype.updateJiraListWithIndividualJiras = function() {

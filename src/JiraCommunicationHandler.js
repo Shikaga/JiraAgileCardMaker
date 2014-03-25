@@ -8,8 +8,19 @@ var JiraCommunicationHandler = function(domain, username, password) {
 		JSONWITHAUTH: 2
 	}
 	this.dataType = null;
-	this.detectConnectionType();
+    this.errorEvents = JiraCommunicationHandler.errorEvents;
 	this.queuedRequests = [];
+}
+
+JiraCommunicationHandler.errorEvents = {
+    SUCCESS: 0,
+    WRONG_AUTH: 1,
+    AUTH_NEEDED: 2,
+    FAIL: 3
+}
+
+JiraCommunicationHandler.prototype.connect = function() {
+    this.detectConnectionType(function(){});
 }
 
 JiraCommunicationHandler.prototype.getData = function(callback, requestUrl) {
@@ -24,9 +35,22 @@ JiraCommunicationHandler.prototype.getData = function(callback, requestUrl) {
 	}
 }
 
-JiraCommunicationHandler.prototype.detectConnectionType = function() {
-	this.tryJsonp();
-	this.tryJson();
+JiraCommunicationHandler.prototype.detectConnectionType = function(callback) {
+	this.tryJsonp(function(error) {
+        this.setConnectionType(this.dataTypes.JSONP);
+        callback(error);
+    }.bind(this));
+
+	this.tryJson(function(error) {
+        if (error === this.errorEvents.SUCCESS) {
+            this.setConnectionType(this.dataTypes.JSON);
+        } else if (error === this.errorEvents.AUTH_NEEDED) {
+            console.log("Auth required!")
+        } else if (error === this.errorEvents.WRONG_AUTH) {
+            console.log("Auth failed!")
+        }
+        callback(error);
+    }.bind(this));
 }
 
 JiraCommunicationHandler.prototype.setConnectionType = function(connectionType) {
@@ -44,28 +68,24 @@ JiraCommunicationHandler.prototype.sendQueuedRequests = function() {
 	this.queuedRequests = [];
 }
 
-JiraCommunicationHandler.prototype.tryJsonp = function() {
+JiraCommunicationHandler.prototype.tryJsonp = function(callback) {
 	this.getDataWithJSONP(function(data) {
 		if (data !== "failed") {
-			this.setConnectionType(this.dataTypes.JSONP);
-		}
+			callback(this.errorEvents.SUCCESS);
+		} else {
+            callback(this.errorEvents.FAIL);
+        }
 	}.bind(this), this.domain + "/rest/api/latest/project");
 }
 
-JiraCommunicationHandler.prototype.tryJson = function() {
+JiraCommunicationHandler.prototype.tryJson = function(callback) {
 	this.getDataWithJSON(function(data) {
 		if (data === 401) { //failed to authenticate
-			console.log("Auth failed!")
-			if (this.dataType === null) {
-				alert("Wrong username or password");
-			}
+            callback(this.errorEvents.WRONG_AUTH);
 		} else if (data.toString() === "") {
-			console.log("Auth required!")
-			if (this.dataType === null) {
-				alert("You need to supply authentication details");
-			}
+            callback(this.errorEvents.AUTH_NEEDED);
 		} else {
-			this.setConnectionType(this.dataTypes.JSON);
+            callback(this.errorEvents.SUCCESS);
 		}
 	}.bind(this), this.domain + "/rest/api/latest/project");
 }

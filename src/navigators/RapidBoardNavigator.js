@@ -29,7 +29,7 @@ var RapidBoardNavigator = function(jiraUrl, jiraNavigator) {
 }
 
 RapidBoardNavigator.prototype.getDisplayName = function() {
-	return "Rapid Board";
+	return "Rapid Board (DEPRECATED)";
 }
 
 RapidBoardNavigator.prototype.requestTopLevelData = function() {
