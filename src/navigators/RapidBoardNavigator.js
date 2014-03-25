@@ -40,8 +40,8 @@ RapidBoardNavigator.prototype.requestTopLevelData = function() {
 }
 
 RapidBoardNavigator.prototype.init = function() {
-	ko.applyBindingsToNode(document.getElementById("rapidBoardsDropDown"), null, this);
-	ko.applyBindingsToNode(document.getElementById("rapidBoardSprintsDropDown"), null, this);
+	ko.applyBindings(this, document.getElementById("rapidBoardsDropDown"));
+	ko.applyBindings(this, document.getElementById("rapidBoardSprintsDropDown"));
 }
 
 RapidBoardNavigator.prototype.receiveRapidBoardViews = function(views) {

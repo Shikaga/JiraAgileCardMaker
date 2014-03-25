@@ -32,8 +32,8 @@ FixVersionNavigator.prototype.getDisplayName = function() {
 }
 
 FixVersionNavigator.prototype.init = function() {
-	ko.applyBindingsToNode(document.getElementById("projectsDropDown"), null, this);
-	ko.applyBindingsToNode(document.getElementById("sprintsDropDown"), null, this);
+	ko.applyBindings(this, document.getElementById("projectsDropDown"));
+	ko.applyBindings(this, document.getElementById("sprintsDropDown"));
 }
 
 FixVersionNavigator.prototype.hideAll = function() {

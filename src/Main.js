@@ -5,6 +5,10 @@ var oApp = null;
 var columnCounter = 0;
 var pageElement = document.createElement("div");
 
+issueChecklistUl = document.getElementById("jiraListUrl");
+var ich = new IssueChecklistHandler(issueChecklistUl);
+var ah = new AuthenticationHandler();
+
 function getParameter(l_sName) {
 	var l_oMatch = window.location.search.match(new RegExp("[?&]" + l_sName + "=([^&]*)"));
 	return ((l_oMatch == null) ? null : l_oMatch[1]);
@@ -56,8 +60,7 @@ function getUrlType(url) {
 }
 
 function setJiraLocation(url) {
-	document.getElementById("jiraLocation").value = url;
-	updateJiraNavigator();
+    ah.location(url);
 }
 
 function getJiraFromUrl(url) {
@@ -111,15 +114,14 @@ function receiveJiraCallback(issues) {
 	stageThree.style.display = "block";
 
 	clearTimeout(jiraRequestedTimeout);
-	issueChecklistUl = document.getElementById("jiraListUrl");
-	var ich = new IssueChecklistHandler(issueChecklistUl, issues);
+    ich.receiveIssues(issues);
 }
 
 function generateTickets() {
 	window.location.hash = "#tickets";
 	var jiraUrl = document.getElementById("jiraLocation").value;
 	var jiraChecklists = document.getElementsByClassName("jiracheck");
-	var checklistToDisplay = getChecked("jiracheck");
+	var checklistToDisplay = ich.getChecked();
 	hideInterface();
 
 	var color = document.getElementById("color").checked;
@@ -220,7 +222,7 @@ function setConfigFromBooleanCookie(elementId, cookie, def) {
 function setConfigFromCookies() {
 	var location = Cookies.get("jiraLocation") || "https://jira.caplin.com";
 	if (location != null && document.getElementById("jiraLocation") != null) {
-		document.getElementById("jiraLocation").value = location;
+		setJiraLocation(location);
         setConfigFromBooleanCookie("color", "colorEnabled", true);
 		setConfigFromBooleanCookie("qrcode", "qrCodeEnabled", true);
 		setConfigFromBooleanCookie("parentdescription", "parentDescriptionEnabled", true);
@@ -262,24 +264,12 @@ function showInterface() {
 //
 var jiraNavigatorDiv = document.getElementById("jiraNavigator");
 
+function setLoginDetails() {
+
+}
+
 function updateJiraNavigator() {
-	var locationElement = document.getElementById("jiraLocation");
-	if (locationElement != null) {
-		var location = locationElement.value;
-
-		if (location == "") {
-			alert("You need to set a valid Jira Location")
-			jn = null;
-			return;
-		}
-
-		var stageTwo = document.getElementById("stageTwo");
-		stageTwo.style.display = "block";
-		
-		jn = new JiraNavigator(location);
-		jn.clearJiraList();
-		jn.init();
-	}
+    debugger;
 }
 
 

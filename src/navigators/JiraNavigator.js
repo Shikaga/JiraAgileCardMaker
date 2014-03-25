@@ -21,7 +21,7 @@ var JiraNavigator = function(jiraUrl) {
 }
 
 JiraNavigator.prototype.init = function() {
-	ko.applyBindingsToNode(document.getElementById("selectionMethod"), null, this);
+	ko.applyBindings(this, document.getElementById("selectionMethod"));
 	for (var key in this.navigatorMap) {
 		var navigator = this.navigatorMap[key];
 		navigator.init();

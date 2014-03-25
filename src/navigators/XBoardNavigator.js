@@ -38,8 +38,8 @@ XBoardNavigator.prototype.requestTopLevelData = function() {
 }
 
 XBoardNavigator.prototype.init = function() {
-	ko.applyBindingsToNode(document.getElementById("xBoardDropDown"), null, this);
-	ko.applyBindingsToNode(document.getElementById("xBoardSprints"), null, this);
+	ko.applyBindings(this, document.getElementById("xBoardDropDown"));
+	ko.applyBindings(this, document.getElementById("xBoardSprints"));
 }
 
 XBoardNavigator.prototype.hideAll = function() {
