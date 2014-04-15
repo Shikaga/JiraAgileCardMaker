@@ -97,6 +97,11 @@ select {
 	color: white;
 }
 
+.color.Change_Request .key {
+    background-color: #ff5d9a;
+    color: black;
+}
+
 .color.Front_End .key {
     background-color: #6c3;
 }
