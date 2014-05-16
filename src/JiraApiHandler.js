@@ -101,6 +101,7 @@ JiraApiHandler.prototype.createCard = function (jira) {
         jira.fields["customfield_10261"],
         jira.fields["customfield_10870"],
 		jira.fields.parent ? jira.fields.parent.key : null,
+		jira.fields.priority ? jira.fields.priority.iconUrl : null,
         jira.fields.subtasks.map(function(_) {return _.key})
 	);
 	return card;

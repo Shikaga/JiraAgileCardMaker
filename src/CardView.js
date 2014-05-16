@@ -17,7 +17,7 @@ CardView.prototype.getElement = function () {
 		this.element = document.createElement('div');
 		this.element.className = "ticket "+(this.isColorEnabled ? "color" : "mono")+" "+this.cardModel.issueType.replace(" ", "_");
 
-		this.addTitle(this.cardModel.issueId, this.cardModel.estimate, this.cardModel.parentIssueId);
+		this.addTitle(this.cardModel.issueId, this.cardModel.estimate, this.cardModel.parentIssueId, this.cardModel.priorityImage);
 		this.addSideBar(this.isQRCodeEnabled, this.cardModel.issueUrl);
 		this.addSummary(this.cardModel.summary, this.getCardParentSummary(), this.cardModel.component, this.cardModel.tag, this.cardModel.businessValue, this.cardModel.epic);
 	}
@@ -29,13 +29,17 @@ CardView.prototype.getCardParentSummary = function() {
 	return parentIssue != null ? parentIssue.summary : null;
 }
 
-CardView.prototype.addTitle = function (issueId, estimate, parent) {
+CardView.prototype.addTitle = function (issueId, estimate, parent, priorityImage) {
 	var titleElement = document.createElement("div");
 	titleElement.className = "titleRow";
 
 	var issueIdElement = this.createSummaryElement(issueId || "Issue Id");
 	issueIdElement.className += " key";
 
+	if (priorityImage) {
+		var priorityElement = this.getPriorityElement(priorityImage)
+	}
+	
 	var estimateElement = this.createTitleElement(estimate || "Estimate");
 	if (estimate) {
 		estimateElement.className += " estimate-number";
@@ -52,7 +56,10 @@ CardView.prototype.addTitle = function (issueId, estimate, parent) {
 	titleElement.appendChild(estimateElement);
 	titleElement.appendChild(actualElement);
 	titleElement.appendChild(ownerElement);
-
+	if (priorityElement) {
+		titleElement.appendChild(priorityElement);
+	}
+	
 	this.element.appendChild(titleElement);
 };
 
@@ -158,4 +165,15 @@ CardView.prototype.createSummaryElement = function (text) {
 
 	return titleElement;
 };
+
+CardView.prototype.getPriorityElement = function(imgUrl) {
+	var priorityImage = document.createElement("img");
+	priorityImage.style.position = "absolute";
+	priorityImage.style.top = "5px";
+	priorityImage.style.right = "5px";
+
+	priorityImage.src = imgUrl;
+
+	return priorityImage;
+}
 
