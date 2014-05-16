@@ -17,8 +17,8 @@ CardView.prototype.getElement = function () {
 		this.element = document.createElement('div');
 		this.element.className = "ticket "+(this.isColorEnabled ? "color" : "mono")+" "+this.cardModel.issueType.replace(" ", "_");
 
-		this.addTitle(this.cardModel.issueId, this.cardModel.estimate, this.cardModel.parentIssueId, this.cardModel.priorityImage);
-		this.addSideBar(this.isQRCodeEnabled, this.cardModel.issueUrl);
+		this.addTitle(this.cardModel.issueId, this.cardModel.estimate, this.cardModel.parentIssueId);
+		this.addSideBar(this.isQRCodeEnabled, this.cardModel.issueUrl, this.cardModel.priorityImage);
 		this.addSummary(this.cardModel.summary, this.getCardParentSummary(), this.cardModel.component, this.cardModel.tag, this.cardModel.businessValue, this.cardModel.epic);
 	}
 	return this.element;
@@ -35,10 +35,6 @@ CardView.prototype.addTitle = function (issueId, estimate, parent, priorityImage
 
 	var issueIdElement = this.createSummaryElement(issueId || "Issue Id");
 	issueIdElement.className += " key";
-
-	if (priorityImage) {
-		var priorityElement = this.getPriorityElement(priorityImage)
-	}
 	
 	var estimateElement = this.createTitleElement(estimate || "Estimate");
 	if (estimate) {
@@ -56,9 +52,6 @@ CardView.prototype.addTitle = function (issueId, estimate, parent, priorityImage
 	titleElement.appendChild(estimateElement);
 	titleElement.appendChild(actualElement);
 	titleElement.appendChild(ownerElement);
-	if (priorityElement) {
-		titleElement.appendChild(priorityElement);
-	}
 	
 	this.element.appendChild(titleElement);
 };
@@ -101,7 +94,7 @@ CardView.prototype.addSummary = function (summary, parentSummary, component, tag
 	this.element.appendChild(sideElement);
 };
 
-CardView.prototype.addSideBar = function (bAddQRCode, url) {
+CardView.prototype.addSideBar = function (bAddQRCode, url, priorityImage) {
 	var sideElement = document.createElement("div");
 	sideElement.className = "sidebar";
 
@@ -112,11 +105,16 @@ CardView.prototype.addSideBar = function (bAddQRCode, url) {
 		sideElement.appendChild(element);
 	}
 
-	if (bAddQRCode) {
-		var qrcodeElement = this.createTitleElement("QRCode");
-		qrcodeElement.className += " qrcode";
-		qrcodeElement.innerHTML = '<img src="http://qr.kaywa.com/?s=8&d=' + encodeURIComponent(url) + '" alt="QRCode"/>';
-		sideElement.appendChild(qrcodeElement);
+	// if (bAddQRCode) {
+	// 	var qrcodeElement = this.createTitleElement("QRCode");
+	// 	qrcodeElement.className += " qrcode";
+	// 	qrcodeElement.innerHTML = '<img src="http://qr.kaywa.com/?s=8&d=' + encodeURIComponent(url) + '" alt="QRCode"/>';
+	// 	sideElement.appendChild(qrcodeElement);
+	// }
+
+	if (priorityImage) {
+		var priorityElement = this.getPriorityElement(priorityImage)
+		sideElement.appendChild(priorityElement);
 	}
 
 	this.element.appendChild(sideElement);
@@ -169,8 +167,10 @@ CardView.prototype.createSummaryElement = function (text) {
 CardView.prototype.getPriorityElement = function(imgUrl) {
 	var priorityImage = document.createElement("img");
 	priorityImage.style.position = "absolute";
-	priorityImage.style.top = "5px";
+	priorityImage.style.bottom = "5px";
 	priorityImage.style.right = "5px";
+	priorityImage.style.width = "70px";
+	priorityImage.style.height = "70px";
 
 	priorityImage.src = imgUrl;
 

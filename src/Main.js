@@ -169,7 +169,7 @@ function drawExampleCard() {
 		};
 
 		var parentMap = {};
-		var ticket = new Card(card.issueId, card.issueUrl, card.issueType, card.estimate, card.summary, card.component, card.tag, card.businessvalue, card.parentIssueId);
+		var ticket = new Card(card.issueId, card.issueUrl, card.issueType, card.estimate, card.summary, card.component, card.tag, card.businessvalue, null,  card.parentIssueId, "https://jira.caplin.com/images/icons/priority_major1.gif");
 
 		parentMap[card.issueId] = card;
 		parentMap[parentCard.issueId] = parentCard;
