@@ -142,7 +142,7 @@ function drawExampleCard() {
 			"issueId": "PCTCUT-511",
 			"issueUrl": "https://jira.caplin.com/browse/PCTCUT-511",
 			"issueType": "Technical task",
-			"checkBoxes": ["Rel Note", "Wiki", "Review"],
+			"checkBoxes": ["ACs", "PO Approval"],
 			"estimate": 3,
 			"summary": "A tech task.",
 			"component": "COMP",

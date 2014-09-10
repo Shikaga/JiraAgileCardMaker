@@ -147,7 +147,7 @@ select {
 	width: 35%;
 }
 
-.Doc, .Demo, .Review, .Rel_Note, .Wiki {
+.Doc, .Demo, .Review, .Rel_Note, .Wiki, .PO_Approval, .ACs{
 	width: 100%;
 	height: 60px;
 }
