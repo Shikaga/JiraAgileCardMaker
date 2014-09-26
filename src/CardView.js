@@ -68,10 +68,7 @@ CardView.prototype.addSummary = function (summary, parentSummary, component, tag
         var epicData = epics.filter(function(_) {
             return _.key === epic
         })[0];
-		var color = null;
-		if (epicData.epicColor) color = epicData.epicColor;
-		if (epicData.color) color = epicData.color;
-        sideElement.innerHTML += "<span class='epic' style='background-color: " + color + "'>" + epicData.epicLabel + "</span>";
+        sideElement.innerHTML += "<span class='epic' style='background-color: " + epicData.epicColor + "'>" + epicData.epicLabel + "</span>";
     }
 
 	if (this.isParentDescriptionEnabled && parentSummary != null) {
@@ -179,3 +176,4 @@ CardView.prototype.getPriorityElement = function(imgUrl) {
 
 	return priorityImage;
 }
+
